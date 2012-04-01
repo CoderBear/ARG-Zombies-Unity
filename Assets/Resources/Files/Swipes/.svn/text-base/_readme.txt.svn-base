@@ -1,0 +1,11 @@
+# - this is the comment symbol, all lines starting with '#', will be ignored
+#
+# A swipe step line has the following order:
+# swipe type (swipe or release = 0 or 1), x1, y1, height, width
+# (release are all the cases when the user has to take the finger of the screen (end a touch)
+# all values are separated by a coma
+# each line contains one step, in the order of their execution
+#
+# example:
+0, 100, 100, 50, 50
+0, 150, 100, 50, 50
