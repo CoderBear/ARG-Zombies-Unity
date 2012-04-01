@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>9.0.21022</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{30B0B4AD-1FC6-75DD-AA4F-114BF8C728EA}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_4_0;UNITY_3_4;UNITY_EDITOR;ENABLE_PROFILER;UNITY_WEBPLAYER;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\QRCode\DemoScene\QRCodeDemo.cs" />
+     <None Include="Assets\Resources\Files\Swipes\furry_of_fists.txt" />
+     <None Include="Assets\Resources\Files\Swipes\tuck_ in_tight.txt" />
+     <None Include="Assets\Resources\Files\PC.txt" />
+     <None Include="Assets\Resources\Files\Swipes\blow the mag.txt" />
+     <None Include="Assets\Resources\Files\Swipes\swing.txt" />
+     <None Include="Assets\Resources\Files\Swipes\stillnes_of_the_sword.txt" />
+     <None Include="Assets\Resources\Files\Swipes\super_punch.txt" />
+     <None Include="Assets\Resources\Files\Swipes\one _two.txt" />
+     <None Include="Assets\Resources\Textures\specialLine1.txt" />
+     <None Include="Assets\Resources\Files\Swipes\mastery.txt" />
+     <None Include="Assets\Resources\Files\Swipes\center_mass.txt" />
+     <None Include="Assets\Resources\Files\Swipes\pummel.txt" />
+     <None Include="Assets\Resources\Files\Swipes\_readme.txt" />
+     <None Include="Assets\Resources\Files\Swipes\stab&amp;twist.txt" />
+     <None Include="Assets\Resources\Files\Swipes\from_the_hip.txt" />
+     <None Include="Assets\Resources\Files\Swipes\covering_fire.txt" />
+     <None Include="Assets\Resources\Files\Swipes\duck_and_weave.txt" />
+     <None Include="Assets\Resources\Files\Swipes\barrage.txt" />
+     <None Include="Assets\Resources\Files\Swipes\hi-duke-in.txt" />
+     <None Include="Assets\Resources\Files\Swipes\head_shot.txt" />
+     <None Include="Assets\Resources\Textures\specialQuad.txt" />
+     <None Include="Assets\Resources\Files\Swipes\flail widly.txt" />
+     <None Include="Assets\Resources\Files\Swipes\multi_slash.txt" />
+ <Reference Include="Assets\QRCode\Plugins\Antares.QRCode">
+ <HintPath>Assets\QRCode\Plugins\Antares.QRCode.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{BE0825E8-854F-456B-2FE7-8F30CB0C5C0A}</Project>
+      <Name>Assembly-CSharp-firstpass-vs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>
+	

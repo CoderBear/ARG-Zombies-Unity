@@ -1,0 +1,33 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+
+Project("{6A34DF64-6F73-F588-2E1C-0FE5F9661F8D}") = "UrbanApocalypse_unity 2 2", "Assembly-CSharp-firstpass-vs.csproj", "{BE0825E8-854F-456B-2FE7-8F30CB0C5C0A}"
+EndProject
+Project("{6A34DF64-6F73-F588-2E1C-0FE5F9661F8D}") = "UrbanApocalypse_unity 2 2", "Assembly-CSharp-vs.csproj", "{30B0B4AD-1FC6-75DD-AA4F-114BF8C728EA}"
+EndProject
+Project("{6A34DF64-6F73-F588-2E1C-0FE5F9661F8D}") = "UrbanApocalypse_unity 2 2", "Assembly-CSharp-Editor-vs.csproj", "{D06A5C57-2A7D-F465-777A-9CBA334DB09F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE0825E8-854F-456B-2FE7-8F30CB0C5C0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0825E8-854F-456B-2FE7-8F30CB0C5C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0825E8-854F-456B-2FE7-8F30CB0C5C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0825E8-854F-456B-2FE7-8F30CB0C5C0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30B0B4AD-1FC6-75DD-AA4F-114BF8C728EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30B0B4AD-1FC6-75DD-AA4F-114BF8C728EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30B0B4AD-1FC6-75DD-AA4F-114BF8C728EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30B0B4AD-1FC6-75DD-AA4F-114BF8C728EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06A5C57-2A7D-F465-777A-9CBA334DB09F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06A5C57-2A7D-F465-777A-9CBA334DB09F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06A5C57-2A7D-F465-777A-9CBA334DB09F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06A5C57-2A7D-F465-777A-9CBA334DB09F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	
+EndGlobal

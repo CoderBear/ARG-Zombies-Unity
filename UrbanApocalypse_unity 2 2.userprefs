@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/scriptTrade 1.js">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="143" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="262" Column="6" />
+      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="661" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="1290" Column="9" />
+      <File FileName="Assets/Resources/Scripts/scriptBank.js" Line="217" Column="6" />
+      <File FileName="Assets/Resources/Scripts/scriptTrade 1.js" Line="288" Column="10" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
