@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Enabled</key>
+	<array>
+		<true/>
+		<true/>
+		<true/>
+		<true/>
+	</array>
+	<key>PathNames</key>
+	<array>
+		<string>Assets/Levels/sceneMainMenu.unity</string>
+		<string>Assets/Levels/sceneMap.unity</string>
+		<string>Assets/Levels/sceneBattle.unity</string>
+		<string>Assets/Levels/sceneLevelUp.unity</string>
+	</array>
+	<key>iPhone LastLocation</key>
+	<string>/Projects/Unity battle/UB_build</string>
+</dict>
+</plist>
