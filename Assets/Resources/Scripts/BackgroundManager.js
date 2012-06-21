@@ -50,7 +50,6 @@
 		texLoading = Resources.Load("menus/menu_map/loading", Texture2D);
 		if( sceneToLoad != "" )
 		{
-			Debug.Log( "loading scene safe" );
 			yield WaitForSeconds( 0.5 );
 			Application.LoadLevelAsync( sceneToLoad );
 			sceneToLoad = "";

@@ -1,6 +1,11 @@
 class Mob{
+
+	var specialMob : int;
+	var photosNames : String;
+
 	var name	: String;			// name of the GameObject
 	var path	: String;			// path of the Resources for this characater
+					//is the mob special an has intro images?
 
 	var id		: int;				// id of mob
 	var mobname	: String;			// name of mob

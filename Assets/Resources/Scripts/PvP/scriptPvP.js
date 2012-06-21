@@ -10,6 +10,9 @@ var needToRegen : boolean;
 var bullet : GameObject;
 var wwwData : String;
 
+var idleAniUpdate : float;
+var idleAniUpdateRate : float;
+
 var styleErrorFrame	: GUIStyle;
 var bLootAlert 		: boolean;
 var lootAlertRect 	: Rect; 
@@ -116,6 +119,8 @@ var SAY				: int = 7;
 var WIN				: int = 8;
 var PLAY			: int = 9;
 var SHOOT			: int = 10;
+var HIT3            : int = 11;
+var FIRE            : int = 12;
 
 var tempHP : int;
 var tempENRG : int;
@@ -162,13 +167,18 @@ function Awake()
 }
 
 function Init() {
+	
+	
+	idleAniUpdate = 0.0;
+ 	idleAniUpdateRate = 15.0;
+ 	
 	//userPC = Instantiate(userPCPrefab, Vector3(-3,0,-6), Quaternion.identity);
 	lootAlertRect = Rect (150, 100, 220, 120);
 	bLoading = true;
 	Global.cameraS = camera;
 	Global.mobSpecialCoolDown = -1;
 	enemyPC = Instantiate(enemyPCPrefab, Vector3(3,0,-7), Quaternion.identity);
-		
+	
 	bMenu = true;
 	var bBattle = true;
 	
@@ -263,6 +273,14 @@ function Init() {
 
 function Update () {
 if(!bLoading){	
+	
+	if((Time.time > idleAniUpdate) && (Global.enemyChar.mobname == "TickMan") && (act.fin)){
+		idleAniUpdate = Time.time + idleAniUpdateRate;
+		addAction("cMob", "idle_2", 70, false);
+		addAction("cMob", IDLE);	
+	}
+
+
 	if(Queue.length > 0){
 		if(act.fin){
 			act = Queue[0];
@@ -280,7 +298,167 @@ if(!bLoading){
 					enemyPC.transform.position.x = enemyPC.transform.position.x - enemyPC.transform.localScale.z/2;
 				}
 			}
-			//razvan 04.10
+			//razvan 04.10 enemyPC
+			
+			
+			switch(act.action){
+				case WALK:
+					if(act.owner == "cPC"){
+						animToPlay = "walk";
+						//cPC.gameObj.animation[animToPlay].speed = 1.5;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						animToPlay = "walk";
+						//cMob.gameObj.animation[animToPlay].speed = 1.5;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case HIT1:
+					if(act.owner == "cPC"){
+						animToPlay = "hit_1";
+                       // cPC.gameObj.animation[animToPlay].speed = 0.75;
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						animToPlay = "hit_1";
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case HIT2:
+					if(act.owner == "cPC"){
+						animToPlay = "hit_2";
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+                    }
+					
+					if(act.owner == "cMob"){
+						animToPlay = "hit_2";
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+                case HIT3:
+                    if(act.owner == "cPC"){
+						animToPlay = "hit_3";
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+                    }
+                
+                    break;
+				case SHOOT:
+					if(act.owner == "cPC"){
+						animToPlay = "hit_3";
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						animToPlay = "hit_3";
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case DODGE:
+					if(act.owner == "cPC"){
+						printText(cPC.role, "-miss");
+						animToPlay = "duck_and_weave";
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						printText(eChar.role, "-miss");
+						animToPlay = "dodge";
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case DIE:
+					if(act.owner == "cPC"){
+						animToPlay = "death";
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						animToPlay = "death";
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case GET_HIT:
+					if(act.owner == "cPC"){
+						printText(cPC.role, "-" + (act.hit.HP > 0 ? act.hit.HP : "miss"));
+						animToPlay = "get_hit";
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						printText(eChar.role, "-" + (act.hit.HP > 0 ? act.hit.HP : "miss"));
+						animToPlay = "get_hit";
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case IDLE:
+					if(act.owner == "cPC"){
+						animToPlay = "idle";
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						if(Global.enemyChar.mobname == "TickMan"){
+							animToPlay = "idle_1";
+							idleAniUpdate = Time.time + idleAniUpdateRate;
+						}
+						else{
+							animToPlay = "idle";
+						}
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				case SAY:
+					if(act.owner == "cPC"){
+						printText(cPC.role, act.text);
+					}
+					if(act.owner == "cMob"){
+						printText(eChar.role, act.text);
+					}
+					act.fin = true;
+					break;
+				case WIN:
+					animToPlay = "win";
+					cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+					cPC.gameObj.animation.CrossFade(animToPlay);
+					break;
+				case PLAY:
+					animToPlay = act.animation;
+                    Debug.Log("act.animation E "+act.animation);
+					if(act.owner == "cPC"){
+                    
+						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+						cPC.gameObj.animation.CrossFade(animToPlay);
+					}
+					if(act.owner == "cMob"){
+						print( animToPlay );
+						enemyPC.animation[animToPlay].wrapMode = WrapMode.Once;
+						enemyPC.animation.CrossFade(animToPlay);
+					}
+					break;
+				//case SPAWN:
+				//	spawnTick();
+				//	act.fin = true;
+				//	break;	
+				case FIRE:
+					Debug.Log("FIRE");
+                    	//cMob.gameObj.animation["brace"].wrapMode = WrapMode.Once;
+						//cMob.gameObj.animation.CrossFade("brace");
+
+					act.fin  = true;
+					break;
+			}
+			act.started = true;
+		}
+			 /*
 			switch(act.action){
 				case WALK:
 					animToPlay = "walk";
@@ -407,6 +585,7 @@ if(!bLoading){
 			}
 			act.started = true;
 		}
+		 */
 		if(	act.action == HIT1 || act.action == HIT2 || act.action == DODGE ||
 			act.action == GET_HIT || act.action == DIE || act.action == WIN || act.action == PLAY){
 				var c: float;
@@ -564,9 +743,9 @@ function OnGUI (){
 	// Interface
 	//GUI.DrawTexture(Rect(215, 5, 51, 39), texTV, ScaleMode.StretchToFill, true, 1);
 	textLabelStyle.alignment = TextAnchor.UpperRight;
-	GUI.Label(Rect(404, 35, 71, 24), enemyPCScript.Nick, textLabelStyle);
+	GUI.Label(Rect(395, 35, 80, 24), enemyPCScript.Nick, textLabelStyle);
 	textLabelStyle.alignment = TextAnchor.UpperLeft;
-	GUI.Label(Rect(5, 35, 71, 24), Global.myChar.Nick, textLabelStyle);
+	GUI.Label(Rect(5, 35, 80, 24), Global.myChar.Nick, textLabelStyle);
 	
 	//draw bottom-bar if inventory not opened
 	if(!Inventory.bInventory)
@@ -853,7 +1032,7 @@ function OnGUI (){
 	textLabelStyle.alignment = TextAnchor.UpperLeft;
 	GUI.Label(Rect(10, 60, 20, 20), "" + Global.myChar.LVL, textLabelStyle);
 	textLabelStyle.alignment = TextAnchor.UpperRight;
-	GUI.Label(Rect(460, 60, 20, 20), "" + eChar.LVL, textLabelStyle);
+	GUI.Label(Rect(450, 60, 20, 20), "" + eChar.LVL, textLabelStyle);
 }
 
 function walk(gameObj : GameObject, toPos : Vector3) : boolean{

@@ -152,7 +152,7 @@ function Start()
 function InitStyles()
 {
 	lvlUpLabel.font = Resources.Load( "Fonts/BEBASNEUE_20", Font );
-	guiStyle3.font = Resources.Load( "Fonts/BEBASNEUE_32", Font );
+	guiStyle3.font = Resources.Load( "Fonts/BEBASNEUE_25", Font );
 	guiStyle3.normal.textColor = Color.white;
 	styleOrangeBut.font = Resources.Load( "Fonts/BEBASNEUE_14", Font );
 	styleOrangeBut.normal.background = Resources.Load( "Menus/Menu_Battle/button_orange", Texture2D );
@@ -177,15 +177,13 @@ function update_data_mission( misiune : Mission )
 	if ( misiune.toDo == "DROP" )
 		{
 			var i : int;
-			// done = iteme in inventory
 			misiune.done = 0;
 			yield StartCoroutine( scriptBattle.scriptInventory.GetInventoryItems() );
 			
 			//if ( Global.itemsInInventory != null )
 			for(i=0;i<scriptBattle.scriptInventory.itemsInInventory.length;i++)
 			{
-				//Debug.Log("Compara: " + scriptBattle.scriptInventory.itemsInInventory[i].id + " cu " + misiune.drop_special_item_id + " lungime vector: " + scriptBattle.scriptInventory.itemsInInventory.length);
-				if ( scriptBattle.scriptInventory.itemsInInventory[i].id == misiune.drop_special_item_id )//misiune.drop_special_item_id )   // poti seta itemul aici ptr misiune
+						if ( scriptBattle.scriptInventory.itemsInInventory[i].id == misiune.drop_special_item_id )//misiune.drop_special_item_id )   // poti seta itemul aici ptr misiune
 					misiune.done = scriptBattle.scriptInventory.itemsInInventory[i].quantity;
 			}
 		}
@@ -193,9 +191,6 @@ function update_data_mission( misiune : Mission )
 
 private function GetMissions( missionsActive : boolean )
 {
-	//Debug.Log( "Getting missions" );
-
-	
 	if (Global.myChar.id)
 	{
 		var url : String;
@@ -212,7 +207,7 @@ private function GetMissions( missionsActive : boolean )
 			download = new WWW(url);
 			yield download;
 		}		
-		Debug.Log( download.text );
+
 		var	retGetMobToFight;
 		var missionsUpdateQueue;
 		if( missionsActive )
@@ -227,20 +222,16 @@ private function GetMissions( missionsActive : boolean )
 		var missionDetails : String[];
 		for (var i:int=0;i<missions.length-1;i++)
 		{
-          //  Debug.Log("missions details "+Regex.Split(missions[i],"-"));
 			missionDetails = Regex.Split(missions[i],"-");
 			var M : Mission;
 			
-			Debug.Log("player: " + Global.myChar.id + " Misiune: " + missionDetails[0] + " , " + missionDetails[1] + " , " + missionDetails[4] + " , " + missionDetails[2] + " , " + missionDetails[3] + " , " + missionDetails[5] + " , " + missionDetails[6] + " , " +  missionDetails[7] + " , " + missionDetails[8] + " END!" );
-            if ( missionDetails.Length < 10 )
+        if ( missionDetails.Length < 10 )
             	return;
             
 			if( missionsActive)
 				M = new Mission(parseInt(missionDetails[0]),missionDetails[1],parseInt(missionDetails[4]),missionDetails[2],parseFloat(missionDetails[3]),missionDetails[5],parseInt(missionDetails[6]), parseFloat( missionDetails[7] ), true, 0, missionDetails[8], parseInt( missionDetails[9] ) );					
 			else
 				M = new Mission( parseInt(missionDetails[0]) ,missionDetails[1],parseInt(missionDetails[4]),missionDetails[2],parseFloat(missionDetails[3]),missionDetails[5],parseInt(missionDetails[6]), parseInt( missionDetails[7] ) , false, 0, missionDetails[8], parseInt( missionDetails[9] )  );
-
-             // Debug.Log("i= "+i+"missions.length = "+missions.length);
 			update_data_mission(M);			
 			Global.missionsArray.Add(M);
 		}			
@@ -265,14 +256,11 @@ private function GetMissions( missionsActive : boolean )
 		Global.missionsArray.RemoveAt( nr );
 		var response = Regex.Split(request.text,"<br />");		
 		response = Regex.Split(response[0].Trim(), "-");
-		
-		
+
 		Debug.Log( "length: " + response.length.ToString() );
 		if( response.length == 1 ) return;
 		Debug.Log( "response[0]: " + response[0] );
-		
-		
-		
+
 		if( response[0] == "XP" )
 		{
 			if( response.length > 2 ) //level up
@@ -336,7 +324,6 @@ private function GetMissions( missionsActive : boolean )
 			currentScreen = SCREEN_PAYEDMISSION;			
 			return;
 		}
-		//Debug.Log( "Activating Quest: " + mission.missionId + " For user: " + Global.myChar.id );
 		var the_url = Global.server + "/mmo_iphone/activate_mission.php?player_id=" + Global.myChar.id + "&mission_id=" + mission.missionId;
 		
 		Debug.Log("Activate Mission: " + the_url);
@@ -353,7 +340,8 @@ private function GetMissions( missionsActive : boolean )
 		if( mission.toDo == "KILL" || mission.toDo == "DROP" )
 		{
 			scriptMissions.GoMission = mission;
-			Global.self.FightMob( mission.what );
+			//Global.self.FightMob( mission.what );
+			Global.self.StartMission( mission );
 		}
         
 	}
@@ -462,16 +450,23 @@ function OnGUI()
                	GUI.Label(new Rect(15, 65*contor+30,200,35),buildingArray[contor].ToString(),blackText);
                	if( GUI.Button( Rect( 0, 65 * contor + 13, 220, 60 ), "", GUIStyle.none ) )
                	{
+             	  	ExitMissions();
+               		Global.self.FightMob("Zombie", buildingArray.length);
+               		print("A inceput fightingul buildingului!");
+               		scriptMissions.clearingBuildings = true;
+               		break;
+               		/*
                    	ExitMissions();
                    	clearingBuildings = true;
                    	LoadSceneScript.nrOfMobs = 0 ;
                    	scriptMissions.GoMission = null;
-                   	Global.self.FightMob("Zombie");	
+                   	Global.self.FightMob("Zombie", 1);	
                    	buildingRewardIc = new Array();
                    	buildingRewardNames = new Array();
                    	buildingPlan = Random.Range( 1, 5 );
                    	scriptBattle.buildingXP = 0;
                    	scriptBattle.buildingGold = 0;
+                   	*/
                	}
 		   	}
         }  
@@ -485,7 +480,7 @@ function StartCamera()
 	cameraActive = true;
 	qrCam.active = true;
 	
-	texture = ARBinding.startCameraCapture( false, ARQuality.High );
+	texture = ARBinding.startCameraCapture( false, ARQuality.Low);
 	target.renderer.sharedMaterial.mainTexture = texture;
 	ARBinding.updateMaterialUVScaleForTexture( target.renderer.sharedMaterial, texture );
 	ARBinding.setFocusMode( 2 ); //ARFocusMode.ContinuousAutoFocus
@@ -513,12 +508,12 @@ function ScanQR()
 	}
 	var test : Rect = qrCam.rect;
 	qrCam.rect = Rect( 0, 0, 1, 1 );
-	var rt : RenderTexture = new RenderTexture( 480, 320, 24);
+	var rt : RenderTexture = new RenderTexture( 480, 360, 24);
 	qrCam.targetTexture = rt;			
-	var gui_texture = new Texture2D(480, 320, TextureFormat.RGB24, false);
+	var gui_texture = new Texture2D(480, 360, TextureFormat.RGB24, false);
 	qrCam.Render();
 	RenderTexture.active = rt;
-	gui_texture.ReadPixels( new Rect(0, 0, 480, 320), 0, 0 );
+	gui_texture.ReadPixels( new Rect(0, 0, 480, 360), 0, 0 );
 	qrCam.targetTexture = null;
 	RenderTexture.active = null;
 	Destroy( rt );
@@ -542,9 +537,7 @@ function ScanQR()
 	
 	target.renderer.material.mainTexture = null;
 	Destroy( gui_texture );
-	Destroy( rt );
-	
-	
+
 	Debug.Log( decodedString );	
 	ActivateQRReward( decodedString );
 	
@@ -562,8 +555,7 @@ function ExitMissions()
 function DrawLevelUp()
 {
 	GUI.BeginGroup(Rect(127,16,400,350));
-		
-	//guiStyle3
+
 	lvlUpLabel.normal.textColor = Color.white;
 	GUI.Label( Rect( 25, 56, 150, 30 ), "Level up", guiStyle3 );
 	//LEVEL, BRT, ACC, FORT, DEF, SPECIAL;
@@ -594,8 +586,7 @@ function DrawLevelUp()
 
 }
 	
-			
-	function DrawExtraScreens()
+function DrawExtraScreens()
 	{
 		switch( currentScreen )
 		{
@@ -635,7 +626,6 @@ function DrawLevelUp()
 						var strLevel : String = qrRewards["XP"];
 						if( levelUp )//we have leveld up
 						{
-							//ShowLevelUp( Regex.Split( strLevel, "/" ) );
 							currentScreen = SCREEN_LEVELUP;
 						}
 						else
@@ -701,14 +691,14 @@ function DrawLevelUp()
 				if( GUI.Button( Rect( 233, 260, 80, 25 ), "Fight", styleOrangeBut ) )
 				{
 					scriptMissions.GoMission = null;
-					Global.self.FightMob( qrRewards[ "MONSTER" ] );
+					Global.self.FightMob( qrRewards[ "MONSTER" ], 1 );
 				}
 				GUI.EndGroup();			
 			break;
 			case SCREEN_FAILED:
 				GUI.BeginGroup( Rect( 127, 16, 400, 350 ) );
 				lvlUpLabel.normal.textColor = Color.white;
-				GUI.Label( Rect( 25, 56, 375, 30 ), "QR code scan failed ", guiStyle3 );
+				GUI.Label( Rect( 25, 56, 375, 30 ), "QR code scan failed, try again!", guiStyle3 );
 				if( GUI.Button( Rect( 233, 260, 80, 25 ), "Continue", styleOrangeBut ) )
 				{
 					qrRewards = null;
@@ -779,13 +769,7 @@ function DrawLevelUp()
 			return;
 		}
 		var reqText : String = "";
-//		if( Global.debugMode )
-//		{
-//			reqText = str;
-//		}
-//		else
-//		{
-			
+
 		var the_url = Global.server + "/mmo_iphone/activate_qr_reward.php?qr_code=" + WWW.EscapeURL(str) + "&player_id=" + Global.myChar.id;
 		var request : WWW = new WWW( the_url );
 		yield request;
@@ -799,7 +783,6 @@ function DrawLevelUp()
 		reqText = request.text;
 		reqText = Regex.Replace(reqText, "\n", "");
 
-//		}
 		StopCamera();
 		
 		if( !reqText.Contains( "-" ) ) //qr code not found
@@ -871,6 +854,7 @@ function DrawLevelUp()
 	}
 function ClearBuilding()
     {
+    print("Asta e scriptu ClearBuilding()");
         getBuildings = true;
        Debug.Log("Clear The Building \n I'm at "+scriptMain.lat+"latitude and "+scriptMain.lon+"longitude");
     //   var geoURL = "http://maps.googleapis.com/maps/api/geocode/xml?address="+scriptMain.lat+','+scriptMain.lon+"&sensor=false";
@@ -884,8 +868,7 @@ function ClearBuilding()
 			request = new WWW( geoURL );
 			yield request;
 		}
-       // Debug.Log(request.text);
-       
+
         var fourDWL : String;
         fourDWL = request.text; 
         var count = 0;
@@ -893,23 +876,20 @@ function ClearBuilding()
         var i = fourDWL.IndexOf("name");
         while (i > 0)
         {
-        if(fourDWL[i+7]!='.')
-        {
-         name = "";
-         i = i + 7 ;
-         while(fourDWL[i]!='"')
-         {
-          
-          name = name + fourDWL[i];
-          i++;
-         }
-          buildingArray[count++] = name;
-      //   Debug.Log(name);
+	        if(fourDWL[i+7]!='.')
+	        {
+	         name = "";
+	         i = i + 7 ;
+		         while(fourDWL[i]!='"')
+		         {
+		          
+			          name = name + fourDWL[i];
+			          i++;
+		         }
+	          buildingArray[count++] = name;
+	        }
+       	 i = fourDWL.IndexOf("name",i+1);
         }
-        i = fourDWL.IndexOf("name",i+1);
-        //Debug.Log(fourDWL[i+8]);
-        }
-      
 }
 
 class Mission
@@ -939,14 +919,14 @@ class Mission
 		itsDone = 0;
 		if (td.Contains("/")) 
             {
-			var aux : String[] = Regex.Split(td,"/");
-			toDo = aux[0].ToUpper();
-			what = aux[1].ToUpper();
+				var aux : String[] = Regex.Split(td,"/");
+				toDo = aux[0].ToUpper();
+				what = aux[1].ToUpper();
             }
 		else 
             {
-			toDo = td.ToUpper();
-			what="";
+				toDo = td.ToUpper();
+				what="";
             }  
 		quant = inQaunt;
 		reward = inRewardType;
@@ -999,8 +979,7 @@ class Mission
 		done = amount;
 		this.calcPercent();
 	}
-
-
+	
 	public function ToString()
 	{
 		var s : String = "";
@@ -1042,18 +1021,10 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	if (AMission.level<=Global.myChar.LVL && AMission.itsDone != 1 && compara_misiune_selectata(AMission.toDo,chooseMission) )//AMission.toDo.ToUpper().Contains(chooseMission)) 
 	{ 
 	   realMissionLength++;
-	           
-				//Debug.Log(Global.missionsArray[i].mActive);
-	            
-	            //Debug.Log("Done : "+Global.missionsArray[i].percentDone);
-	            
+
 	   if(AMission.toDo=="MOVE")                // move = exploration       !!!
 	   {
-		   //if( AMission.mActive  )
-		        GUI.DrawTexture( new Rect( 0, 65 * j, 315, 60 ), texElementBgSelBlue, ScaleMode.StretchToFill );
-			//else
-			//	GUI.DrawTexture(new Rect(0,65*j,315,60), texElementBackgroundBlue , ScaleMode.StretchToFill);
-		   
+	       GUI.DrawTexture( new Rect( 0, 65 * j, 315, 60 ), texElementBgSelBlue, ScaleMode.StretchToFill );
 		   GUI.Label(new Rect(15, 65*j+30,200,35),AMission.interfaceDescription,blackText);
 		   GUI.Label(new Rect(140, 65*j+13,50,35),AMission.RewardString(),blueText);
 		   GUI.DrawTexture(new Rect(15, 65*j+16,106,7 ) , bar_grey , ScaleMode.StretchToFill);
@@ -1062,11 +1033,7 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	              
 	   	if(AMission.toDo=="KILL" || AMission.toDo == "DROP")			// kill = survival
 		{
-	        //if( AMission.mActive  )
-				GUI.DrawTexture( new Rect( 0, 95 * k, 315, 90 ), texElementBgSelRed, ScaleMode.StretchToFill );
-			//else
-			//	GUI.DrawTexture(new Rect(0,95*k,315,90), texElementBackgroundRed , ScaleMode.StretchToFill);
-	        
+			GUI.DrawTexture( new Rect( 0, 95 * k, 315, 90 ), texElementBgSelRed, ScaleMode.StretchToFill );
 	        if ( GUI.Button(Rect(5, 95*k+5, 50, 30),"Info") )     // de pus butonul cu prioritate
 	        {
 	        	GoMission = AMission;
@@ -1082,10 +1049,7 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	                
 	    if(AMission.toDo=="CRAFT")                 // craft
 		{
-	        //if( AMission.mActive  )
-	        	GUI.DrawTexture( new Rect( 0, 65 * l, 315, 60 ), texElementBgSelOrange, ScaleMode.StretchToFill );
-			//else
-			//	GUI.DrawTexture(new Rect(0,65*l,315,60), texElementBackgroundOrange , ScaleMode.StretchToFill);
+	        GUI.DrawTexture( new Rect( 0, 65 * l, 315, 60 ), texElementBgSelOrange, ScaleMode.StretchToFill );
 	        GUI.Label(new Rect(15, 65*l+30,200,35),AMission.interfaceDescription,blackText);
 	        GUI.Label(new Rect(140, 65*l+13,50,35),AMission.RewardString(),blueText);
 	        GUI.DrawTexture(new Rect(15, 65*l+16,106,7 ) , bar_grey , ScaleMode.StretchToFill);           
@@ -1093,10 +1057,7 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	                
 	    if(AMission.toDo=="BOSS")
 		{
-	    	//if( AMission.mActive  )
-	            GUI.DrawTexture( new Rect( 0, 65 * i, 315, 60 ), texElementBgSelBlack, ScaleMode.StretchToFill );
-			//else
-			//	GUI.DrawTexture(new Rect(0,65*i,315,60), texElementBackgroundBlack , ScaleMode.StretchToFill);
+	        GUI.DrawTexture( new Rect( 0, 65 * i, 315, 60 ), texElementBgSelBlack, ScaleMode.StretchToFill );
 	        GUI.Label(new Rect(15, 65*i+30,200,35),AMission.interfaceDescription,whiteText);
 	        GUI.Label(new Rect(140, 65*i+13,50,35),AMission.RewardString(),white2Text);
 	        GUI.DrawTexture(new Rect(15, 65*i+16,106,7 ) , bar_grey , ScaleMode.StretchToFill);        
@@ -1109,16 +1070,16 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	        	}
 	        else if(chooseMission == "CRAFT")
 	             if( ( l + 1 ) * 65 < scrollPosition.y || ( l - 1 ) * 65 > scrollPosition.y + 320 )
-	             {
-	             	UpdateVector(V,j,k,l);
-	             	return V;
-	             }
+		             {
+		             	UpdateVector(V,j,k,l);
+		             	return V;
+		             }
 	             else if(chooseMission == "MOVE")
 	                  if( ( j + 1 ) * 65 < scrollPosition.y || ( j - 1 ) * 65 > scrollPosition.y + 320 )
-	                  {
-	                  	UpdateVector(V,j,k,l);
-	                  	return V;
-	                  }
+		                  {
+		                  	UpdateVector(V,j,k,l);
+		                  	return V;
+		                  }
 			/*	GUI.Label(new Rect(15, 65*i+30,200,35),Global.missionsArray[i].interfaceDescription,blackText);
 				GUI.Label(new Rect(140, 65*i+13,50,35),Global.missionsArray[i].RewardString(),blueText);
 				GUI.DrawTexture(new Rect(15, 65*i+16,106,7 ) , bar_grey , ScaleMode.StretchToFill); */
@@ -1127,8 +1088,6 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 		var td : int;
 		var greenBarScale : float = AMission.done * 1.0f/AMission.quant;
 		if (greenBarScale > 1) greenBarScale =1;
-			//Debug.Log( "greescale: " + greenBarScale + "   Done: " + Global.missionsArray[i].done + "   quant: " + Global.missionsArray[i].quant );
-				
 		if( AMission.toDo.ToUpper().Contains("MOVE") )
 		{
 			if ( !AMission.mActive )
@@ -1155,7 +1114,7 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	           GUI.Label(new Rect(175, 65*j+16,20,20),done.ToString(),fractionStyle1);
 	           GUI.Label(new Rect(205, 65*j+31,20,20),td.ToString(), fractionStyle2 );	
 	        }
-	        else if (chooseMission == "CRAFT")
+	    else if (chooseMission == "CRAFT")
 	        {
 	           GUI.Label(new Rect(175, 65*l+16,20,20),done.ToString(),fractionStyle1);
 	           GUI.Label(new Rect(205, 65*l+31,20,20),td.ToString(), fractionStyle2 );	
@@ -1163,26 +1122,25 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	        }
 		var aux = GUI.color.a;
 		GUI.color.a = greenBarScale/2 + 0.5;
-	         //   GUI.DrawTexture(new Rect(15, 65*i+16,106*greenBarScale,7 ) , bar_green , ScaleMode.StretchToFill);
 	    if(chooseMission=="KILL")
 	    {
 			GUI.Label(new Rect(175, 95*k+35,20,20),done.ToString(),fractionStyle1);
 		    GUI.Label(new Rect(205, 95*k+46,20,20),td.ToString(), fractionStyle2 );	
 		    GUI.DrawTexture(new Rect(15, 95*k+35,106*greenBarScale,7 ) , bar_green , ScaleMode.StretchToFill);   // bara green ( cat e complet din quest )
 	    }
-	    else if(chooseMission == "CRAFT")
+	  	  else if(chooseMission == "CRAFT")
 	    {
 	    	GUI.Label(new Rect(175, 65*l+16,20,20),done.ToString(),fractionStyle1);
 	        GUI.Label(new Rect(205, 65*l+31,20,20),td.ToString(), fractionStyle2 );	
 	        GUI.DrawTexture(new Rect(15, 65*l+16,106*greenBarScale,7 ) , bar_green , ScaleMode.StretchToFill);
 	    }
-	         else if(chooseMission == "MOVE") 
-	         {
-	             GUI.Label(new Rect(175, 65*j+16,20,20),done.ToString(),fractionStyle1);
-	             GUI.Label(new Rect(205, 65*j+31,20,20),td.ToString(), fractionStyle2 );	
-	             GUI.DrawTexture(new Rect(15, 65*j+16,106*greenBarScale,7 ) , bar_green , ScaleMode.StretchToFill);
-	         }
-	                
+	      else if(chooseMission == "MOVE") 
+	    {
+	         GUI.Label(new Rect(175, 65*j+16,20,20),done.ToString(),fractionStyle1);
+	         GUI.Label(new Rect(205, 65*j+31,20,20),td.ToString(), fractionStyle2 );	
+	         GUI.DrawTexture(new Rect(15, 65*j+16,106*greenBarScale,7 ) , bar_green , ScaleMode.StretchToFill);
+	    }
+                
 		GUI.color.a = aux;
 				
 		if( AMission.getPercentDone() > 99.99f ) //it's done
@@ -1193,22 +1151,22 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 		            AMission.itsDone = 1;
 		            CompleteMission( i );
 	                if ( AMission.toDo == "DROP" )
-					{
-						DeleteUniqueItemFromQuest(AMission);
-					}
+						{
+							DeleteUniqueItemFromQuest(AMission);
+						}
 	          	}
 	            if(chooseMission=="MOVE")
 					if (GUI.Button (new Rect(225,65*j+13,81.25,36.6),"",doneStyle))
-					{
-	                    AMission.itsDone = 1;
-	                    CompleteMission( i );
-	              	}
+						{
+		                    AMission.itsDone = 1;
+		                    CompleteMission( i );
+		              	}
 	                if(chooseMission=="CRAFT")
 						if (GUI.Button (new Rect(225,65*l+13,81.25,36.6),"",doneStyle))
-						{
-	                        AMission.itsDone = 1;
-	                        CompleteMission( i );
-	                   	}                                                                                                                                
+							{
+		                        AMission.itsDone = 1;
+		                        CompleteMission( i );
+		                   	}                                                                                                                                
 	    k++;
 	    l++;
 	    j++;
@@ -1225,19 +1183,20 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	            {               
 	            	ExitMissions();
 					if( !t.mActive )
-					{
-						ActivateMission( AMission );
-						// 
-	                }
+						{
+							ActivateMission( AMission );
+							// 
+		                }
 					else
 					{   
 						ExitMissions();
 						Debug.Log( "Mission : " + AMission.toDo + " - " + AMission.what );
 						if( AMission.toDo == "KILL" || AMission.toDo == "DROP" )
-						{
-							scriptMissions.GoMission = AMission;
-							Global.self.FightMob( AMission.what );
-						}						
+							{
+								scriptMissions.GoMission = AMission;
+								//Global.self.FightMob( AMission.what );
+								Global.self.StartMission( AMission );
+							}						
 					}
 				}
 				k++;
@@ -1251,18 +1210,18 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	                   
 	        	    ExitMissions();
 					if( !AMission.mActive )
-					{
-						ActivateMission( AMission );
-	                }
+						{
+							ActivateMission( AMission );
+		                }
 					else
 					{   
 						ExitMissions();
 						Debug.Log( "Mission : " + AMission.toDo + " - " + AMission.what );
 						if( AMission.toDo == "KILL" || AMission.toDo == "DROP" )
-						{
-							scriptMissions.GoMission = AMission;
-							Global.self.FightMob( AMission.what );
-						}					
+							{
+								scriptMissions.GoMission = AMission;
+								Global.self.StartMission( AMission );
+							}					
 					}					
 				}
 				j++;
@@ -1276,18 +1235,18 @@ function PutMissionInWindow( AMission : Mission , i : int , j : int, k : int, l 
 	            {
 	        	    ExitMissions();
 					if( !t.mActive )
-					{
-						ActivateMission( AMission );
-	                }
+						{
+							ActivateMission( AMission );
+		                }
 					else
 					{   
 						ExitMissions();
 						Debug.Log( "Mission : " + AMission.toDo + " - " + AMission.what );
 						if( AMission.toDo == "KILL" || AMission.toDo == "DROP" )
-						{
-							scriptMissions.GoMission = AMission;
-							Global.self.FightMob( AMission.what );
-						}					
+							{
+								scriptMissions.GoMission = AMission;
+								Global.self.StartMission( AMission );
+							}					
 					}
 				  	l++;
 	            }
@@ -1303,10 +1262,10 @@ function delete_special_item(itemId : int)
 {
 	var index : int = Inventory.self.find_item_from_inventory(itemId);
 	if ( index != -1 )
-	{
-		Inventory.self.itemsInInventory[ index ] = Item();
-		yield Inventory.self.SendInventoryItems();
-	}
+		{
+			Inventory.self.itemsInInventory[ index ] = Item();
+			yield Inventory.self.SendInventoryItems();
+		}
 
 	/*
 	var the_url = Global.server + "/mmo_iphone/update_spec_item.php?id_item=" + itemId + "&id_user=" + Global.myChar.id + "&delete=sterge";
@@ -1325,8 +1284,4 @@ function DeleteUniqueItemFromQuest( mission : Mission)
 {
 	yield delete_special_item(mission.drop_special_item_id);
 	yield scriptBattle.scriptInventory.GetInventoryItems();
-	
-	
-	//scriptBattle.scriptInventory.DeleteItemFromInventory(mission.drop_special_item_id, mission.quant);
-	//yield scriptBattle.scriptInventory.SendInventoryItems();
 }

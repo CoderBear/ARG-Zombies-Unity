@@ -93,7 +93,8 @@ var myTrades2		: Item4[];
 var yourTrades2		: Item4[];
 var myItems2		: Array;//Item[];//
 
-var texMyItems 		: Array;
+var texMyItems = new Array();
+//var texMyItems 		: Array;
 var texMyTrades		: Texture2D[];
 var texYourTrades	: Texture2D[];
 
@@ -355,7 +356,7 @@ function GetTradeItems2(){
 	var nrOfItemsInInv : int = parseInt(values[0]);
 	
 	myItems2 = new Array(); // new Item[nrOfItemsInInv+1]; // //
-	var texMyItems = new Array();//new Texture2D[nrOfItemsInInv+1];
+	//var texMyItems = new Array();//new Texture2D[nrOfItemsInInv+1];
 	var tmp : int = 0;
 		var t=new Item();
 	for( i = 0; i<nrOfItemsInInv; i++)
@@ -405,7 +406,6 @@ function GetTradeItems2(){
 	yield upload;
 	while( upload.error && upload.error.ToString().Contains("Resolving host timed out") )
 	{
-    	Debug.Log( "Retrying" );
     	upload = new WWW(Global.server + "/mmo_iphone/trade.php", postData);
 		yield upload;
 	}

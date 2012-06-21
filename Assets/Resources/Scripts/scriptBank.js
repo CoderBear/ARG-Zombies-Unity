@@ -110,9 +110,7 @@ static var InboxTrade : boolean;
 
 function Start() {
 	InboxTrade = false;
-	Debug.Log("APELARE SCRIPT BANK");
-	
-    Debug.Log("ScriptBank.js:function Start()");
+
 	sQuantity = "1";
 	dark_pixel = Resources.Load("Menus/Menu_General/dark_pixel", Texture2D);
     inboxPressed = true;
@@ -611,8 +609,7 @@ function GetInventoryItems()
 		}
 		i=i+1;
 	}
-	Debug.Log("scriptBank:GetInventoryItems: myChar.WepType="+Global.myChar.WepType);
-	Debug.Log("scriptBank:GetInventoryItems: myChar.WepType="+Global.myChar.WepType);
+
 	UpdateInventory();
 	is_updating = false;
 }

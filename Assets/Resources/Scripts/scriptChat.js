@@ -6,7 +6,8 @@ var sChat			: String;
 var sAux			: String;
 
 var lastTime		: float;
-static var Chats	: Array;
+//static var Chats	: Array; 
+static var	Chats = new Array();
 var auxChat			: Chat;
 var auxChat2		: Chat;
 static var nCurChat		: int;
@@ -45,7 +46,6 @@ function Start(){
 	sChat = "";
 	//nUserId = Global.myChar.id;
 	nUserId = Global.myChar.id;
-	Chats = new Array();
 	auxChat = new Chat();
 	Chats.Add(auxChat);
 }

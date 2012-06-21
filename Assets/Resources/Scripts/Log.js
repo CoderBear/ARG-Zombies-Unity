@@ -70,15 +70,15 @@ static function OnGUI(){
      
 	//if (show) GUI.Label(Rect(0, 0, 480, 320), sLog);
 	
-	if(GUI.Button(Rect(Screen.width-55, 0, 40, 25), "Show")) show = !show;
-
-	if(show){
-		if(GUI.Button(Rect(Screen.width-55, 25, 40, 25), "Gray")) gray = !gray;
-		if(GUI.Button(Rect(Screen.width-55, Screen.height-25, 40, 25), "Clear")) clear();
-	
-		scrollPos = GUI.VerticalScrollbar (Rect (Screen.width - 15, 0, 15, Screen.height),
-											scrollPos, Screen.height / textHeight, 0, nLog);
-		if(gray) GUI.Button(Rect(-5, -5, Screen.width + 7, Screen.height + 7), "");
-		GUI.Label(Rect(0, 0 - scrollPos*textHeight , Screen.width - 15, nLog * textHeight), sLog);
-	}
+//	if(GUI.Button(Rect(Screen.width-55, 0, 40, 25), "Show")) show = !show;
+//
+//	if(show){
+//		if(GUI.Button(Rect(Screen.width-55, 25, 40, 25), "Gray")) gray = !gray;
+//		if(GUI.Button(Rect(Screen.width-55, Screen.height-25, 40, 25), "Clear")) clear();
+//	
+//		scrollPos = GUI.VerticalScrollbar (Rect (Screen.width - 15, 0, 15, Screen.height),
+//											scrollPos, Screen.height / textHeight, 0, nLog);
+//		if(gray) GUI.Button(Rect(-5, -5, Screen.width + 7, Screen.height + 7), "");
+//		GUI.Label(Rect(0, 0 - scrollPos*textHeight , Screen.width - 15, nLog * textHeight), sLog);
+//	}
 }

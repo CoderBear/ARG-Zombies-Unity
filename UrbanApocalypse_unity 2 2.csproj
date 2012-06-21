@@ -37,16 +37,16 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>/Users/user/Desktop/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>/Volumes/Data/work_sabin/Unity 3.3/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>/Users/user/Desktop/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>/Volumes/Data/work_sabin/Unity 3.3/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
 	</Reference>
 	<Reference Include="Boo.Lang">
-	  <HintPath>/Users/user/Desktop/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+	  <HintPath>/Volumes/Data/work_sabin/Unity 3.3/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityScript">
-	  <HintPath>/Users/user/Desktop/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/UnityScript.dll</HintPath>
+	  <HintPath>/Volumes/Data/work_sabin/Unity 3.3/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/UnityScript.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>

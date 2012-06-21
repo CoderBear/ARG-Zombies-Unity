@@ -452,6 +452,9 @@ function OnGUI(){
 	if(nCraftPos!=-1)
 	if(GUI.Button(Rect(370, 283, 83, 36), "Craft", style)){
 		// Update inventory locally
+//		CraftItem();
+		
+		/* OLD SHIT
 		for(i = 0; i<allItems[nCraftPos].craft_id.length; i++){
 			k = -1;
 			bFound = false;
@@ -480,6 +483,7 @@ function OnGUI(){
 										"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0-0", "0", "0"]);
 			bNewCraft = true;
 		}
+		*/
 		Debug.Log(allItems[nCraftPos].name);
 		
 		switch( allItems[nCraftPos].craft_type )
@@ -595,4 +599,28 @@ function loadItems(length :int)
   
   neededItems[i] = Resources.Load(neededString[i]);
     }
+}
+
+//function CraftItem()
+//{
+//	var CheckAllMats : boolean = true;
+//	
+//	yield Inventory.self.GetInventoryItems();
+//	
+//	for(int i = 0; i<allItems[nCraftPos].craft_id.length; i++)
+//	{
+//		CheckAllMats = Inventory.self.UnlootItem(allItems[nCraftPos].craft_id[i], allItems[nCraftPos].craft_quantity[i]);
+//		if ( CheckAllMats == false )
+//			break;
+//	}
+//	if ( CheckAllMats )
+//		LootItem(allItems[nCraftPos].id);
+//	else
+//		yield Inventory.self.GetInventoryItems();
+//}
+
+function LootItem(id : int)
+{
+	yield Inventory.self.LootItem(id);
+	yield Inventory.self.SendInventoryItems();
 }

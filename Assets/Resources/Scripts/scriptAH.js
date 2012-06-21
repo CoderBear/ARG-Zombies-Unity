@@ -37,7 +37,7 @@ var nMoney		: int;
 var nBuyItems	: int;
 var nSellItems	: int;
 var nFailItems	: int;
-var myItems		: Array;
+var myItems = new Array();
 var AHItems		: Item3[];
 var FailItems	: Item3[];
 var nSearchItems: int;
@@ -135,6 +135,7 @@ function GetAHItems(){
 		AHItems[i] = Item3(values[i]);
 		AHItems[i].active = true;
 		texBuyItems[i] = Resources.Load("Menus/Inventory/Icons/" + AHItems[i].id);
+		print(AHItems[i].name);
 		nBuyItems++;
 	}
 	nSearchItems = nBuyItems;
@@ -170,7 +171,6 @@ function GetAHItems(){
 	}
 	nSearchItems1 = nFailItems;
 	
-	Debug.Log("am intraty in Sell si bSell=true");
 	download = new WWW(Global.server + "/mmo_iphone/items-on.php?id=" + nUserId);
 	yield download;
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"))
@@ -192,7 +192,7 @@ function GetAHItems(){
 	//myItems = new Item[values.length-1];
 	texSellItems = new Texture2D[values.length-1];
 	
-	var myItems = new Array();
+	//var myItems = new Array();
 	texSellItems = new Array();
 	var t=new Item();
 	for(i = 0; i<values.length-2; i++){
@@ -472,8 +472,10 @@ function guiSell(){
 	
 	GUI.DrawTexture(Rect(4, 40, 471, 234), texSellFrame);
 	sellScrollPos = GUI.BeginScrollView(sellItemsFrame, sellScrollPos, Rect(0, 0, 145, nSellItems*27));
+
 	for(i = 0; i<nSellItems; i++){
 		t = myItems[i];
+
 		styleList = i == nSellItem ? styleBut : styleButP;
 			if (t.quantity < 2) {
 				sellItemCnt.text = "  " +  (t.name.length>14 ? t.name.Substring(0,14)+".." : t.name);
@@ -544,6 +546,8 @@ function guiSell(){
 		if ( !is_updating_ah )
 		{
             SellItem();
+         //  guiSell();
+            print("S-a vandut + ceva");
 		}
 
 	}
@@ -592,6 +596,7 @@ function SellItem()
 		return;
     var t = new Item();	
     t = myItems[nSellItem];	
+    print("t-ul cautat de noi este " + t.name);
 	is_updating_ah = true;
   //  Debug.Log("nUserId = "+nUserId+" id item = "+myItems[nSellItem].id+" quantity "+sQuantity+" price ="+ sPrice+";_____nSellItem="+nSellItem+" Numele"+myItems[nSellItem].name);
             
@@ -642,6 +647,9 @@ function SellItem()
 	
 	yield WaitForSeconds(1.0);
 	is_updating_ah = false;
+
+	
+	
 	//yield WaitForSeconds(1);
 }
 

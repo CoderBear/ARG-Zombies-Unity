@@ -38,10 +38,15 @@ var WMaxD 	: int;
 var WepType : int;
 	
 var AvatarId : String;							//id of avatar to use
+var Body    : int;
 
 public var SpecialAttacks : SpecialAttacks[];			// special attacks
 
 function getUserData(){
+	
+	if ( Global.enemyPCUserName == "" )
+		return;
+
 	var values : String[];
 	var the_url = Global.server + "/mmo_iphone/user_desc.php?username=" + Global.enemyPCUserName;
 	var download = new WWW( the_url );
@@ -52,7 +57,6 @@ function getUserData(){
     	download = new WWW( the_url );
     	yield download;
 	}
-	
  	
 	if(download.error) {
 		print( "Error downloading: " + download.error );
@@ -61,10 +65,11 @@ function getUserData(){
 	}
 
 	if(wwwData.IndexOf("Invalid", 0) > 0){
-		print("Invalid user ID scriptEnemyPC.");
+		print(download.text);
 	}
 	else
 	{
+	print(download.text);
 		values = Regex.Split(wwwData,"<br />");
 		
 		BRT		= parseInt(values[0]);
@@ -93,7 +98,9 @@ function getUserData(){
 
 		Money = parseInt(values[20]);
 		AvatarId = values[21];
-
+		Body = parseInt(values[24]);
+		Log_stats();
+		
 	}
 }
 
@@ -101,7 +108,7 @@ function Log_stats()
 {
 	Debug.Log("ENEMY:   BRT: " + BRT + " ACC: " + ACC + " ENRG: " + ENRG + " DEF: " + DEF +
 		" FORT: " + FORT + " HP: " + HP + " EVASION: " + EVASION + " ATK: " + ATK + " LVL: " +
-		LVL + " EXP: " + EXP + " REGEN: " + REGEN);
+		LVL + " EXP: " + EXP + " REGEN: " + REGEN + "Helmet " + Helmet);
 }
 
 
@@ -130,7 +137,6 @@ function GetInventoryItems()
 	if(download.error) {
 		print( "Error downloading: " + download.error );
 	}else{
-		print(download.text);
 	}
 	
 	values = Regex.Split(download.text,"<br />");
@@ -232,7 +238,6 @@ function getUserSpecials(){
 	if(download.error) {
 		print( "Error downloading: " + download.error );
 	}else{
-		print(download.text);
 	}
 	values = Regex.Split(download.text,"<br />");
 	if (parseInt(values[0])) numberOfAttacks = parseInt(values[0]);
@@ -275,12 +280,52 @@ function Init() {
 	var renderers = gameObject.GetComponentsInChildren(Renderer);
 	//set tex for head
 	var r : Renderer = renderers[2];
+	
+	var path_to_faces : String = inPath + "/NewFaces/" + AvatarId + "/";
+	var path_to_body : String = inPath + "/Body/" + Body + "/";
+		
+
+	r.materials[0].mainTexture = Resources.Load(path_to_body + "chilot", typeof(Texture2D));// as Texture2D);
+	r.materials[1].mainTexture = Resources.Load(path_to_body + "corp", typeof(Texture2D));
+	r.materials[2].mainTexture = Resources.Load(path_to_faces + "cap1", typeof(Texture2D));
+	r.materials[3].mainTexture = Resources.Load(path_to_body + "pantalon_drept", typeof(Texture2D));
+	r.materials[4].mainTexture = Resources.Load(path_to_body + "pantalon_stang", typeof(Texture2D));
+	r.materials[5].mainTexture = Resources.Load(path_to_body + "picior_drept", typeof(Texture2D));
+	r.materials[6].mainTexture = Resources.Load(path_to_body + "picior_stang", typeof(Texture2D));
+	r.materials[7].mainTexture = Resources.Load(path_to_body + "mana_dreapta", typeof(Texture2D));
+	r.materials[8].mainTexture = Resources.Load(path_to_body + "mana_stanga", typeof(Texture2D));
+	
+	if(Weapon!=0)
+	{
+	print ("ahaaa, are arma!!");
+		r = renderers[1];
+		r.materials[0].mainTexture = Resources.Load(inPath + "/Weapon/" + Weapon);
+	}
+	else 
+	{
+		r = renderers[1];
+		r.materials[0].mainTexture = Resources.Load(inPath + "/Armour/Basic/helmet");
+	}
+	if ( Helmet != 0)
+	{
+	print ("ahaaa, are helmet!!");
+		r = renderers[0];
+		r.materials[0].mainTexture = Resources.Load(inPath + "/Armour/" + Helmet);
+	}
+	else 
+	{
+		r = renderers[0];
+		r.materials[0].mainTexture = Resources.Load(inPath + "/Armour/Basic/helmet");
+	}
+	/*
 	r.materials[0].mainTexture = Resources.Load(inPath + "/Faces/"+AvatarId+"/head");
 	r = renderers[0];
 	r.materials[0].mainTexture = Resources.Load(inPath + "/Faces/"+AvatarId+"/head_1");
 	r = renderers[3];
 	r.materials[0].mainTexture = Resources.Load(inPath + "/Faces/"+AvatarId+"/head_2");
 	//set tex for hands
+	
+	
 	r = renderers[5];
 	if(Hands!=0){
 		//r.materials[2].mainTexture = Resources.Load(inPath + "/Armour/" + Hands + "/"+ Hands +"_left");
@@ -343,6 +388,7 @@ function Init() {
 	else{
 		r.materials[0].mainTexture = Resources.Load(inPath + "/Weapon/0");
 	}
+	*/
 }
 
 function Update () {

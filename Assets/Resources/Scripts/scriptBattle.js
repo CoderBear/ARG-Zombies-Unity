@@ -1,14 +1,29 @@
-//static var cameraS : Camera;
+//static var cameraS : Camera;  
+
+var imagineDezactivare : boolean = true;
+static var nr : int = 0;
+var nextImage : int = 0;
+var ceva : Texture2D;
+var UrlImagine : String;
+var timp : double;
+var regenHp : double;
+var menuInventory : boolean = false;
+var atribute : boolean = false;
+var InventoryStyle : GUIStyle;
+var AttributeStyle : GUIStyle;
+
 var PC				: GameObject;
 var Mob				: GameObject;
 static var scriptInventory : Inventory;
+var MobsKilled      : int;
+var tmpHP           : int;
+
 var Queue			: Array;
 var durationQueue 	: Array;
 static var buildingGold : int;
 static var buildingXP   : int;
 var texOwen :Texture2D;
 var texDavid :Texture2D;
-
 static var getRewarded : boolean;
 
 var styleErrorFrame	: GUIStyle;
@@ -106,7 +121,7 @@ static var intoMap  :boolean;
 
 var action			: Action;
 var cHit			: Hit;
-var cPC				: Char = new Char();
+static var cPC				: Char = new Char();
 var cMob			: Mob = new Mob();
 
 var goHOME			: boolean = false;
@@ -234,7 +249,8 @@ class Hit{
 	}
 }
 
-class Duration{
+class Duration
+{
 	var Character	: Char;			// the character which will receive the effect
 	var effect		: Hit;			// what effects will the character get on the duration
 	var turnsLeft	: int;			// turns left for the effect
@@ -242,11 +258,13 @@ class Duration{
 	var wearOff		: boolean;		// will the effect wear off after the duration?
 	var turn		: int;			// turn nr. the duration is in effect
 	
-	function Duration(){
+	function Duration()
+	{
 		turn = 0;
 	}
 
-	function Duration(inChar : Char, inEffect : Hit, inTurns : int){
+	function Duration(inChar : Char, inEffect : Hit, inTurns : int)
+	{
 		turn = 0;
 		effect = inEffect;
 		turnsLeft = inTurns;
@@ -255,7 +273,8 @@ class Duration{
 		wearOff = true;
 	}
 	
-	function Duration(inChar : Char, inEffect : Hit, inTurns : int, inRepeating : boolean, inWearOff : boolean){
+	function Duration(inChar : Char, inEffect : Hit, inTurns : int, inRepeating : boolean, inWearOff : boolean)
+	{
 		turn = 0;
 		effect = inEffect;
 		turnsLeft = inTurns;
@@ -265,7 +284,8 @@ class Duration{
 	}
 }
 
-class Action{
+class Action
+{
 	var owner		: String;			// who does
 	var length		: float;			// length of the action in ms
 	var lengthP		: float;			// length of the action in % of the animation
@@ -278,18 +298,21 @@ class Action{
 	var text		: String;			// text to print
 	var animation	: String;			// animation
 	
-	function Action(){
+	function Action()
+	{
 		fin = false;
 		started = false;
 	}
 }
 
-class Turn{
+class Turn
+{
 	var action		: Action;			// turn's action
 	var finished	: boolean;			// is the action finished?
 	var started		: boolean;
 	
-	function Turn(){
+	function Turn()
+	{
 		finished = false;
 		started = false;
 	}
@@ -299,24 +322,61 @@ class Turn{
 
 // ***********************************************
 // -------------------- START --------------------
-// ===============================================
-
+// =============================================== 
 function Awake()
-{   changeLoadScreen = Random.value;
-	Init();
-    if(scriptMain.drawCutScenes)
-        {
-        if( scriptGUICutScene.HasCutScene("homebase") )
-		scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_INTRO );
-       
-        }
-	if( scriptGUICutScene.HasCutScene( Global.enemyChar.mobname ) )
-		scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_INTRO );
-    Debug.Log("HI!!! My name is "+Global.enemyChar.mobname);
-   getRewarded=  false;
+{ 
+	 imagineDezactivare  = true;
+	 nr  = 0;
+	 nextImage = 0;
+		timp = Time.time;
+	    changeLoadScreen = Random.value;
+		MobsKilled = LoadSceneScript.nrOfMobsKilled;
+		Init( true );
+	    if(scriptMain.drawCutScenes)
+	        {
+	        if( scriptGUICutScene.HasCutScene("homebase") )
+				scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_INTRO );
+	       
+	        }
+		if( scriptGUICutScene.HasCutScene( Global.enemyChar.mobname ) )
+			scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_INTRO );
+	    Debug.Log("HI!!! My name is "+Global.enemyChar.mobname + "  And my id: " + Global.enemyChar.id + "   And im special? " + Global.enemyChar.specialMob);
+	   getRewarded=  false;
+
 }
 
-function Init(){
+
+
+
+function Start()
+{	  	
+		if (Global.enemyChar.specialMob == 1)
+		{
+			var Imagine =  Global.enemyChar.photosNames.Split("^"[0]); 
+			for (var i:int = nr ; i< Imagine.length-1; i++) 
+			{ 
+				if ( nextImage == 0)
+			 	{  
+			      var n = Imagine[i].Replace(" ","%20");
+				  UrlImagine = Global.server + "/mmo_iphone/images/" + n; 
+			      var www : WWW = new WWW (UrlImagine);
+    			  yield www;
+  				  ceva = www.texture; 
+  				  nextImage = 1; 
+  				} 
+  			}  	
+	  				if(nr == Imagine.length-1) 
+			imagineDezactivare = false;	  	   
+		}
+}
+
+
+function Init( FirstInit : boolean )
+{
+
+	if ( !FirstInit )
+		Destroy( cMob.gameObj );
+		
 	var finDuration = new Duration();
 	lootAlertRect = Rect (150, 100, 220, 120);
 	nPts = 4;
@@ -335,23 +395,29 @@ function Init(){
 	//}
      
 	var sceneNr = Random.Range( 1, 5 );
-    if(scriptMissions.clearingBuildings)
-               {
-                    if(scriptMissions.buildingPlan==1)  
-                                  
-		GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND" );
-                                    else
-		GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND" + scriptMissions.buildingPlan );
-                 } 
-   else{
-                   
-    if(Global.CES==0)
-    	if( sceneNr == 1 )
-		GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND" );
-        else
-		GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND" + sceneNr );
-    else GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUNDCES" );
+	
+	if ( FirstInit )
+	{
+	    if(scriptMissions.clearingBuildings)
+	               {
+	                    if(scriptMissions.buildingPlan==1)             
+								GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND" );
+			
+	           			else
+								GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND2");
+	                 } 
+	   else
+	   {
+	                   
+	    if(Global.CES==0)
+	    	if( sceneNr == 1 )
+				GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND3" );
+	        else
+				 GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND" + sceneNr );
+	   		else GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUNDCES" );
+		}
 	}
+	
     bMenu = true;
 	bBattle = true;
 	theStyle = guiStyle;
@@ -362,18 +428,29 @@ function Init(){
 	nCurTurn = 0;
 	nTurns = 0;
 	//add char
-	Global.myChar.init("PC", "Animations/Character1.5", Vector3(-3, 0, -7), Vector3(3, 3, 3), Vector3(-3, 0, -7), Vector3(2.1, 0, -7), FLAG_PC);
+	if( FirstInit )
+		{
+			Global.myChar.init("PC", "Animations/Character1.5", Vector3(-3, 0, -7), Vector3(3, 3, 3), Vector3(-3, 0, -7), Vector3(2.1, 0, -7), FLAG_PC);
+		}
+	
 	cPC = Global.myChar;
-   // Debug.Log("cPC.WepType e "+cPC.WepType);
-	
 	yield StartCoroutine( cPC.getUserSpecials() );
-	
+			
 	tempHP = Global.myChar.HP;
 	tempENRG = Global.myChar.ENRG;
 	tempHit = new Hit();
-	
 	healthB = Global.myChar.HP;
 	enerB = Global.myChar.ENRG;
+	
+	if ( !FirstInit )
+		cPC.HP = tmpHP;
+	
+	if (Global.Hp_incercare > 1)
+	Global.myChar.HP = Global.Hp_incercare;
+
+	
+   // Debug.Log("cPC.WepType e "+cPC.WepType);
+	
 	
 	//add mob
 	//Global.enemyChar.mobname = "Behemoth";
@@ -561,8 +638,10 @@ function Init(){
 	playerHasRecover = -1;
 	if(cPC.SpecialAttacks.length > 0)
 	{
-		for(var i : int = 0; i<cPC.SpecialAttacks.length; i++){
-			switch(cPC.SpecialAttacks[i].attackname){
+		for(var i : int = 0; i<cPC.SpecialAttacks.length; i++)
+		{
+			switch(cPC.SpecialAttacks[i].attackname)
+			{
 				case "Brace":
 					playerHasBrace = i;
 				break;
@@ -578,9 +657,10 @@ function Init(){
 			}
 		}
 		sPlayerSpecialAttacks = new String[playerSpecialAttacks.length];
-		for(i = 0; i< playerSpecialAttacks.length;i++){
-			sPlayerSpecialAttacks[i] = cPC.SpecialAttacks[playerSpecialAttacks[i]].attackname;
-		}
+		for(i = 0; i< playerSpecialAttacks.length;i++)
+			{
+				sPlayerSpecialAttacks[i] = cPC.SpecialAttacks[playerSpecialAttacks[i]].attackname;
+			}
 	}
 	if(playerSpecialAttacks.length < 5)
 		gridHSpecialAttacks = 30;
@@ -593,9 +673,7 @@ function Init(){
 	scriptInventory.init_battle();
 	if( Global.FightType == 1) //boss battle
 	{   
-       Audio.clip = BossMusic;
-        
-        
+        Audio.clip = BossMusic;
 		MusicManager.PlayFile( MusicManager.MUSIC_BOSS );
         Debug.Log("BOSS");
 		Global.FightType = 0;
@@ -606,7 +684,10 @@ function Init(){
 }
 
 function LoadMap()
-{   Inventory.ResetSelectedItem();
+{   
+	LoadSceneScript.MoreMobsToFight = false;
+	
+	Inventory.ResetSelectedItem();
 	yield StartCoroutine( Global.save_stats() );
 	bBattle = false;
 	bLoading = true;
@@ -620,7 +701,8 @@ function LoadMap()
 	Application.LoadLevel("LoadingScene");
 }
 
-function spawnTick(){
+function spawnTick()
+{
 	Global.spawnInPosition = false;
 	var renderers = cMob.gameObj.GetComponentsInChildren(Renderer);
 	var r : Renderer = renderers[0];
@@ -644,17 +726,21 @@ function spawnTick(){
 	addAction("cMob", IDLE, true);
 }
 
-function walk(gameObj : GameObject, toPos : Vector3) : boolean{
+function walk(gameObj : GameObject, toPos : Vector3) : boolean
+{
 	var vec = gameObj.transform.position - toPos; 
 	var dist = vec.magnitude;
 	
-	if(dist > moveDist){
-		vec.Normalize();
-		gameObj.transform.position = gameObj.transform.position - vec*Time.deltaTime*moveSpeed;
-		return false;
-	}else{
-		return true;
-	}
+	if(dist > moveDist)
+		{
+			vec.Normalize();
+			gameObj.transform.position = gameObj.transform.position - vec*Time.deltaTime*moveSpeed;
+			return false;
+		}
+	else
+		{
+			return true;
+		}
 }
 
 
@@ -694,22 +780,24 @@ function addDuration(inDuration : Duration){
 	finHit.REGEN += curDuration.effect.REGEN;
 	finHit.ATK += curDuration.effect.ATK;
 	finHit.EVASION += curDuration.effect.EVASION + (curDuration.effect.DEF/2);
-
-	print( "(add duration )-> char def: " + curDuration.Character.DEF + "  finHit.DEF: " + finHit.DEF + " actual char def: " + Global.myChar.DEF);
 	durationQueue.Add(inDuration);
 }
 
-function addDuration(kHP : int, kENRG : int, kBRT : int, kACC : int, kFORT : int, kDEF : int, kREGEN : int, kATK : int, kEVASION : int, k_turns){
+function addDuration(kHP : int, kENRG : int, kBRT : int, kACC : int, kFORT : int, kDEF : int, kREGEN : int, kATK : int, kEVASION : int, k_turns)
+{
 	addDuration(Duration(cPC,
 						 Hit(kHP, kENRG, kBRT, kACC, kFORT, kDEF, kREGEN, kATK, kEVASION),
 						 k_turns));
 }
 
-function computeDurations(){
+function computeDurations()
+{
 	var i : int;
-	for(i = 0; i<durationQueue.length; i++){
+	for(i = 0; i<durationQueue.length; i++)
+	{
 		curDuration = durationQueue[i];
-		if(curDuration.repeating == true){
+		if(curDuration.repeating == true)
+		{
 			
 			curDuration.Character.HP += curDuration.effect.HP;
 			curDuration.Character.ENRG += curDuration.effect.ENRG;
@@ -734,8 +822,10 @@ function computeDurations(){
 			finHit.EVASION += curDuration.effect.EVASION + (curDuration.effect.DEF/2);
 		}
 		//why do they substract effect * turn?
-		if(curDuration.turnsLeft==0){
-			if(curDuration.wearOff){
+		if(curDuration.turnsLeft==0)
+		{
+			if(curDuration.wearOff)
+			{
 				//razvan 04.10
 				curDuration.Character.HP = curDuration.Character.HP - curDuration.effect.HP * (curDuration.repeating ? curDuration.turn : 1);
 				curDuration.Character.ENRG = curDuration.Character.ENRG - curDuration.effect.ENRG * (curDuration.repeating ? curDuration.turn : 1);
@@ -766,11 +856,11 @@ function computeDurations(){
 		curDuration.turn++;
 		curDuration.turnsLeft = curDuration.turnsLeft>0 ? curDuration.turnsLeft-1 : 0;
 	}
-	print( " char def: " + curDuration.Character.DEF + "  finHit.DEF: " + finHit.DEF + " actual char def: " + Global.myChar.DEF);
 }
 
 
-function addQueue(who : String, inAction : int, goWHERE : boolean, inFlip : boolean, inLengthP : float, inHit : Hit, inText : String, inAnimation : String){
+function addQueue(who : String, inAction : int, goWHERE : boolean, inFlip : boolean, inLengthP : float, inHit : Hit, inText : String, inAnimation : String)
+{
 	action = new Action();
 	action.owner = who;
 	action.action = inAction;
@@ -783,62 +873,74 @@ function addQueue(who : String, inAction : int, goWHERE : boolean, inFlip : bool
 	// Make the damage calculus here
 	action.hit = inHit;
 	if(action.owner ==	"cPC")
-	{
-		action.hit.HP = cPC.hit_get(inHit);
-	}
+		{
+			action.hit.HP = cPC.hit_get(inHit);
+		}
 	if(action.owner == "cMob")
-	{
-		action.hit.HP = cMob.hit_get(inHit);
-	}
+		{
+			action.hit.HP = cMob.hit_get(inHit);
+		}
 	Queue.Add(action);
 }
 
-function addAction(who : String, inAction : int){
+function addAction(who : String, inAction : int)
+{
 	addQueue(who, inAction, false, false, 0, Hit(0), "", "");
 }
 
-function addAction(who : String, inAction : int, goWHERE : String){
+function addAction(who : String, inAction : int, goWHERE : String)
+{
 	addQueue(who, inAction, goWHERE == "home" ? goHOME : goATTACK, false, 0, Hit(0), "", "");
 }
 
-function addAction(who : String, inAction : int, inFlip : boolean){
+function addAction(who : String, inAction : int, inFlip : boolean)
+{
 	addQueue(who, inAction, false, inFlip, 0, Hit(0), "", "");
 }
 
-function addAction(who : String, inAction : int, inLengthP : float){
+function addAction(who : String, inAction : int, inLengthP : float)
+{
 	addQueue(who, inAction, false, false, inLengthP, Hit(0), "", "");
 }
 
-function addAction(who : String, inAction : int, goWHERE : boolean, inFlip : boolean){
+function addAction(who : String, inAction : int, goWHERE : boolean, inFlip : boolean)
+{
 	addQueue(who, inAction, goWHERE, inFlip, 0, Hit(0), "", "");
 }
 
-function addAction(who : String, inAction : int, inLengthP : float, inHit : Hit){
+function addAction(who : String, inAction : int, inLengthP : float, inHit : Hit)
+{
 	addQueue(who, inAction, false, false, inLengthP, inHit, "", "");
 }
 
-function addAction(who : String, inAnimation : String, inLengthP : float, inFlip : boolean){
+function addAction(who : String, inAnimation : String, inLengthP : float, inFlip : boolean)
+{
 	addQueue(who, PLAY, false, inFlip, inLengthP, Hit(0), "", inAnimation);
 }
 
-function addText(who : String, inText : String){
+function addText(who : String, inText : String)
+{
 	addQueue(who, SAY, false, false, 0, Hit(0), inText, "");
 }
 
 
-function addText(inText : String){
+function addText(inText : String)
+{
 	addQueue("cPC", SAY, false, false, 0, Hit(0), inText, "");
 }
 
-function printText(rect : Rect, theText : String){
+function printText(rect : Rect, theText : String)
+{
 	tFade = 1;
 	tY = 0;
 	tText = theText;
 	tRect = rect;
 }
 
-function printText(position : int, theText : String){
-	switch(position){
+function printText(position : int, theText : String)
+{
+	switch(position)
+	{
 		case POS_MID:
 			theStyle = guiStyle3;
 			printText(Rect(0, 100, 480, 100), theText);
@@ -852,7 +954,8 @@ function printText(position : int, theText : String){
 			printText(Rect(240, 100, 240, 100), theText);
 			break;
 	}
-	switch(theText){
+	switch(theText)
+	{
 		case "Victory!":
 			//wait to finish the aninamtion
 			//then go to loot screen and continue from there
@@ -861,7 +964,9 @@ function printText(position : int, theText : String){
 				CheckMissions(scriptMissions.GoMission.toDo,cMob.mobname);
 			else
 				CheckMissions("KILL",cMob.mobname);
+			Global.Hp_incercare = Global.myChar.HP;
 			endFight();
+			
 			break;
 		case "Defeat":
 			//wait to finish the animation
@@ -873,59 +978,72 @@ function printText(position : int, theText : String){
 	}
 }
 
-function printText(theText : String){
+function printText(theText : String)
+{
 	printText(Rect(200, 100, 80, 100), theText);
 }
 
-function mobsRevenge(){
+function mobsRevenge()
+{
 	// Revenge of the Mob
 	cMob.ATK = Random.Range(cMob.ATKMIN,cMob.ATKMAX+1);
-	if(cMob.HP  - tempHit.HP > 0){
-		if(Global.mobIsRanged){
-			if(Global.mobSpecialCoolDown == 0){
-				cMob.ATK = cMob.ATKMAX;
-				addAction("cMob","special",70, false);
-				Global.mobSpecialCoolDown = cMob.SpecialCD; 
-			}
-			else{
-				addAction("cMob", HIT2, 10);
-			}
+	if(cMob.HP  - tempHit.HP > 0)
+	{
+		if(Global.mobIsRanged)
+		{
+			if(Global.mobSpecialCoolDown == 0)
+				{
+					cMob.ATK = cMob.ATKMAX;
+					addAction("cMob","special",70, false);
+					Global.mobSpecialCoolDown = cMob.SpecialCD; 
+				}
+			else
+				{
+					addAction("cMob", HIT2, 10);
+				}
 			tempHit = Hit(cMob.hit_do(cPC));
-			if(tempHit.HP == 0){
-				addAction("cPC", DODGE, 70, tempHit );
-			}
-			else{
-				addAction("cPC", GET_HIT, 70, tempHit );
-			}
+			if(tempHit.HP == 0)
+				{
+					addAction("cPC", DODGE, 70, tempHit );
+				}
+			else
+				{
+					addAction("cPC", GET_HIT, 70, tempHit );
+				}
 			if(cPC.HP - tempHit.HP  > 0) 
 				addAction("cPC", IDLE); 
-			else {
-				addAction("cPC", DIE, 10);
-				addText("Defeat");
-			}
+			else 
+				{
+					addAction("cPC", DIE, 10);
+					addText("Defeat");
+				}
 			addAction("cMob", IDLE, false);
 		}
 		else
 		{	
-			if(Global.mobSpecialCoolDown == 0){
+			if(Global.mobSpecialCoolDown == 0)
+			{
 				if(Global.mobSpecialIsRanged)
 				{
 					cMob.ATK = cMob.ATKMAX;
-					addAction("cMob","special",70, false);
+					addAction("cMob","special2",70, false);
 					Global.mobSpecialCoolDown = cMob.SpecialCD;
 					tempHit = Hit(cMob.hit_do(cPC));
-					if(tempHit.HP == 0){
-						addAction("cPC", DODGE, 70, tempHit );
-					}
-					else{
-						addAction("cPC", GET_HIT, 70, tempHit );
-					}
+					if(tempHit.HP == 0)
+						{
+							addAction("cPC", DODGE, 70, tempHit );
+						}
+					else
+						{
+							addAction("cPC", GET_HIT, 70, tempHit );
+						}
 					if(cPC.HP - tempHit.HP  > 0) 
 						addAction("cPC", IDLE); 
-					else{
-						addAction("cPC", DIE, 10);
-						addText("Defeat");
-					}
+					else
+						{
+							addAction("cPC", DIE, 10);
+							addText("Defeat");
+						}
 					addAction("cMob", IDLE, false);
 				}
 				if(!Global.mobSpecialIsRanged)
@@ -935,38 +1053,45 @@ function mobsRevenge(){
 					addAction("cMob","special",70, false);
 					Global.mobSpecialCoolDown = cMob.SpecialCD;
 					tempHit = Hit(cMob.hit_do(cPC));
-					if(tempHit.HP == 0){
-						addAction("cPC", DODGE, 70, tempHit );
-					}
-					else{
-						addAction("cPC", GET_HIT, 70, tempHit );
-					}
+					if(tempHit.HP == 0)
+						{
+							addAction("cPC", DODGE, 70, tempHit );
+						}
+					else
+						{
+							addAction("cPC", GET_HIT, 70, tempHit );
+						}
 					if(cPC.HP - tempHit.HP  > 0) 
 						addAction("cPC", IDLE); 
-					else{
-						addAction("cPC", DIE, 10);
-						addText("Defeat");
-					}
+					else
+						{
+							addAction("cPC", DIE, 10);
+							addText("Defeat");
+						}
 					addAction("cMob", WALK, goHOME, true);
 					addAction("cMob", IDLE, true);
 				}
 			}
-			else{
+			else
+			{
 				addAction("cMob", WALK, "attack"); // go to the player character
 				addAction("cMob", HIT1, 10);
 				tempHit = Hit(cMob.hit_do(cPC));
-				if(tempHit.HP == 0){
-					addAction("cPC", DODGE, 70, tempHit );
-				}
-				else{
-					addAction("cPC", GET_HIT, 70, tempHit );
-				}
+				if(tempHit.HP == 0)
+					{
+						addAction("cPC", DODGE, 70, tempHit );
+					}
+				else
+					{
+						addAction("cPC", GET_HIT, 70, tempHit );
+					}
 				if(cPC.HP - tempHit.HP  > 0) 
 					addAction("cPC", IDLE); 
-				else{
-					addAction("cPC", DIE, 10);
-					addText("Defeat");
-				}
+				else
+					{
+						addAction("cPC", DIE, 10);
+						addText("Defeat");
+					}
 				addAction("cMob", WALK, goHOME, true);
 				addAction("cMob", IDLE, true);
 			}
@@ -986,26 +1111,29 @@ function endFight()
 	yield download;
 
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"))
-	{
-		download = new WWW( login_url );
-		yield download;
-	}
-	if(download.error) {
-		print( "Error downloading: " + download.error );
-		var wwwData = "Error! Could not connect.";
-		return;
-	}else{
-		//print(wwwData);
-		wwwData = download.text;
-	}
+		{
+			download = new WWW( login_url );
+			yield download;
+		}
+	if(download.error) 
+		{
+			print( "Error downloading: " + download.error );
+			var wwwData = "Error! Could not connect.";
+			return;
+		}
+	else
+		{
+			//print(wwwData);
+			wwwData = download.text;
+		}
 	bLooting = true;
 	bLootAlert = false;
 	if(wwwData.IndexOf("No",0) > 0)
-	{
-		sLootName = "No loot";
-		nLootGold = 0;
-		nLootXP = 0;
-	}
+		{
+			sLootName = "No loot";
+			nLootGold = 0;
+			nLootXP = 0;
+		}
 	else
 	{
 		values = Regex.Split(wwwData, "<br />");
@@ -1020,13 +1148,11 @@ function endFight()
 			nLootXp = 0;
 		else
 			nLootXP = parseInt(values[3]);
-        if(scriptMissions.clearingBuildings){    
-                                            getRewarded = true;
-                                            scriptMissions.buildingRewardIc[LoadSceneScript.nrOfMobs] =   idLootItem;	
-                                            scriptMissions.buildingRewardNames[LoadSceneScript.nrOfMobs] =   sLootName;
-                                            buildingGold +=   nLootGold;
-                                            buildingXP +=   nLootXp;
-                                            }	
+        if(scriptMissions.clearingBuildings)
+	        {    
+		            buildingGold +=   nLootGold;
+		            buildingXP +=   nLootXp;
+            }	
         
         //yield scriptInventory.GetInventoryItems();
 
@@ -1046,29 +1172,31 @@ function endFight()
 	        	if ( tmp != -1 && scriptInventory.find_index_to_loot_item(scriptMissions.GoMission.drop_special_item_id, tmp) != -1 )
 		        		scriptInventory.LootItems(idLootItem, scriptMissions.GoMission.drop_special_item_id, true, 5);
 		        else
-		        {
-					bLootAlert = true;
-					bLooting = false;
-		        }
+			        {
+						bLootAlert = true;
+						bLooting = false;
+			        }
         	}
         	else
         		if(!scriptInventory.LootItem(idLootItem))
-        		{
-					bLootAlert = true;
-					bLooting = false;
-				}
+	        		{
+						bLootAlert = true;
+						bLooting = false;
+					}
         }
         else
-		if(!scriptInventory.LootItem(idLootItem)){
-			bLootAlert = true;
-			bLooting = false;
-		}
+		if(!scriptInventory.LootItem(idLootItem))
+			{
+				bLootAlert = true;
+				bLooting = false;
+			}
 		
 	}
 	Global.save_stats();
 }
 
-function finalize_durations() {
+function finalize_durations() 
+{
 	scriptInventory.in_battle = false;
 	//while (durationQueue.length > 0) computeDurations();
 
@@ -1096,6 +1224,7 @@ function endFightClub()
 	//endFight2();
 	bLoading = true;
 	bBattle = false;
+	LoadSceneScript.MoreMobsToFight = false;
 	
 	while( scriptGUICutScene.cutSceneActive ) 
 		yield WaitForSeconds( 0.3 );
@@ -1116,52 +1245,55 @@ function endFightDeath()
 	yield download;
 	
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"))
-	{
-		Debug.Log( "Retrying");
-		download = new WWW( the_url );
-		yield download;
-	}
+		{
+			Debug.Log( "Retrying");
+			download = new WWW( the_url );
+			yield download;
+		}
 
-	if(download.error) {
-		print( "Error downloading: " + download.error );
-		var wwwData = "Error! Could not connect.";
-		return;
-	}else{
-		wwwData = download.text;
-	}
+	if(download.error)
+		{
+			print( "Error downloading: " + download.error );
+			var wwwData = "Error! Could not connect.";
+			return;
+		}
+	else
+		{
+			wwwData = download.text;
+		}
 	var xpToLvL : int;
-var	values = Regex.Split(wwwData,":");
+	var	values = Regex.Split(wwwData,":");
 	if(values[0].length > 3)
 		xpToLvL = parseInt(values[0]);
 	else
 		xpToLvL = 0;
 	
 	nLootXP = xpToLvL * (-0.15); //15% of xp to level up
-
-	
 }
 
 function endFight2()
 {
-   
 	var values : String[];
 	var xpToLvL : int;
 
 	yield StartCoroutine( Global.getUserData() ); //Added by Radu. If you died, your life got stuck at 0. This should prevent that.
 	Global.myChar.EXP += nLootXP;
 	Global.myChar.Money += nLootGold;
+	MobsKilled++;
+	
+
 	var the_url = Global.server + "/mmo_iphone/level_xp.php?id=" + Global.myChar.id;
 	
 	if( Global.myChar.EXP < 0 )
 		the_url += "&delevel=1";
-var	download = new WWW( the_url );
+	var	download = new WWW( the_url );
 	yield download;
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"))
-	{
-		download = new WWW( the_url );
-		yield download;
-	}
-var	wwwData = download.text;
+		{
+			download = new WWW( the_url );
+			yield download;
+		}
+	var	wwwData = download.text;
 		
 	values = Regex.Split(wwwData,":");
 	if(values[0].length > 3)
@@ -1195,16 +1327,16 @@ var	wwwData = download.text;
 			Global.myChar.EXP += xpToLvL;
 			Global.myChar.LVL--;
 			if( Global.myChar.LVL < 1 )
-			{
-				Global.myChar.LVL = 1;
-				Global.myChar.EXP = 0;
-				
-				bLoading = true;
-				bBattle = false;
-
-				LoadMap();
-				return;
-			}
+				{
+					Global.myChar.LVL = 1;
+					Global.myChar.EXP = 0;
+					
+					bLoading = true;
+					bBattle = false;
+	
+					LoadMap();
+					return;
+				}
 			newSpecialLearned = values[1];
 			if(newSpecialLearned.length > 0)
 				bNewSpecialLearned = -1;
@@ -1221,218 +1353,276 @@ var	wwwData = download.text;
 			scriptInventory.AddItemStats();
 			yield StartCoroutine( Global.save_stats() );
 			scriptInventory.AddItemStats();
-			
 			bLevelUp = -1;		
 		}
 		else
 		{
 			//finalize_durations();
-			bLoading = true;
-			bBattle = false;
-			LoadMap();
+			Debug.Log("KILL: " + MobsKilled + "    FROM: " + LoadSceneScript.nrOfMobs);
+			if ( MobsKilled < LoadSceneScript.nrOfMobs && LoadSceneScript.MoreMobsToFight )
+				{
+					Init( false );
+				}
+			else
+				{
+					bLoading = true;
+					bBattle = false;
+					
+					LoadMap();
+				}
 		}
 	}
 	else
 	{
 		//finalize_durations();
-			bLoading = true;
-			bBattle = false;
-
-			LoadMap();
+		Debug.Log("KILL: " + MobsKilled + "    FROM: " + LoadSceneScript.nrOfMobs);
+		if ( MobsKilled < LoadSceneScript.nrOfMobs && LoadSceneScript.MoreMobsToFight )
+			{
+				Init( false );
+			}
+		else
+			{
+				bLoading = true;
+				bBattle = false;
+				LoadMap();
+			}
 	}
 }
 
 function Update()
 {
-
-
-
-if(!bLoading){
-	if(Queue.length > 0){
-		if(act.fin){
-			act = Queue[0];
-			Queue.Shift();
+//regenerate 1 hp every 4 secs in battle
+	regenHp = Time.time;
+	if ( regenHp-timp > 4 && tempHP > Global.myChar.HP && Global.myChar.HP >1)
+		{
+			Global.myChar.HP = Global.myChar.HP + 1;
+			timp = Time.time;
 		}
-		if(!act.started){
+		
+
+if(!bLoading)
+{
+	if(Queue.length > 0){
+		if(act.fin)
+			{
+				act = Queue[0];
+				Queue.Shift();
+			}
+		if(!act.started)
+		{
 			if(act.lengthP == 0) act.lengthP = 90;
-			if(act.flip){
-				if(act.owner == "cPC"){
-					cPC.gameObj.transform.localScale.z = -cPC.gameObj.transform.localScale.z;
-					cPC.gameObj.transform.position.x = cPC.gameObj.transform.position.x - cPC.gameObj.transform.localScale.z/2;
-				}
-				if(act.owner == "cMob"){
+			if(act.flip)
+			{
+				if(act.owner == "cPC")
+					{
+						cPC.gameObj.transform.localScale.z = -cPC.gameObj.transform.localScale.z;
+						cPC.gameObj.transform.position.x = cPC.gameObj.transform.position.x - cPC.gameObj.transform.localScale.z/2;
+					}
+				if(act.owner == "cMob")
+				{
 					cMob.gameObj.transform.localScale.z = -cMob.gameObj.transform.localScale.z;
 					//TODO: trebuiesc modificate pozitiile la toti mobsii sa foloseasca noul sistem de flip
 					//vechiul flip sucks. (flipul se face cu scale.z cu -/+ )
 					if( Global.enemyChar.mobname == "Dog" )
-					{
-						var renderers = cMob.gameObj.GetComponentsInChildren( Renderer );
-						if( cMob.gameObj.transform.localScale.z < 0 )
-							cMob.gameObj.transform.position.x += ( renderers[0] as Renderer ).bounds.size.x;
-						else
-							cMob.gameObj.transform.position.x -= ( renderers[0] as Renderer ).bounds.size.x;
-					}
+						{
+							var renderers = cMob.gameObj.GetComponentsInChildren( Renderer );
+							if( cMob.gameObj.transform.localScale.z < 0 )
+								cMob.gameObj.transform.position.x += ( renderers[0] as Renderer ).bounds.size.x;
+							else
+								cMob.gameObj.transform.position.x -= ( renderers[0] as Renderer ).bounds.size.x;
+						}
 					else
 						cMob.gameObj.transform.position.x = cMob.gameObj.transform.position.x - cMob.gameObj.transform.localScale.z/2;
 				}
 			}
 			//razvan 04.10
 			
-			switch(act.action){
+			switch(act.action)
+			{
 				case WALK:
-					if(act.owner == "cPC"){
-						animToPlay = "walk";
-						//cPC.gameObj.animation[animToPlay].speed = 1.5;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						animToPlay = "walk";
-						//cMob.gameObj.animation[animToPlay].speed = 1.5;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							animToPlay = "walk";
+							cPC.ChangeToNormalFace();
+							//cPC.gameObj.animation[animToPlay].speed = 1.5;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							animToPlay = "walk";
+							//cMob.gameObj.animation[animToPlay].speed = 1.5;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case HIT1:
-                    Debug.Log("HIT 1111111");
-					if(act.owner == "cPC"){
-						animToPlay = "hit_1";
-                       // cPC.gameObj.animation[animToPlay].speed = 0.75;
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-                        
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						animToPlay = "hit_1";
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							animToPlay = "hit_1";
+	                       // cPC.gameObj.animation[animToPlay].speed = 0.75;
+	                      // cPC.ChangeToAngryFace();
+	                       
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+	                        
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							animToPlay = "hit_1";
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case HIT2:
-					if(act.owner == "cPC"){
-						animToPlay = "hit_2";
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-                    }
+					if(act.owner == "cPC")
+						{
+							animToPlay = "hit_2";
+							//cPC.ChangeToAngryFace();
+							
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+	                    }
 					
-					if(act.owner == "cMob"){
-						animToPlay = "hit_2";
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cMob")
+						{
+							animToPlay = "hit_2";
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
                 case HIT3:
-                    Debug.Log("HIT 333333333333");
-                    if(act.owner == "cPC"){
-						animToPlay = "hit_3";
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-                    }
+                    if(act.owner == "cPC")
+	                    {
+							animToPlay = "hit_3";
+							//cPC.ChangeToAngryFace();
+							
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+	                    }
                 
                     break;
 				case SHOOT:
-					if(act.owner == "cPC"){
-						animToPlay = "hit_3";
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						animToPlay = "hit_3";
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							animToPlay = "CoveringFire";
+							//cPC.ChangeToAngryFace();
+							
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							animToPlay = "hit_3";
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case DODGE:
-					if(act.owner == "cPC"){
-						printText(cPC.role, "-miss");
-						animToPlay = "duck_and_weave";
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						printText(cMob.role, "-miss");
-						animToPlay = "dodge";
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							printText(cPC.role, "-miss");
+							animToPlay = "duck_and_weave";
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							printText(cMob.role, "-miss");
+							animToPlay = "dodge";
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case DIE:
-					if(act.owner == "cPC"){
-						animToPlay = "death";
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						animToPlay = "death";
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							animToPlay = "death";
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							animToPlay = "death";
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case GET_HIT:
-					if(act.owner == "cPC"){
-						printText(cPC.role, "-" + (act.hit.HP > 0 ? act.hit.HP : "miss"));
-						animToPlay = "get_hit";
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						printText(cMob.role, "-" + (act.hit.HP > 0 ? act.hit.HP : "miss"));
-						animToPlay = "get_hit";
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							printText(cPC.role, "-" + (act.hit.HP > 0 ? act.hit.HP : "miss"));
+							animToPlay = "get_hit";
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							printText(cMob.role, "-" + (act.hit.HP > 0 ? act.hit.HP : "miss"));
+							animToPlay = "get_hit";
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case IDLE:
-					if(act.owner == "cPC"){
-						animToPlay = "idle";
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						if(Global.enemyChar.mobname == "TickMan"){
-							animToPlay = "idle_1";
-							idleAniUpdate = Time.time + idleAniUpdateRate;
-						}
-						else{
+					if(act.owner == "cPC")
+						{
 							animToPlay = "idle";
+							cPC.ChangeToNormalFace();
+							
+							cPC.gameObj.animation.CrossFade(animToPlay);
 						}
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cMob")
+						{
+							if(Global.enemyChar.mobname == "TickMan")
+								{
+									animToPlay = "idle_1";
+									idleAniUpdate = Time.time + idleAniUpdateRate;
+								}
+							else
+								{
+									animToPlay = "idle";
+								}
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case SAY:
-					if(act.owner == "cPC"){
-						printText(cPC.role, act.text);
-					}
-					if(act.owner == "cMob"){
-						printText(cMob.role, act.text);
-					}
+					if(act.owner == "cPC")
+						{
+							printText(cPC.role, act.text);
+						}
+					if(act.owner == "cMob")
+						{
+							printText(cMob.role, act.text);
+						}
 					act.fin = true;
 					break;
 				case WIN:
+					Debug.Log("PLAYER: " + cPC.HP);
+					tmpHP = cPC.HP;	
+					SaveStats();
 					animToPlay = "win";
 					cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
 					cPC.gameObj.animation.CrossFade(animToPlay);
 					break;
 				case PLAY:
+				
 					animToPlay = act.animation;
                     Debug.Log("act.animation E "+act.animation);
-					if(act.owner == "cPC"){
-                    
-						cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cPC.gameObj.animation.CrossFade(animToPlay);
-					}
-					if(act.owner == "cMob"){
-						print( animToPlay );
-						cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
-						cMob.gameObj.animation.CrossFade(animToPlay);
-					}
+					if(act.owner == "cPC")
+						{
+							cPC.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cPC.gameObj.animation.CrossFade(animToPlay);
+						}
+					if(act.owner == "cMob")
+						{
+							cMob.gameObj.animation[animToPlay].wrapMode = WrapMode.Once;
+							cMob.gameObj.animation.CrossFade(animToPlay);
+						}
 					break;
 				case SPAWN:
 					spawnTick();
 					act.fin = true;
 					break;	
 				case FIRE:
-					Debug.Log("FIRE");
-                    	//cMob.gameObj.animation["brace"].wrapMode = WrapMode.Once;
-						//cMob.gameObj.animation.CrossFade("brace");
-
 					act.fin  = true;
 					break;
 			}
@@ -1441,55 +1631,76 @@ if(!bLoading){
 		if(	act.action == HIT1 || act.action == HIT2 || act.action == DODGE ||
 			act.action == GET_HIT || act.action == DIE || act.action == WIN || act.action == PLAY){
 				var c: float;
-				if(act.owner == "cPC"){
-						//c = cPC.gameObj.animation[animToPlay].time / cPC.gameObj.animation[animToPlay].length*100;
-						c = cPC.gameObj.animation[animToPlay].normalizedTime * 100;
-				}
-				if(act.owner == "cMob"){
-						//c = cMob.gameObj.animation[animToPlay].time / cMob.gameObj.animation[animToPlay].length*100;
-						c = cMob.gameObj.animation[animToPlay].normalizedTime * 100;
-				}
+				if(act.owner == "cPC")
+					{
+							//c = cPC.gameObj.animation[animToPlay].time / cPC.gameObj.animation[animToPlay].length*100;
+							c = cPC.gameObj.animation[animToPlay].normalizedTime * 100;
+					}
+				if(act.owner == "cMob")
+					{
+							//c = cMob.gameObj.animation[animToPlay].time / cMob.gameObj.animation[animToPlay].length*100;
+							c = cMob.gameObj.animation[animToPlay].normalizedTime * 100;
+					}
 				if(c > act.lengthP) act.fin = true;
-		}else
-		switch(act.action){
+		}
+		else
+		switch(act.action)
+		{
 			case WALK:
-				if(act.owner == "cPC"){
-					if(act.goWHERE == goHOME){
-						if(walk(cPC.gameObj, cPC.pos1)) act.fin = true;
-					}else{
-						if(walk(cPC.gameObj, cPC.pos2)) act.fin = true;
+				if(act.owner == "cPC")
+					{
+						if(act.goWHERE == goHOME)
+							{
+								if(walk(cPC.gameObj, cPC.pos1)) act.fin = true;
+							}
+						else
+							{
+								if(walk(cPC.gameObj, cPC.pos2)) act.fin = true;
+							}
 					}
-				}
-				if(act.owner == "cMob"){
-					if(act.goWHERE == goHOME){
-						if(walk(cMob.gameObj, cMob.pos1)) act.fin = true;
-					}else{
-						if(walk(cMob.gameObj, cMob.pos2)) act.fin = true;
+				if(act.owner == "cMob")
+					{
+						if(act.goWHERE == goHOME)
+							{
+								if(walk(cMob.gameObj, cMob.pos1)) act.fin = true;
+							}
+						else
+							{
+								if(walk(cMob.gameObj, cMob.pos2)) act.fin = true;
+							}
 					}
-				}
 				break;
 			case SHOOT:
-				if(act.owner == "cPC"){
-					if(act.goWHERE == goHOME){
-						if(walk(cPC.gameObj, cPC.pos1)) act.fin = true;
-					}else{
-						if(walk(cPC.gameObj, cPC.pos2)) act.fin = true;
-					}
+				if(act.owner == "cPC")
+				{
+					if(act.goWHERE == goHOME)
+						{
+							if(walk(cPC.gameObj, cPC.pos1)) act.fin = true;
+						}
+					else
+						{
+							if(walk(cPC.gameObj, cPC.pos2)) act.fin = true;
+						}
 				}
-				if(act.owner == "cMob"){
-					if(act.goWHERE == goHOME){
-						if(walk(cMob.gameObj, cMob.pos1)) act.fin = true;
-					}else{
-						if(walk(cMob.gameObj, cMob.pos2)) act.fin = true;
+				if(act.owner == "cMob")
+					{
+						if(act.goWHERE == goHOME)
+							{
+								if(walk(cMob.gameObj, cMob.pos1)) act.fin = true;
+							}
+						else
+							{
+								if(walk(cMob.gameObj, cMob.pos2)) act.fin = true;
+							}
 					}
-				}
 				break;	
 			case IDLE:
 				act.fin = true;
 				break;
 		}
 		if(act.fin){
-			if(act.owner =="cPC"){
+			if(act.owner =="cPC")
+			{
 				cPC.HP 		-= act.hit.HP;
 				cPC.ENRG 	-= act.hit.ENRG;
 				cPC.BRT 	-= act.hit.BRT;
@@ -1500,7 +1711,8 @@ if(!bLoading){
 				cPC.ATK 	-= act.hit.ATK;
 				cPC.EVASION -= act.hit.EVASION;
 			}
-			if(act.owner =="cMob"){
+			if(act.owner =="cMob")
+			{
 				cMob.HP 	-= act.hit.HP;
 				cMob.ENRG 	-= act.hit.ENRG;
 				cMob.DEF	-= act.hit.DEF;
@@ -1508,15 +1720,77 @@ if(!bLoading){
 				cMob.ATK 	-= act.hit.ATK;
 				cMob.EVASION -= act.hit.EVASION;
 			}
+			
 		}
+		
 	}
 }
+}
+
+function SaveStats()
+{
+	StartCoroutine( Global.save_stats() );
 }
 
 var special : int;
 
 function OnGUI()
 {
+	
+		if (atribute)
+		{
+		GUI.Box(Rect(165, 30, 150, 240), "");
+		GUI.BeginGroup(Rect(165, 15, 180, 250)); 
+					GUI.Label(Rect(10, 5 + 10, 190, 20), Global.myChar.Nick + " Level:" + Global.myChar.LVL);
+					
+					GUI.Label(Rect(10, 5 + 40, 190, 20), Global.myChar.BRT + " Brutality");
+					
+					GUI.Label(Rect(10 , 5 + 60, 190, 20), Global.myChar.ACC + " Accuracy");
+					
+					GUI.Label(Rect(10 , 5 + 80, 190, 20), Global.myChar.FORT + " Fortitude");
+					
+					GUI.Label(Rect(10 , 5 + 100, 190, 20), Global.myChar.DEF + " Defense");
+					
+					GUI.Label(Rect(10 , 5 + 120, 190, 20), Global.myChar.HP + " Health");
+						
+					GUI.Label(Rect(10 , 5 + 140, 190, 20), Global.myChar.ENRG + " Energy");
+					
+					GUI.Label(Rect(10 , 5 + 160, 190, 20), Global.myChar.ATK + " attack power");
+						
+					GUI.Label(Rect(10 , 5 + 180, 190, 20), Global.myChar.EVASION + "% chance to dodge");
+					if(GUI.Button(Rect(10 , 220, 130, 20), "Close"))
+						{
+							atribute = false;
+						}
+		GUI.EndGroup();
+		}
+		
+		if (menuInventory == false)
+		{
+				if(GUI.Button(Rect(254, 247, 82, 36), "", InventoryStyle))
+					{
+							if (bLootAlert) 
+							{
+								bLootAlert = false;
+								bReLoot = true;
+							}
+							Inventory.bInventory = true;
+							Inventory.bPlayerEq = false;
+							Craft.bCraft = false;
+							Inventory.bResetSelItem = true;
+							menuInventory = true;
+					}
+				if(GUI.Button(Rect(344, 247, 82, 36), "", AttributeStyle))
+					{
+						atribute = true;
+						menuInventory = true;
+					}
+		}
+		else {}
+		
+		
+		
+		
 //Debug.Log("scriptBattle: OnGui****"+cPC.WepType);
 //cPC.WepType=Global.myChar.WepType;
 	if( scriptGUICutScene.cutSceneActive ) return;
@@ -1525,21 +1799,13 @@ function OnGUI()
      var scaledMatrix: Matrix4x4 = Matrix4x4.identity.Scale(Vector3(screenScale,screenScale,screenScale));
      GUI.matrix = scaledMatrix;
 
-	if(bLoading){
-  /*  if(Global.CES!=0){
-    if(Global.CES == 1) GUI.DrawTexture (Rect(0,0,480,320), texOwen, ScaleMode.StretchToFill, true, 1);
-    else if(Global.CES ==2) GUI.DrawTexture (Rect(0,0,480,320), texDavid, ScaleMode.StretchToFill, true, 1);
-    
-    
-}else */ 
+	if(bLoading)
+	{
     if(Global.randomNumber <= 0.33)
 		GUI.DrawTexture (Rect(0,0,480,320), texLoading1, ScaleMode.StretchToFill, true, 1);
         else if(Global.randomNumber > 0.33 && Global.randomNumber <= 0.66)
             GUI.DrawTexture (Rect(0,0,480,320), texLoading2, ScaleMode.StretchToFill, true, 1);
             else GUI.DrawTexture (Rect(0,0,480,320), texLoading3, ScaleMode.StretchToFill, true, 1);
-            
-            
-    //   GUI.DrawTexture (Rect(0,0,480,320), texLoading1, ScaleMode.StretchToFill, true, 1);   
 		return;
 	}
 	//RADU: TUTORIALS if it's the first time displaying, show tutorial overlay
@@ -1572,20 +1838,16 @@ function OnGUI()
 		scriptInventory.AddItemStats();
 		if( GUI.Button( Rect( 100, 230, 83, 33 ), "Continue", styleOrangeBut ) )
 		{
-			
 			scriptInventory.RemoveItemStats();
-			
 			Global.myChar.HP += (Global.myChar.FORT - nFORT)*5 + 10;
 			Global.myChar.ATK += (Global.myChar.BRT - nBRT)*2 + 1;
             Global.myChar.EVASION = (Global.myChar.DEF/2.0) + (Global.myChar.LVL/10.0);
 			scriptInventory.AddItemStats();
-			
+			Global.Hp_incercare = Global.myChar.HP;
 			//Unlock Mission
 			//AddMissionToCharacter();
-			
 			if( bNewSpecialLearned != 0 )
 			{
-				print("here");
 				bShowNewSpecial = bNewSpecialLearned;
 				bLevelUp = 0;
 			}
@@ -1598,7 +1860,8 @@ function OnGUI()
 		GUI.EndGroup();
 	}
 	
-	if(bShowNewSpecial != 0){
+	if(bShowNewSpecial != 0)
+	{
 		//TODO: make modifications for( losed a skill )
 		GUI.BeginGroup(Rect(107,16,266,289));
 		if( bShowNewSpecial == -1 )
@@ -1627,57 +1890,26 @@ function OnGUI()
 		GUI.EndGroup();
 	}
     
-		if(bLooting ){
-        if(scriptMissions.clearingBuildings)
-          if(LoadSceneScript.nrOfMobs == 4) {
-                                                GUI.DrawTexture (Rect(112, 57, 256, 206), texLootB, ScaleMode.StretchToFill, true, 1);
-                                                guiStyle.normal.textColor = Color(1, 1, 1, 1);
-                                                GUI.Label(Rect(150, 98, 120, 100), "Loot", guiStyle);
-                                               // GUI.Label(Rect(235, 98, 130, 100), sLootName, lootStyle);
-                                                GUI.Label(Rect(150, 130, 300, 100), "$", guiStyle);
-                                                GUI.Label(Rect(210, 130, 300, 100), "" + buildingGold, lootStyle);
-                                                GUI.Label(Rect(150, 164, 300, 100), "XP", guiStyle);
-                                                GUI.Label(Rect(210, 164, 300, 100), "" +  buildingXP, lootStyle);
-                                                if(GUI.Button(Rect(199, 200, 83, 33), "Continue", styleOrangeBut)){
-        
-                                                    if( scriptGUICutScene.HasCutScene( Global.enemyChar.mobname ) )
-                                                        scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_CUTSCENES );
-                                                        bLooting = false;
-                                                        CheckMissions("FIND",sLootName);
-                                                        endFight2();
-                                                }
-
-                                         }
-           else {   
-                     bLoading = true;
-                     bBattle = false;
-                     LoadMap();
-                }                               
-        else                                                
-            {                                                                                 
-                                                                                                                                                                         
-		GUI.DrawTexture (Rect(112, 57, 256, 206), texLootB, ScaleMode.StretchToFill, true, 1);
-		GUI.DrawTexture (Rect(210, 100, 18, 18), texLootIcon, ScaleMode.StretchToFill, true, 1);
-		guiStyle.normal.textColor = Color(1, 1, 1, 1);
-		GUI.Label(Rect(150, 98, 120, 100), "Loot", guiStyle);
-		GUI.Label(Rect(235, 98, 130, 100), sLootName, lootStyle);
-		GUI.Label(Rect(150, 130, 300, 100), "$", guiStyle);
-		GUI.Label(Rect(210, 130, 300, 100), "" + nLootGold, lootStyle);
-		GUI.Label(Rect(150, 164, 300, 100), "XP", guiStyle);
-		GUI.Label(Rect(210, 164, 300, 100), "" + nLootXP, lootStyle);
-        //PREACHERMAN animation begins
-       // Debug.Log("HIER");
-		if(GUI.Button(Rect(199, 200, 83, 33), "Continue", styleOrangeBut)){
-        
-			if( scriptGUICutScene.HasCutScene( Global.enemyChar.mobname ) )
-				scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_CUTSCENES );
-			bLooting = false;
-			CheckMissions("FIND",sLootName);
-			endFight2();
-		}
-        }
-        
-        //Debug.Log("Zombie Owen"); 
+		if(bLooting )
+		{                                                                                                                                                                                                                                       
+			GUI.DrawTexture (Rect(112, 57, 256, 206), texLootB, ScaleMode.StretchToFill, true, 1);
+			GUI.DrawTexture (Rect(210, 100, 18, 18), texLootIcon, ScaleMode.StretchToFill, true, 1);
+			guiStyle.normal.textColor = Color(1, 1, 1, 1);
+			GUI.Label(Rect(150, 98, 120, 100), "Loot", guiStyle);
+			GUI.Label(Rect(235, 98, 130, 100), sLootName, lootStyle);
+			GUI.Label(Rect(150, 130, 300, 100), "$", guiStyle);
+			GUI.Label(Rect(210, 130, 300, 100), "" + nLootGold, lootStyle);
+			GUI.Label(Rect(150, 164, 300, 100), "XP", guiStyle);
+			GUI.Label(Rect(210, 164, 300, 100), "" + nLootXP, lootStyle);
+	        //PREACHERMAN animation begins
+			if(GUI.Button(Rect(199, 200, 83, 33), "Continue", styleOrangeBut))
+			{
+				if( scriptGUICutScene.HasCutScene( Global.enemyChar.mobname ) )
+					scriptGUICutScene.ToggleCutScene( true, scriptGUICutScene.MODE_CUTSCENES );
+				bLooting = false;
+				CheckMissions("FIND",sLootName);
+				endFight2();
+			}
 	}
 	
 	if( bDeathPenalty )
@@ -1699,36 +1931,40 @@ function OnGUI()
 		{
 			bDeathPenalty = false;
 			nLootGold = 0;
+			LoadSceneScript.MoreMobsToFight = false;
 			endFight2();
 		}
 		if( Global.myChar.Money + nLootGold >= 0 )
 		if( GUI.Button( Rect( 255, 210, 60, 28 ), "$", styleOrangeBut ) )
 		{
-            Debug.Log("abcddd");
 			bDeathPenalty = false;
 			nLootXP = 0;
+			LoadSceneScript.MoreMobsToFight = false;
 			endFight2();
 		}
 	}
 
-	if(nCurTurn < nTurns && Queue.length == 0){
+	if(nCurTurn < nTurns && Queue.length == 0)
+	{
 		nCurTurn++;
 		tempHit = new Hit();
 		computeDurations();
 		cPC.calc_stats(); //bassically this does nothing. ( RADU )
 		cMob.calc_stats();
-		if(Global.mobSpecialCoolDown > 0){
-			Global.mobSpecialCoolDown = Global.mobSpecialCoolDown-1;
-		}
-		if(tempENRG > cPC.ENRG){
-			cPC.ENRG = (tempENRG > (cPC.ENRG + cPC.REGEN)) ? (cPC.ENRG + cPC.REGEN) : tempENRG;
-		}
+		if(Global.mobSpecialCoolDown > 0)
+			{
+				Global.mobSpecialCoolDown = Global.mobSpecialCoolDown-1;
+			}
+		if(tempENRG > cPC.ENRG)
+			{
+				cPC.ENRG = (tempENRG > (cPC.ENRG + cPC.REGEN)) ? (cPC.ENRG + cPC.REGEN) : tempENRG;
+			}
 	}
 	
 	if(!bMenu) return;
-	if( !bLooting && bLevelUp==0 && bShowNewSpecial == 0 && !bDeathPenalty ){
+	if( !bLooting && bLevelUp==0 && bShowNewSpecial == 0 && !bDeathPenalty )
+	{
 	// *** Draw the GUI ***
-	//add 0.0 to convert to float
 	// HP char
 	GUI.DrawTexture(Rect(5, 3, 2, 15), texHPc1, ScaleMode.StretchToFill, true, 1);
 	GUI.DrawTexture(Rect(7, 3, ((cPC.HP+0.0)/tempHP)*200, 15), texHPc2, ScaleMode.StretchToFill, true, 1);
@@ -1765,9 +2001,12 @@ function OnGUI()
 		// Attack
 		style.active.background = bAttack ? texAttackP : texAttack;
 		style.normal.background = bAttack ? texAttack : texAttackP;
-		if(GUI.Button(Rect(42, 287, 82, 36), "", style)){
+		if(GUI.Button(Rect(42, 287, 82, 36), "", style))
+		{
 			bAttack = !bAttack;
 			doSpecial = false;
+			menuInventory = true;
+			atribute = false;
 		}
 	
 		if(cPC.HP<0) cPC.HP = 0;
@@ -1775,33 +2014,65 @@ function OnGUI()
 		if(cPC.ENRG<0) cPC.ENRG = 0;
 		if(cMob.ENRG<0) cMob.ENRG = 0;
 	
-		if(bAttack && Queue.length == 0 && cPC.HP > 0 && cMob.HP > 0){
+		if(bAttack && Queue.length == 0 && cPC.HP > 0 && cMob.HP > 0)
+		{
 			// Hit
 			style.active.background = texHit;
 			style.normal.background = texHitP;
-			if(GUI.Button(Rect(42, 75, 83, 37), "", style) && (Queue.length == 0)){				
+			if(GUI.Button(Rect(42, 75, 83, 37), "", style) && (Queue.length == 0))
+			{				
 				bAttack = false;
 				if(cPC.WepType == 3)
 				{
-                    Debug.Log("Attack = "+cPC.ATK);
 					//range wepon, shoot it
-					//addAction("cPC", WALK, "attack"); // go to the mob
-					addAction("cPC", SHOOT, 50);
-					tempHit = Hit(cPC.hit_do(cMob));
-					if(tempHit.HP == 0){
-						addAction("cMob", DODGE, 70, tempHit);
-					}else{
-						addAction("cMob", GET_HIT, 70, tempHit);
+					Debug.Log("Inventory: weapon type Inventoryaaaa" + Inventory.itemsEquiped[Inventory.temp_slot].weapon_type + "  IDUL : " + Inventory.itemsEquiped[Inventory.temp_slot].id);
+					
+					if(Inventory.itemsEquiped[Inventory.temp_slot].id == 226)
+							{
+							
+								addAction("cPC", SHOOT, 50);
+								tempHit = Hit(cPC.hit_do(cMob));
+								if(tempHit.HP == 0)
+									{
+										addAction("cMob", DODGE, 70, tempHit);
+									}
+								else
+									{
+										addAction("cMob", GET_HIT, 70, tempHit);
+									}
+//								bullet = GameObject.Instantiate(Resources.Load("Animations/Booms/Bullet"));
+//								bullet.active = true;
+			
+								if(cMob.HP - tempHit.HP> 0) 
+									addAction("cMob", IDLE);
+								else 
+									addAction("cMob", DIE, 10);
+								//addAction("cPC", WALK, goHOME, true);
+								addAction("cPC", IDLE, false);
+							}
+						else
+						{
+							addAction("cPC", SHOOT, 50);
+							tempHit = Hit(cPC.hit_do(cMob));
+							if(tempHit.HP == 0)
+								{
+									addAction("cMob", DODGE, 70, tempHit);
+								}
+							else
+								{
+									addAction("cMob", GET_HIT, 70, tempHit);
+								}
+//							bullet = GameObject.Instantiate(Resources.Load("Animations/Booms/Bullet"));
+//							bullet.active = true;
+		
+							if(cMob.HP - tempHit.HP> 0) 
+								addAction("cMob", IDLE);
+							else 
+								addAction("cMob", DIE, 10);
+							//addAction("cPC", WALK, goHOME, true);
+							addAction("cPC", IDLE, false);
 					}
-					bullet = GameObject.Instantiate(Resources.Load("Animations/Booms/Bullet"));
-					bullet.active = true;
-
-					if(cMob.HP - tempHit.HP> 0) 
-						addAction("cMob", IDLE); 
-					else 
-						addAction("cMob", DIE, 10);
-					//addAction("cPC", WALK, goHOME, true);
-					addAction("cPC", IDLE, false);
+					
 				}
 				else
 				{	
@@ -1811,11 +2082,14 @@ function OnGUI()
                     else
                         addAction("cPC", HIT1, 5);
 					tempHit = Hit(cPC.hit_do(cMob));
-					if(tempHit.HP == 0){
-						addAction("cMob", DODGE, 70, tempHit);
-					}else{
-						addAction("cMob", GET_HIT, 70, tempHit);
-					}
+					if(tempHit.HP == 0)
+						{
+							addAction("cMob", DODGE, 70, tempHit);
+						}
+					else
+						{
+							addAction("cMob", GET_HIT, 70, tempHit);
+						}
 					if(cMob.HP - tempHit.HP> 0) 
 						addAction("cMob", IDLE); 
 					else 
@@ -1830,41 +2104,40 @@ function OnGUI()
 						Global.enemyChar.mobname = "Tick";
 						addAction("cMob", SPAWN);
 					}
-					else{
+					else
+					{
 						addText("Victory!");
 						addAction("cPC", WIN);
 						addAction("cPC", IDLE);
 					}
 				}
-				else{
+				else
+				{
 					mobsRevenge();
 					nTurns++;
 				}
-
 			}
+			
 			// Brace
 			if(playerHasBrace > -1){
 				style.active.background = texBrace;
 				style.normal.background = texBraceP;
-				if(GUI.Button(Rect(42, 125, 83, 37), "", style) && (Queue.length == 0)){
-					if(cPC.SpecialAttacks[playerHasBrace].energcost <= cPC.ENRG){
-					cPC.ENRG = cPC.ENRG - cPC.SpecialAttacks[playerHasBrace].energcost;
-					addAction("cPC", cPC.SpecialAttacks[playerHasBrace].attackanimation, 70, false);
-					addAction("cPC", IDLE);
-					bAttack = false;
-					var def : int = Random.Range(cPC.SpecialAttacks[playerHasBrace].min_damage,cPC.SpecialAttacks[playerHasBrace].max_damage);
-		/*
-		Duration(inChar : Char, inEffect : Hit, inTurns : int)
-		old Hit (inHP : int, inMANA : int, inSTR : int, inAGI : int, inINT : int,inREGEN : float, inARMOUR : float, inDMG : float, inEVASION : float)
-		new Hit (inHP : int, inENRG : int, inBRT : int, inACC : int, inFORT : int, inDEF : float, inREGEN : float, inATK : float, inEVASION : float)
-		*/
-					addDuration(Duration(cPC, Hit(0, 0, 0, 0, 0, def, 0, 0, 0), 3));
-					printText(FLAG_PC, "+"+def+" Defense");
-				
-					mobsRevenge();
-					nTurns++;
+				if(GUI.Button(Rect(42, 125, 83, 37), "", style) && (Queue.length == 0))
+				{
+					if(cPC.SpecialAttacks[playerHasBrace].energcost <= cPC.ENRG)
+					{
+						cPC.ENRG = cPC.ENRG - cPC.SpecialAttacks[playerHasBrace].energcost;
+						addAction("cPC", cPC.SpecialAttacks[playerHasBrace].attackanimation, 70, false);
+						addAction("cPC", IDLE);
+						bAttack = false;
+						var def : int = Random.Range(cPC.SpecialAttacks[playerHasBrace].min_damage,cPC.SpecialAttacks[playerHasBrace].max_damage);
+						addDuration(Duration(cPC, Hit(0, 0, 0, 0, 0, def, 0, 0, 0), 3));
+						printText(FLAG_PC, "+"+def+" Defense");
+						mobsRevenge();
+						nTurns++;
 					}
-					else{
+					else
+					{
 						printText(FLAG_NONE, "Not enough energy!");
 					}
 				}
@@ -1873,20 +2146,23 @@ function OnGUI()
 			if(playerHasConcentrate > -1){
 				style.active.background = texConcentrate;
 				style.normal.background = texConcentrateP;
-				if(GUI.Button(Rect(42, 175, 83, 37), "", style) && (Queue.length == 0)){
-					if(cPC.SpecialAttacks[playerHasConcentrate].energcost <= cPC.ENRG){
-					cPC.ENRG = cPC.ENRG - cPC.SpecialAttacks[playerHasConcentrate].energcost;
-					addAction("cPC", cPC.SpecialAttacks[playerHasConcentrate].attackanimation, 70, false);
-					addAction("cPC", IDLE);
-					bAttack = false;
-					var atk : int  = Random.Range(cPC.SpecialAttacks[playerHasConcentrate].min_damage,cPC.SpecialAttacks[playerHasConcentrate].max_damage);
-					addDuration(Duration(cPC, Hit(0, 0, 0, 0, 0, 0, 0, atk, 0), 1));
-					printText(FLAG_PC, "+" +atk+" Attack");
-
-					mobsRevenge();
-					nTurns++;
+				if(GUI.Button(Rect(42, 175, 83, 37), "", style) && (Queue.length == 0))
+				{
+					if(cPC.SpecialAttacks[playerHasConcentrate].energcost <= cPC.ENRG)
+					{
+						cPC.ENRG = cPC.ENRG - cPC.SpecialAttacks[playerHasConcentrate].energcost;
+						addAction("cPC", cPC.SpecialAttacks[playerHasConcentrate].attackanimation, 70, false);
+						addAction("cPC", IDLE);
+						bAttack = false;
+						var atk : int  = Random.Range(cPC.SpecialAttacks[playerHasConcentrate].min_damage,cPC.SpecialAttacks[playerHasConcentrate].max_damage);
+						addDuration(Duration(cPC, Hit(0, 0, 0, 0, 0, 0, 0, atk, 0), 1));
+						printText(FLAG_PC, "+" +atk+" Attack");
+	
+						mobsRevenge();
+						nTurns++;
 					}
-					else{
+					else
+					{
 						printText(FLAG_NONE, "Not enough energy!");
 					}
 				}
@@ -1895,7 +2171,8 @@ function OnGUI()
 			if(playerHasRecover > -1){
 				style.active.background = texRecover;
 				style.normal.background = texRecoverP;
-				if(GUI.Button(Rect(42, 225, 83, 37), "", style) && (Queue.length == 0)){
+				if(GUI.Button(Rect(42, 225, 83, 37), "", style) && (Queue.length == 0))
+				{
 					addAction("cPC", cPC.SpecialAttacks[playerHasRecover].attackanimation, 70, false);
 					addAction("cPC", IDLE);
 					bAttack = false;
@@ -1931,59 +2208,67 @@ function OnGUI()
             break;
         }
 				cPC.ENRG = cPC.ENRG - cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].energcost;
-				if(cPC.WepType!=3){
+				if(cPC.WepType!=3)
+				{
 					addAction("cPC", WALK, "attack"); // go to the mob
 					//addAction("cPC", FIRE);
                    // addAction("cPC", "brace", 70, false);
 					addAction("cPC", cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].attackanimation, 70, false);
-					Debug.Log("SPECIAL ATAC");
-					
 					
 					tempHit = Hit(cPC.hit_do(cMob));
-					if(tempHit.HP == 0){
-						addAction("cMob", DODGE, 70, tempHit);
-					}else{
-                    	tempHit.HP += (cPC.RRA + Random.Range(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].min_damage,cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].max_damage)*(1-cMob.DEF)*(2*theSwipe.accuracy/100.0));
-                        
-                        if(theSwipe.accuracy==1) tempHit.HP*=1/3;
-                        if(Random.value*100 <= SpecialCriticalChance)
-                            tempHit.HP *= 2;
-						addAction("cMob", GET_HIT, 70, tempHit);
-					}
+					if(tempHit.HP == 0)
+						{
+							addAction("cMob", DODGE, 70, tempHit);
+						}
+					else
+						{
+	                    	tempHit.HP += (cPC.RRA + Random.Range(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].min_damage,cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].max_damage)*(1-cMob.DEF)*(2*theSwipe.accuracy/100.0));
+	                        
+	                        if(theSwipe.accuracy==1) tempHit.HP*=1/3;
+	                        if(Random.value*100 <= SpecialCriticalChance)
+	                            tempHit.HP *= 2;
+							addAction("cMob", GET_HIT, 70, tempHit);
+						}
 					if(cMob.HP - tempHit.HP > 0) 
 						addAction("cMob", IDLE); 
 					else 
-						addAction("cMob", DIE, 10);
+					addAction("cMob", DIE, 10);
 					addAction("cPC", WALK, goHOME, true);
 					addAction("cPC", IDLE, true);
 				}
-				else{	
+				else
+				{	
 					addAction("cPC", cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].attackanimation, 70, false);
 					tempHit = Hit(cPC.hit_do(cMob));
-					if(tempHit.HP == 0){
-						addAction("cMob", DODGE, 70, tempHit);
-					}else{
-						tempHit.HP += (cPC.RRA + Random.Range(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].min_damage,cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].max_damage)*(1-cMob.DEF)*(2*theSwipe.accuracy/100.0));
-                         if(Random.value*100 <= SpecialCriticalChance)
-                            tempHit.HP *= 2;
-						addAction("cMob", GET_HIT, 70, tempHit);
-					}
+					if(tempHit.HP == 0)
+						{
+							addAction("cMob", DODGE, 70, tempHit);
+						}
+					else
+						{
+							tempHit.HP += (cPC.RRA + Random.Range(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].min_damage,cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].max_damage)*(1-cMob.DEF)*(2*theSwipe.accuracy/100.0));
+	                         if(Random.value*100 <= SpecialCriticalChance)
+	                            tempHit.HP *= 2;
+							addAction("cMob", GET_HIT, 70, tempHit);
+						}
 					if(cMob.HP - tempHit.HP > 0) 
 						addAction("cMob", IDLE); 
 					else 
 						addAction("cMob", DIE, 10);
-					addAction("cPC", IDLE);
+						addAction("cPC", IDLE);
 				}
 
-				if(cMob.HP  - tempHit.HP <= 0){
-					addText("Victory!");
-					addAction("cPC", WIN);
-					addAction("cPC", IDLE);
-				}
-				else{
-					mobsRevenge();
-					nTurns++;
-				}
+				if(cMob.HP  - tempHit.HP <= 0)
+					{
+						addText("Victory!");
+						addAction("cPC", WIN);
+						addAction("cPC", IDLE);
+					}
+				else
+					{
+						mobsRevenge();
+						nTurns++;
+					}
 				theSwipe.accuracy = 0;
 			}
 		}
@@ -1991,29 +2276,36 @@ function OnGUI()
 		// Special
 		style.active.background = texSpecial;
 		style.normal.background = texSpecialP;
-		if(GUI.Button(Rect(143, 287, 82, 36), "", style)){
-			selectedSpecialAttack = -1;
-			doSpecial = !doSpecial;	
-			bAttack = false;
-		}
-		if(doSpecial && Queue.length == 0 && cPC.HP > 0 && cMob.HP > 0){
+		if(GUI.Button(Rect(143, 287, 82, 36), "", style))
+			{
+				selectedSpecialAttack = -1;
+				doSpecial = !doSpecial;	
+				bAttack = false;
+				menuInventory = true;
+				atribute = false;
+			}
+		if(doSpecial && Queue.length == 0 && cPC.HP > 0 && cMob.HP > 0)
+		{
 			//selectedSpecialAttack = GUI.SelectionGrid(Rect(140, 75, 82, playerSpecialAttacks.length * gridHSpecialAttacks), selectedSpecialAttack, sPlayerSpecialAttacks, 1, specialAttacksGridStyle);
 			for( var i = 0; i < playerSpecialAttacks.length; i++ )
 				if( GUI.Button( Rect( 140, 60 + gridHSpecialAttacks * 1.1 * i, 120, gridHSpecialAttacks ), 
 				( " ( " + sPlayerSpecialAttacks[ i ] + " ) - " + cPC.SpecialAttacks[playerSpecialAttacks[i]].energcost  ), 
 				specialAttacksGridStyle ) )
-				{
-					selectedSpecialAttack = i;
-				}
+					{
+						selectedSpecialAttack = i;
+					}
 		}
 
-		if((selectedSpecialAttack >-1)&&(doSpecial)){
-			if(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].energcost > cPC.ENRG){	
-				
-				selectedSpecialAttack = -1;
-				printText(FLAG_NONE, "Not enough energy! " );
-			}
-			else{
+		if((selectedSpecialAttack >-1)&&(doSpecial))
+		{
+			if(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].energcost > cPC.ENRG)
+				{	
+					
+					selectedSpecialAttack = -1;
+					printText(FLAG_NONE, "Not enough energy! " );
+				}
+			else
+			{
 				//theSwipe = new Swipe(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].attackname,swipeImage, 							swipeParticles,	swipeParticles2);
 				
 				theSwipe = new Swipe(cPC.SpecialAttacks[playerSpecialAttacks[selectedSpecialAttack]].attackname,
@@ -2029,22 +2321,31 @@ function OnGUI()
 			}
 			doSpecial = false;
 		}
-		if(theSwipe.isInit){
+		if(theSwipe.isInit)
+		{
 			theSwipe.Update();
 			//theSwipe.UpdateClue();
 		}
 		// Inventory
 		style.active.background = texInventory;
 		style.normal.background = texInventoryP;
-		if(GUI.Button(Rect(254, 287, 82, 36), "", style)){
-			if (bLootAlert) {
-				bLootAlert = false;
-				bReLoot = true;
-			}
-			Inventory.bInventory = true;
-			Inventory.bPlayerEq = false;
-			Craft.bCraft = false;
-			Inventory.bResetSelItem = true;
+		
+		// buton de inventory
+		if(GUI.Button(Rect(254, 287, 82, 36), "", style))
+		{
+				if (menuInventory == true)
+					{
+						atribute = false;
+						menuInventory = false;
+					}
+				else 
+					{
+						menuInventory = true;
+						atribute = false;
+					}
+				bAttack = !bAttack;
+				doSpecial = false;
+				bAttack = false;
 		}
 
 		// Run away!
@@ -2053,36 +2354,27 @@ function OnGUI()
 		if(GUI.Button(Rect(363, 287, 82, 36), "", style)){
 			if(  Queue.length == 0 )
 			{
-				finalize_durations();
-				//endFight2();
-				bLoading = true;
-				bBattle = false;
-                changeLoadScreen = Random.value ;
-                Global.theScene = 3;
-                Global.randomNumber = Random.value;
-                intoMap = true ;
-                scriptMissions.clearingBuildings = false;
-				Application.LoadLevel("LoadingScene");
-                
+				Global.Hp_incercare = Global.myChar.HP;
+				RunAway();    
 			}
 		}
 	
 		// Draw the text
-		if(tFade > 0){
+		if(tFade > 0)
+		{
 			tFade -= 0.25*Time.deltaTime;
 			tY += 15*Time.deltaTime;
 			theStyle.normal.textColor = Color(1,1,1,tFade);
 			GUI.Label(Rect(tRect.x, tRect.y - tY, tRect.width, tRect.height), tText, theStyle);
 		}
 	}//end if inventory opened
-	Log.OnGUI();
-
-	
-	if(theSwipe.result == 1){
+	if(theSwipe.result == 1)
+	{
 		bAttack = true;
 	}
 
-	if (theSwipe.result == 2) {
+	if (theSwipe.result == 2) 
+	{
 		addText("Fail");
 		theSwipe.result = 3;
 		theSwipe.accuracy = 1;
@@ -2090,27 +2382,67 @@ function OnGUI()
 		nTurns++;
 	}
 	
-	if((Time.time > idleAniUpdate) && (Global.enemyChar.mobname == "TickMan") && (act.fin)){
+	if((Time.time > idleAniUpdate) && (Global.enemyChar.mobname == "TickMan") && (act.fin))
+	{
 		idleAniUpdate = Time.time + idleAniUpdateRate;
 		addAction("cMob", "idle_2", 70, false);
 		addAction("cMob", IDLE);	
 	}
-	if(bLootAlert){
+	if(bLootAlert)
+	{
 		lootAlertRect = GUI.Window (idLootAlert, lootAlertRect, DoLootAlert, "", styleErrorFrame);
 		GUI.FocusWindow(idLootAlert);
 	}
-	if(bReLoot && !bLootAlert && !scriptInventory.bInventory){
-		if(GUI.Button(Rect(199, 200, 83, 33), "Loot", styleOrangeBut)){
+	if(bReLoot && !bLootAlert && !scriptInventory.bInventory)
+	{
+		if(GUI.Button(Rect(199, 200, 83, 33), "Loot", styleOrangeBut))
+		{
 			bReLoot = false;
-			if(!scriptInventory.LootItem(idLootItem)){
-				bLootAlert = true;
-				bLooting = false; 
-			}
-			else{
-				bLooting = true;
-			}
+			if(!scriptInventory.LootItem(idLootItem))
+				{
+					bLootAlert = true;
+					bLooting = false; 
+				}
+			else
+				{
+					bLooting = true;
+				}
 		}
 	}
+	
+	if (Global.enemyChar.specialMob == 1)
+	{ 
+	if ( imagineDezactivare == true)
+		{
+		
+			if (GUI.Button(Rect(0,0, Screen.width,Screen.height),ceva, ""))
+				{
+					print("nr = " + nr);
+					nextImage = 0; 
+					 nr++; 
+					Start(); 
+				}
+		 }
+	}
+}
+
+function RunAway()
+{
+	finalize_durations();
+	bLoading = true;
+	bBattle = false;
+    changeLoadScreen = Random.value ;
+    Global.theScene = 3;
+    Global.randomNumber = Random.value;
+    intoMap = true ;
+    scriptMissions.clearingBuildings = false;
+                
+    LoadSceneScript.MoreMobsToFight = false;
+                
+    Inventory.ResetSelectedItem();
+	yield StartCoroutine( Global.save_stats() );
+	Application.LoadLevel("LoadingScene");
+
 }
 
 function DoLootAlert (windowID : int) {
@@ -2118,25 +2450,23 @@ function DoLootAlert (windowID : int) {
 	GUI.Label(Rect(20,30,190,40),"Not enough free slots.\nPlease remove some items.");
 	if(GUI.Button(Rect(74, 70, 83, 36), "Close", scriptInventory.styleButSmll))
 		bLootAlert = false;
-		bReLoot = true;
+	bReLoot = true;
 }
 
 
 function AddMissionToCharacter() //This will retire and will not be used anymore
 {
- //Debug.Log("adding mission , player id:" + Global.myChar.id + " , level: " + Global.myChar.LVL);
- var url : String = Global.server + "/mmo_iphone/add_player_mission.php?player_id="+Global.myChar.id+"&level=" + Global.myChar.LVL;
-
- var req : WWW = new WWW(url);
- yield req;
- while (req.error && req.error.ToString().Contains("Resolving host timed out"))
- { 
-  Debug.Log( "Retrying" );
-  req = new WWW(url);
-  yield req;
- }
-
- while(req.error);
+	 var url : String = Global.server + "/mmo_iphone/add_player_mission.php?player_id="+Global.myChar.id+"&level=" + Global.myChar.LVL;
+	 var req : WWW = new WWW(url);
+	 yield req;
+	 while (req.error && req.error.ToString().Contains("Resolving host timed out"))
+		 { 
+			  Debug.Log( "Retrying" );
+			  req = new WWW(url);
+			  yield req;
+		 }
+	
+	 while(req.error);
 }
 
 function CheckMissions( missionType : String, elem : String)
@@ -2145,25 +2475,24 @@ function CheckMissions( missionType : String, elem : String)
 	{
 		if ( Global.missionsArray != null )
 			for( var i : int = 0; i < Global.missionsArray.length; i++ )
-			{    var t : Mission ;
+			{  
+				 var t : Mission ;
 			     t = Global.missionsArray[i];
 				if( t.toDo.ToUpper() == missionType && t.done < t.quant ) 
 				{
 					if(elem.ToUpper().Contains(t.what.ToUpper())) 
-					{
-						t.UpdateMission(1);
-						var url = Global.server + "/mmo_iphone/update_player_mission.php?mission_id=" + t.missionId.ToString() + "&player_id=" + Global.myChar.id + "&procent=" + t.done.ToString();
-					
-						Debug.Log("DONE: " + url);
-						var post = new WWW(url);
-						yield(post);
-						while (post.error && post.error.ToString().Contains("Resolving host timed out"))
-						{ 
-							Debug.Log( "Retrying" );
-							post = new WWW(url);
+						{
+							t.UpdateMission(1);
+							var url = Global.server + "/mmo_iphone/update_player_mission.php?mission_id=" + t.missionId.ToString() + "&player_id=" + Global.myChar.id + "&procent=" + t.done.ToString();
+							var post = new WWW(url);
 							yield(post);
+							while (post.error && post.error.ToString().Contains("Resolving host timed out"))
+								{ 
+									Debug.Log( "Retrying" );
+									post = new WWW(url);
+									yield(post);
+								}
 						}
-					}
 				}
 			}
 	}
@@ -2175,20 +2504,18 @@ function CheckMissions( missionType : String, elem : String)
 
 function UpdateMissions() //RADU: this doesn't seems to be used anywhere, why is it still here? and who uses spaces instead of tabs anyway?
  {
- for (var i:int=0;i<Global.missionsUpdateQueue.length;i++)
-  {
-  var t : Mission ;
-  t = Global.missionsArray[Global.missionsUpdateQueue[i]];
-  var url = Global.server + "/mmo_iphone/update_player_mission.php?mission_id="+t.missionId.ToString()+"&player_id="+Global.myChar.id+"&procent=" +t.done.ToString();
-  Debug.Log(url);
-   var post = new WWW(url);
-    yield(post); 
-  while (post.error && post.error.ToString().Contains("Resolving host timed out"))
- 	{ 
-  		Debug.Log( "Retrying" );
-  	post = new WWW(url);
-    yield(post); 
- 	}
-  }
+	 for (var i:int=0;i<Global.missionsUpdateQueue.length;i++)
+		  {
+			  var t : Mission ;
+			  t = Global.missionsArray[Global.missionsUpdateQueue[i]];
+			  var url = Global.server + "/mmo_iphone/update_player_mission.php?mission_id="+t.missionId.ToString()+"&player_id="+Global.myChar.id+"&procent=" +t.done.ToString();
+			  var post = new WWW(url);
+			  yield(post); 
+			  while (post.error && post.error.ToString().Contains("Resolving host timed out"))
+				 	{ 
+					  	post = new WWW(url);
+					    yield(post); 
+				 	}
+		  }
  Global.missionsUpdateQueue = new Array(); 
  }
