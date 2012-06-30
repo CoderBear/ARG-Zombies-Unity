@@ -4,8 +4,8 @@ function Start()
 {
 	CharId	 = Global.myChar.id;
 }
- function SetLastTimeOnline()
- {		
+function SetLastTimeOnline()
+{		
  	scriptMain.firstLog = 0;
  	var	wwwData;
 	var postData : WWWForm = new WWWForm();
@@ -18,12 +18,14 @@ function Start()
 	var login_url = Global.server + "/mmo_iphone/set_logout.php";
 	var download = new WWW(login_url, postData);
 	yield download;
+	
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"))
 		{
 			Debug.Log( "Retrying" );
 			download = new WWW(login_url, postData);
 			yield download;
 		}
+	
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"));
 	if(download.error) 
 		{
@@ -36,7 +38,7 @@ function Start()
 			wwwData = download.text;
 			print ("A mers!" + Global.myChar.id);
 		}
- }
+}
  
 function OnApplicationQuit()
 {
@@ -44,6 +46,7 @@ function OnApplicationQuit()
 	var login_url = Global.server + "/mmo_iphone/login.php?logout=" + CharId;
 	var download = new WWW( login_url);
 	yield download;
+	
 	while( download.error && download.error.ToString().Contains("Resolving host timed out") )
 		{
 	    	Debug.Log( "Retrying" );
@@ -52,17 +55,17 @@ function OnApplicationQuit()
 		}
 
     var wwwData;
+	
 	if(download.error) 
-	{
-		wwwData = "Error! Could not connect.";
-	}
+		{
+			wwwData = "Error! Could not connect.";
+		}
 	else
-	{
-		wwwData = download.text;
-	}
+		{
+			wwwData = download.text;
+		}
 }
 
 function Update ()
 {
-
 }
