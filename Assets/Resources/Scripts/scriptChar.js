@@ -26,6 +26,7 @@ class Char{
 	var path	: String;			// path of the Resources for this characater
 	
 	var gameObj	: GameObject;		// the GameObject
+	
 	//static var gameObj	: GameObject;		// the GameObject
 	//static var GameObjCreat : boolean = false;
 	var renderers : Component[];	// used to hide the animation
@@ -85,8 +86,9 @@ class Char{
 	}
 	
 	function init(name : String, inPath : String, pos : Vector3, scale : Vector3,
-					inPos1 : Vector3, inPos2 : Vector3, inRole : int){
-		        print("A rulat scriptChar si a incarcat resursele caracterului!");
+				  inPos1 : Vector3, inPos2 : Vector3, inRole : int)
+	{
+		print("A rulat scriptChar si a incarcat resursele caracterului!");
 		gameObj = start(name, inPath + "/Char", pos, scale);
 		renderers = gameObj.GetComponentsInChildren(Renderer);
 		gameObj.active = true;
@@ -423,7 +425,8 @@ class Char{
 		return gObj;
 	}
 
-	function hit_get(inHit : Hit) : int{
+	function hit_get(inHit : Hit) : int
+	{
 		/*if(Random.Range(0, 100) > AGI + 5 + EVASION){
 			dmg = inHit.HP;
 			

@@ -390,7 +390,7 @@ function Init( FirstInit : boolean )
 		   else
 			   {
 			                   
-			    if(Global.CES==0)
+			    if(Global.CES ==0)
 			    	if( sceneNr == 1 )
 						GameObject.Find( "Plane" ).renderer.material.mainTexture = Resources.Load( "Menus/BACKGROUND3" );
 			        else

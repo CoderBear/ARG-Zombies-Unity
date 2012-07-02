@@ -133,8 +133,8 @@ static function save_stats()
 		{
 			print( "Error downloading: " + upload.error );
 		}
-	else
-		{}
+	//else
+		//{}
 }
 
 static function getUserData()
