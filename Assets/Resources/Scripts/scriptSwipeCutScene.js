@@ -210,70 +210,69 @@ function LoadFightScene()
  
 function Update () {
   
-	if (goBackToMenu) 
-	{ 
+	if (goBackToMenu) { 
 		SetObjectsActive(false);
 		//LoadFightScene();
 		giveBackBehaviouralControl();	
 	}
      
-	if (Input.GetMouseButton(0) && !next)  //implemented for mouse,will work with ios touch
-	{
-        
-		var mousePos : Vector2 = new Vector2( Input.mousePosition.x, Input.mousePosition.y );
-		if ( x.x < 0 ) 
+	//if (Input.GetMouseButton(0) && !next)  //implemented for mouse,will work with ios touch
+	if (Input.GetMouseButton(0) && !next) {
+	
+		var mousePos : Vector2 = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+		
+			
+        if ( x.x < 0 ) { 
 			x = mousePos;  //implement touch began
-		else 
-			if( x.x > mousePos.x && Vector2.Distance( mousePos , x ) > 100 )
-				if( i < textures.Length )
-				{ 
+		} else { 
+			if( x.x > mousePos.x && Vector2.Distance( mousePos , x ) > 100 ) {
+				if( i < textures.Length ) { 
 					next = true; 
 					subtitle.material.color.a = 0;
                     swipeToContinue.material.color.a = 0.25;
 					fadeOut = false;
 				}
-	}
-	else 
-		x = new Vector2( -100, -100 );
-    //Debug.Log("Mouse Position "+ Input.mousePosition.x);
-    if( next )
-    {
-     poz1.x = mousePos.x - Input.mousePosition.x;
-     poz1.y = mousePos.y - Input.mousePosition.y;
-    // Debug.Log("poz1 = "+poz1);
-    }
-     if ( next )
-      
-	if (obj1.transform.position.x > -500){
-  //  obj1.transform.position.x = obj1.transform.position.x+poz1.x;
-                            if(Input.mousePosition.x<70)
-                                obj1.transform.position = Vector3.MoveTowards(obj1.transform.position,Vector3(obj1.transform.position.x-400,0,obj1.transform.position.z),transitionSpeed*Time.deltaTime);
-                            else obj1.transform.position = Vector3.MoveTowards(obj1.transform.position,Vector3(0,0,966),transitionSpeed*Time.deltaTime);
-                    }
-        else if ( obj2.transform.position.y > 0 ) 
-			obj2.transform.position = Vector3.MoveTowards(obj2.transform.position,Vector3(0,0,966),transitionSpeed*Time.deltaTime);
-		else 
-		{
-			fadeOut = true;
-			next = false;
-			obj1.transform.position = Vector3( 0, 1000, 966 );
-			if( i < textures.Length ) 
-				obj1.renderer.material.mainTexture = textures[i];
-				 
-			subtitle.text = Subtitles[i-1]; 
-            swipeToContinue.text = "Swipe to continue";
-//			if( i > 7 ) 
-//				i = 7;
-//			else 
-				i++;
-			var aux = obj1;
-			obj1 = obj2;
-			obj2 = aux;
+			}
 		}
-	    fade(); 
-      
+	} else { 
+		x = new Vector2( -100, -100 );
+	}
+  
+    if( next ) {
+    	poz1.x = mousePos.x - Input.mousePosition.x;
+    	poz1.y = mousePos.y - Input.mousePosition.y;   
+    }
    
-  }
+    if (next) {
+                
+	if (obj1.transform.position.x > -500) {
+  //  obj1.transform.position.x = obj1.transform.position.x+poz1.x;
+		if(Input.mousePosition.x<70) {
+       		obj1.transform.position = Vector3.MoveTowards(obj1.transform.position,Vector3(obj1.transform.position.x-400,0,obj1.transform.position.z),transitionSpeed*Time.deltaTime);
+        } else { 
+          	obj1.transform.position = Vector3.MoveTowards(obj1.transform.position,Vector3(0,0,966),transitionSpeed*Time.deltaTime);
+        }
+	} else if ( obj2.transform.position.y > 0 && Input.mousePosition.x<70 ) {
+		obj2.transform.position = Vector3.MoveTowards(obj2.transform.position,Vector3(0,0,966),transitionSpeed*Time.deltaTime);
+	} else {
+		fadeOut = true;
+		next = false;
+		obj1.transform.position = Vector3( 0, 1000, 966 );
+			
+		if( i < textures.Length ) {
+			obj1.renderer.material.mainTexture = textures[i];
+		}
+				 
+		subtitle.text = Subtitles[i-1]; 
+		swipeToContinue.text = "Swipe to continue"; 
+		i++;
+		var aux = obj1;
+		obj1 = obj2;
+		obj2 = aux;
+	}
+	}
+	fade();    
+}
 
 var fadeAmount : float = 0.02f;
 

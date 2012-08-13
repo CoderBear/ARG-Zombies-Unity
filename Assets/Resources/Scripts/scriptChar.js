@@ -1,3 +1,21 @@
+
+class CharBody
+{
+	var BodyId   : int;
+	var Sex      : String;
+	var Size     : int;
+	
+	function Set( bodyid : int)
+	{
+		BodyId = bodyid;
+		Size = bodyid / 4 + 1;
+		if ( bodyid <= 16 )
+			Sex = "male";
+		else
+			Sex = "female";
+	}
+};
+
 class Char{
 	var id		: int;				// id in the database
 	var Nick	: String;			// Nickname
@@ -8,6 +26,7 @@ class Char{
 	var path	: String;			// path of the Resources for this characater
 	
 	var gameObj	: GameObject;		// the GameObject
+	
 	//static var gameObj	: GameObject;		// the GameObject
 	//static var GameObjCreat : boolean = false;
 	var renderers : Component[];	// used to hide the animation
@@ -31,8 +50,11 @@ class Char{
 	var LVL		: int;				// level
 	var EXP		: int;				// experience
 	
+ var playerZombie : int;
+	
     var RRA     : float;
     
+    var soulToken : int;			// the souls the char has
     
 	var Money : int;				// the money char has
 	
@@ -53,67 +75,159 @@ class Char{
 	var home_lon : float;			// Homebase longitude
 	
 	var SpecialAttacks : SpecialAttacks[];			// special attacks
-	var Body     : int;
+	var Body     : CharBody;
+	var HpVechi     : int;
+	var dataVeche : String;
+	var dataNoua : String;
+	var isZombie : boolean = false;
 	
+	function Start()
+	{
+	}
 			
 	function Char(){
+		Body = new CharBody();
 	}
 	
-	function init(name : String, inPath : String, pos : Vector3, scale : Vector3,
-					inPos1 : Vector3, inPos2 : Vector3, inRole : int){
+	function makeHuman(name : String, inPath : String, pos : Vector3, scale : Vector3, inPos1 : Vector3, inPos2 : Vector3, inRole : int)
+	{
+			print("A rulat scriptChar si a incarcat resursele caracterului!");
+			gameObj = start(name, inPath + "/Char", pos, scale);
+			renderers = gameObj.GetComponentsInChildren(Renderer);
+			gameObj.active = true;
 		
-		gameObj = start(name, inPath + "/Char", pos, scale);
-		renderers = gameObj.GetComponentsInChildren(Renderer);
-		gameObj.active = true;
-		//var r : Renderer = renderers[2];
-		/*
-		r.materials[0].mainTexture = Resources.Load(inPath + "/Faces/"+Global.myChar.AvatarId+"/head");
-		r = renderers[0];
-		r.materials[0].mainTexture = Resources.Load(inPath + "/Faces/"+Global.myChar.AvatarId+"/head_1");
-		r = renderers[3];
-		r.materials[0].mainTexture = Resources.Load(inPath + "/Faces/"+Global.myChar.AvatarId+"/head_2");
-		*/
-		//show();
-				
-		//MonoBehaviour.print(r.name);
-				
+					
+			
+			var sr : Renderer = renderers[5];
+			
 		
-		var sr : Renderer = renderers[2];
+			var path_to_body : String = inPath + "/Body/" + Global.myChar.Body.BodyId + "/";
+			
+			var path_to_faces : String = inPath + "/NewFaces/" + Global.myChar.AvatarId + "/";
+			
+			sr.materials[0].mainTexture = Resources.Load(path_to_body + "chilot", typeof(Texture2D));// as Texture2D);
+			sr.materials[1].mainTexture = Resources.Load(path_to_body + "corp", typeof(Texture2D));
+			sr.materials[2].mainTexture = Resources.Load(path_to_faces + "cap1", typeof(Texture2D));
+			sr.materials[3].mainTexture = Resources.Load(path_to_body + "pantalon_drept", typeof(Texture2D));
+			sr.materials[4].mainTexture = Resources.Load(path_to_body + "pantalon_stang", typeof(Texture2D));
+			sr.materials[5].mainTexture = Resources.Load(path_to_body + "picior_drept", typeof(Texture2D));
+			sr.materials[6].mainTexture = Resources.Load(path_to_body + "picior_stang", typeof(Texture2D));
+			sr.materials[7].mainTexture = Resources.Load(path_to_body + "mana_dreapta", typeof(Texture2D));
+			sr.materials[8].mainTexture = Resources.Load(path_to_body + "mana_stanga", typeof(Texture2D));
+	        
+	        show();
+	
+			
+			posH = pos;
+			pos1 = inPos1;
+			pos2 = inPos2;
+			role = inRole;
+			path = inPath;
+			//init_stats();
+	        RRA = Random.Range(ATK - (ATK * 0.1) , ATK + (ATK * 0.1)) + Random.Range(WMinD, WMaxD+1);
+	}
+	
+	function makeZombie(name : String, inPath : String, pos : Vector3, scale : Vector3, inPos1 : Vector3, inPos2 : Vector3, inRole : int)
+	{
+		print("A rulat scriptChar si a incarcat resursele caracterului!");
+			gameObj = start(name, inPath + "/Zombie 3", pos, scale);
+			renderers = gameObj.GetComponentsInChildren(Renderer);
+			gameObj.active = true;
 		
-		MonoBehaviour.print("SALAM: " + renderers[0]);
-				
-		for(var i : int = 0; i < sr.materials.Length; i ++){
-			MonoBehaviour.print("----------->>> " + sr.materials[i].mainTexture.name);
-		}
+					
+			
+			var sr1 : Renderer = renderers[5];
+			
 		
-		//Global.myChar.Body = 1;
-		Debug.Log("BODYYYYY: " + Global.myChar.Body + "AVATAR : " + Global.myChar.AvatarId);
-		var path_to_body : String = inPath + "/Body/" + Global.myChar.Body + "/";
-		//var path_to_body : String = "Animations/Character1.5/Body/1/";
-		var path_to_faces : String = inPath + "/NewFaces/" + Global.myChar.AvatarId + "/";
-		
-		sr.materials[0].mainTexture = Resources.Load(path_to_body + "chilot", typeof(Texture2D));// as Texture2D);
-		sr.materials[1].mainTexture = Resources.Load(path_to_body + "corp", typeof(Texture2D));
-		sr.materials[2].mainTexture = Resources.Load(path_to_faces + "cap1", typeof(Texture2D));
-		sr.materials[3].mainTexture = Resources.Load(path_to_body + "pantalon_drept", typeof(Texture2D));
-		sr.materials[4].mainTexture = Resources.Load(path_to_body + "pantalon_stang", typeof(Texture2D));
-		sr.materials[5].mainTexture = Resources.Load(path_to_body + "picior_drept", typeof(Texture2D));
-		sr.materials[6].mainTexture = Resources.Load(path_to_body + "picior_stang", typeof(Texture2D));
-		sr.materials[7].mainTexture = Resources.Load(path_to_body + "mana_dreapta", typeof(Texture2D));
-		sr.materials[8].mainTexture = Resources.Load(path_to_body + "mana_stanga", typeof(Texture2D));
-        
-        show();
-		
-		posH = pos;
-		pos1 = inPos1;
-		pos2 = inPos2;
-		role = inRole;
-		path = inPath;
-		//init_stats();
-        RRA = Random.Range(ATK - (ATK * 0.1) , ATK + (ATK * 0.1)) + Random.Range(WMinD, WMaxD+1);
-       
+			var path_to_body1 : String = inPath + "/Body/0/";
+			
+			var path_to_faces1 : String = inPath + "/NewFaces/0/";
+			
+			sr1.materials[0].mainTexture = Resources.Load(path_to_body1 + "chilot", typeof(Texture2D));// as Texture2D);
+			sr1.materials[1].mainTexture = Resources.Load(path_to_body1 + "corp", typeof(Texture2D));
+			sr1.materials[2].mainTexture = Resources.Load(path_to_faces1 + "cap1", typeof(Texture2D));
+			sr1.materials[3].mainTexture = Resources.Load(path_to_body1 + "pantalon_drept", typeof(Texture2D));
+			sr1.materials[4].mainTexture = Resources.Load(path_to_body1 + "pantalon_stang", typeof(Texture2D));
+			sr1.materials[5].mainTexture = Resources.Load(path_to_body1 + "picior_drept", typeof(Texture2D));
+			sr1.materials[6].mainTexture = Resources.Load(path_to_body1 + "picior_stang", typeof(Texture2D));
+			sr1.materials[7].mainTexture = Resources.Load(path_to_body1 + "mana_dreapta", typeof(Texture2D));
+			sr1.materials[8].mainTexture = Resources.Load(path_to_body1 + "mana_stanga", typeof(Texture2D));
+	        
+	        show();
+	
+			
+			posH = pos;
+			pos1 = inPos1;
+			pos2 = inPos2;
+			role = inRole;
+			path = inPath;
+			//init_stats();
+	        RRA = Random.Range(ATK - (ATK * 0.1) , ATK + (ATK * 0.1)) + Random.Range(WMinD, WMaxD+1);
+	   //     Global.myChar.playerZombie = 1;
+	}	
+
+	
+	function init(name : String, inPath : String, pos : Vector3, scale : Vector3, inPos1 : Vector3, inPos2 : Vector3, inRole : int)
+	{	
+		//if(Global.myChar.playerZombie >= 0)
+			if(Global.playerZombie == false && Global.myChar.playerZombie == 0)
+			
+			{
+				makeHuman(name, inPath, pos, scale, inPos1, inPos2,inRole);
+	      	}
+	       
+	       
+	        else
+	        {
+	       		makeZombie(name, inPath, pos, scale, inPos1, inPos2,inRole);
+	        }
+      
        
 	}
+	
+	function ChangeToAngryFace()
+	{
+	
+		if(Global.playerZombie == false)
+		{
+			renderers = gameObj.GetComponentsInChildren(Renderer);
+			
+			var sr : Renderer = renderers[5];
+			var path_to_faces : String = "Animations/Character1.5/NewFaces/" + Global.myChar.AvatarId + "/";
+			sr.materials[2].mainTexture = Resources.Load(path_to_faces + "cap2", typeof(Texture2D));
+		}
+		else
+		{
+			renderers = gameObj.GetComponentsInChildren(Renderer);
+			
+			var sr1 : Renderer = renderers[5];
+			var path_to_faces1 : String = "Animations/Character1.5/NewFaces/0/";
+			sr1.materials[2].mainTexture = Resources.Load(path_to_faces1 + "cap3", typeof(Texture2D));
+		}
+	}
+	
+	function ChangeToNormalFace()
+	{
+		if(Global.playerZombie == false)
+		{
+		
+			renderers = gameObj.GetComponentsInChildren(Renderer);
+			
+			var sr : Renderer = renderers[5];
+			var path_to_faces : String = "Animations/Character1.5/NewFaces/" + Global.myChar.AvatarId + "/";
+			sr.materials[2].mainTexture = Resources.Load(path_to_faces + "cap1", typeof(Texture2D));
+		}
+		
+		else
+		{
+			renderers = gameObj.GetComponentsInChildren(Renderer);
+			
+			var sr1 : Renderer = renderers[5];
+			var path_to_faces1 : String = "Animations/Character1.5/NewFaces/0/";
+			sr1.materials[2].mainTexture = Resources.Load(path_to_faces1 + "cap1", typeof(Texture2D));
+		}
+		
+}
 	
 		
 	function equipItem(item : Item){
@@ -156,7 +270,8 @@ class Char{
 				Global.myChar.Weapon = item.id;//S
 				WMinD = item.weapon_dmg_min;
 				WMaxD = item.weapon_dmg_max;
-				if( item.id != 0 )
+				if( item.id == 0 )
+					print("Item id este 0");
 			
 				break;
 			default:
@@ -188,17 +303,21 @@ class Char{
 	
 		renderers = inChar.GetComponentsInChildren(Renderer);
 		var r : Renderer = renderers[1];
-		if(itemid!=0)
-		{
-			equipHands(0,gameObj);
-			r.materials[0].mainTexture = Resources.Load(path + "/Weapon/" + itemid);
-		}
-		else
-		{
-			Global.myChar.WepType = 0;
-			r.materials[0].mainTexture = Resources.Load(path + "/Weapon/0");
-		}
-	}
+		
+				if(itemid!=0)
+				{
+					equipHands(0,gameObj);
+					r.materials[0].mainTexture = Resources.Load(path + "/Weapon/" + itemid);
+				}
+				else
+				{
+					Global.myChar.WepType = 0;
+					r.materials[0].mainTexture = Resources.Load(path + "/Weapon/0");
+				}
+			}
+			
+		
+	
 	
 	function equipHelmet(itemid: int, inChar : GameObject){
 		Global.myChar.Helmet = itemid;
@@ -218,21 +337,22 @@ class Char{
 	function equipChest(itemid: int, inChar : GameObject){
 		Global.myChar.Chest = itemid;
 		renderers = inChar.GetComponentsInChildren(Renderer);
-		var r : Renderer = renderers[1];
+		var r : Renderer = renderers[2];
 		if(itemid!=0)
 		{
-			//r.materials[1].mainTexture = Resources.Load(path + "/Armour/" + itemid);
+			r.materials[0].mainTexture = Resources.Load(path + "/items/chest/ID/" + Global.myChar.Body.Size);
 		}
 		else
 		{
 			//r.materials[1].mainTexture = Resources.Load(path + "/Armour/Basic/chest");
+			r.materials[0].mainTexture = Resources.Load(path + "/items/others/alfa");
 		}
 	}
 	
 	function equipPants(itemid: int, inChar : GameObject){
 		Global.myChar.Pants = itemid;
 		renderers = inChar.GetComponentsInChildren(Renderer);
-		var r : Renderer = renderers[1];
+		var r : Renderer = renderers[5];
 		if(itemid!=0)
 		{
 			//r.materials[0].mainTexture = Resources.Load(path + "/Armour/" + itemid);
@@ -250,16 +370,24 @@ class Char{
 	function equipShoes(itemid: int, inChar : GameObject){
 		Global.myChar.Shoes = itemid;
 		renderers = inChar.GetComponentsInChildren(Renderer);
-		var r : Renderer = renderers[1];
+		var r : Renderer;
+		
 		if(itemid!=0)
 		{
-			//r.materials[6].mainTexture = Resources.Load(path + "/Armour/" + itemid + "_left");
+			r = renderers[3];
+			r.materials[0].mainTexture = Resources.Load(path + "/items/boots/1/" + Global.myChar.Body.Sex + "/right/" + Global.myChar.Body.Size);
 			//r.materials[5].mainTexture = Resources.Load(path + "/Armour/" + itemid + "_right");
+			
+			r = renderers[4];
+			r.materials[0].mainTexture = Resources.Load(path + "/items/boots/1/" + Global.myChar.Body.Sex + "/left/" + Global.myChar.Body.Size);
 		}
 		else
 		{
-			//r.materials[6].mainTexture = Resources.Load(path + "/Armour/Basic/shoe_left");
-			//r.materials[5].mainTexture = Resources.Load(path + "/Armour/Basic/shoe_right");	
+			r = renderers[3];
+			r.materials[0].mainTexture = Resources.Load(path + "/items/others/alfa");
+			
+			r = renderers[4];
+			r.materials[0].mainTexture = Resources.Load(path + "/items/others/alfa");
 		}
 	}
 	
@@ -271,7 +399,7 @@ class Char{
 		
 		//MonoBehaviour.print( Global.myChar.WepType );
 		if( Global.myChar.WepType == 1 ) //( if weapon is gloves they must be rendered over the arm )
-			r.transform.localPosition.z = 0.005;			
+			r.transform.localPosition.z = 0.010;			
 		else
 			r.transform.localPosition.z = 0.00145;
 			
@@ -369,7 +497,8 @@ class Char{
 		return gObj;
 	}
 
-	function hit_get(inHit : Hit) : int{
+	function hit_get(inHit : Hit) : int
+	{
 		/*if(Random.Range(0, 100) > AGI + 5 + EVASION){
 			dmg = inHit.HP;
 			
@@ -523,7 +652,7 @@ class Char{
 		var i : int;
 		var spattack : String[];
 		the_url = Global.server + "/mmo_iphone/special.php?id=" + Global.myChar.id + "&weapon=" + WepType;
-		
+		print("Script char intrare!");
 		
 		var download : WWW = new WWW(the_url);
 		yield download;

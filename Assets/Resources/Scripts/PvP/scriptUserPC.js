@@ -20,7 +20,7 @@ var REGEN	: float;			// extra regen
 var DMG		: float;			// extra damage
 var CTH		: float;			// chance to hit the mob
 var EVASION	: float;			// extra evasion
-static var LVL		: int;				// level
+static var LVL		: int;		// level
 var EXP		: int;				// experience
 	
 var Money : int;				// the money char has

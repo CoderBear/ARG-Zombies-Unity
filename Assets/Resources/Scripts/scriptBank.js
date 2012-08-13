@@ -20,6 +20,9 @@ var texInventoryFrame : Texture2D;			// inventory frame texture
 var texPEquipedFrame : Texture2D;
 var texTooltipItemFrame : Texture2D;
 
+static var alertSus : boolean = false;
+
+
 var bSwapAlert 		: boolean;
 var bTransferAllAlert : boolean;
 var swapAlertRect 	: Rect;
@@ -110,9 +113,7 @@ static var InboxTrade : boolean;
 
 function Start() {
 	InboxTrade = false;
-	Debug.Log("APELARE SCRIPT BANK");
-	
-    Debug.Log("ScriptBank.js:function Start()");
+
 	sQuantity = "1";
 	dark_pixel = Resources.Load("Menus/Menu_General/dark_pixel", Texture2D);
     inboxPressed = true;
@@ -228,7 +229,7 @@ function UpdatePlayerEq()
 function DrawInventory() {
 
 	//goInvFrame.renderer.enabled = true;
-	GUI.DrawTexture(Rect(startX-35, startY-40, 45 + itemsPerRow*(paddingX+texwidth), 85 + (maxInvItems/itemsPerRow)*(paddingY+texheight)), texInventoryFrame,ScaleMode.StretchToFill,true,1);
+	GUI.DrawTexture(Rect(startX-55, startY-40, 85 + itemsPerRow*(paddingX+texwidth), 85 + (maxInvItems/itemsPerRow)*(paddingY+texheight)), texInventoryFrame,ScaleMode.StretchToFill,true,1);
 	//GUI.Label(Rect(startX - 15, startY - 25, 100, 20),Global.myChar.Money+" gold");
 	for (var i = 0; i< maxInvItems; i++)
 	{	
@@ -601,18 +602,17 @@ function GetInventoryItems()
 		itemstats = Regex.Split(values[i],":");
 		if(parseInt(itemstats[2]) == 0)
 		{
-			itemsInInventory[j] = new Item(itemstats);
+			if (j <itemsInInventory.length) itemsInInventory[j] = new Item(itemstats);
 			j=j+1;
 		}
 		else
 		{
-			itemsEquiped[k] = new Item(itemstats);
+			if (j <itemsInInventory.length) itemsEquiped[k] = new Item(itemstats);
 			k=k+1;
 		}
 		i=i+1;
 	}
-	Debug.Log("scriptBank:GetInventoryItems: myChar.WepType="+Global.myChar.WepType);
-	Debug.Log("scriptBank:GetInventoryItems: myChar.WepType="+Global.myChar.WepType);
+
 	UpdateInventory();
 	is_updating = false;
 }
@@ -1196,6 +1196,7 @@ function OnGUI()
 			bInventory = false;
 			bPlayerEq = false;
             ResetSelectedItem();
+            alertSus = true;
 		}
 		if(scriptMain.bCanShowBank)
 		if(GUI.Button(Rect(305, 37, 153, 36), "Transfer  to  inventory", btnstyle))

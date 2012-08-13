@@ -1,6 +1,11 @@
 class Mob{
+
+	var specialMob : int;
+	var photosNames : String;
+
 	var name	: String;			// name of the GameObject
 	var path	: String;			// path of the Resources for this characater
+					//is the mob special an has intro images?
 
 	var id		: int;				// id of mob
 	var mobname	: String;			// name of mob
@@ -17,7 +22,7 @@ class Mob{
 	var LVL		: int;				// level
 	var SpecialCD		: int;				// experience
 
-   
+  //  var mobChar : Mob = new Mob(); 
 
 	var gameObj	: GameObject;		// the GameObject
 	/*var idle	: GameObject;		// idle animation
@@ -34,8 +39,10 @@ class Mob{
 	var posH		: Vector3;			// where the char is first displayed
 	var pos1	: Vector3;			// first position to go to, this is the character's home
 	var pos2	: Vector3;			// second position to go to, this is where the character will attack
+	
 	var role	: int;				// role of the character, can be: NONE, PC, MOB1, MOB2, MOB3
 	
+	var RRA     : float;
 
 	function Mob(){
 	}
@@ -65,15 +72,81 @@ class Mob{
 		init_stats();
 	}
 	*/
+	
+	
+	/*function init2(name : String, inPath : String, pos : Vector3, scale : Vector3,
+					inPos1 : Vector3, inPos2 : Vector3, inRole : int){
+					
+		print("A rulat scriptMob si a incarcat resursele caracterului!");
+		
+		gameObj = start(name, inPath + "/Zombie 2", pos, scale);
+		
+		renderers = gameObj.GetComponentsInChildren(Renderer);
+		
+		gameObj.active = true;
+		//Debug.Log("Aici");
+	    var sr : Renderer = renderers[5];
+	   // Debug.Log("Aici");
+		var path_to_body : String = inPath + "/Body/";
+		
+	//	var path_to_faces : String = inPath2 + "/Body/";
+		
+		
+		//sr.materials[0].mainTexture = Resources.Load(path_to_body + "cap", typeof(Texture2D));
+		sr.materials[0].mainTexture = Resources.Load(path_to_body + "cap+gat", typeof(Texture2D));
+		//sr.materials[1].mainTexture = Resources.Load(path_to_body + "cap+gat 2", typeof(Texture2D));
+		sr.materials[1].mainTexture = Resources.Load(path_to_body + "chilot", typeof(Texture2D));   
+		sr.materials[2].mainTexture = Resources.Load(path_to_body + "corp", typeof(Texture2D));
+		//sr.materials[5].mainTexture = Resources.Load(path_to_body + "gat", typeof(Texture2D));
+		sr.materials[3].mainTexture = Resources.Load(path_to_body + "mana dreapta", typeof(Texture2D));
+		sr.materials[4].mainTexture = Resources.Load(path_to_body + "mana stanga", typeof(Texture2D));
+		sr.materials[5].mainTexture = Resources.Load(path_to_body + "palma stanga", typeof(Texture2D));
+		sr.materials[6].mainTexture = Resources.Load(path_to_body + "palma dreapta", typeof(Texture2D));
+		sr.materials[7].mainTexture = Resources.Load(path_to_body + "pantalon drept", typeof(Texture2D));
+		sr.materials[8].mainTexture = Resources.Load(path_to_body + "pantalon stang", typeof(Texture2D));  
+		sr.materials[9].mainTexture = Resources.Load(path_to_body + "picior drept", typeof(Texture2D));
+		sr.materials[10].mainTexture = Resources.Load(path_to_body + "picior stang", typeof(Texture2D));
+		
+		
+		
+		
+        
+       // show();
+
+		
+		posH = pos;
+		pos1 = inPos1;
+		pos2 = inPos2;
+		role = inRole;
+		path = inPath;
+		
+       // RRA = Random.Range(ATK - (ATK * 0.1) , ATK + (ATK * 0.1)) + Random.Range(WMinD, WMaxD+1);
+		
+		
+		//init_stats();			
+								
+														
+					
+	}*/
+	
+	
 	function init(name : String, inPath : String, pos : Vector3, scale : Vector3,
 					inPos1 : Vector3, inPos2 : Vector3, inRole : int){
 
+			
+			
+		
+
+
+
+	
 		gameObj = start(name, inPath, pos, scale);		
 		gameObj.active = true; 
 		show();
 		posH = pos;
 		pos1 = inPos1;
 		pos2 = inPos2;
+		
 		role = inRole;
 		//animations = new Array();
 		path = inPath;

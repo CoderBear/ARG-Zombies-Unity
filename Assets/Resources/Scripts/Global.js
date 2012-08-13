@@ -1,24 +1,32 @@
-//static var server : String = "http://www.b-0.info";
-//static var server : String = "http://86.121.60.145:21/x-2_info";]
-static var server : String = "http://argzombies.com/app/"; 
-//static var server : String = "http://192.168.1.135/";
+static var server : String = "http://50.97.172.82";
+
+var regenHp : double;
+var timp : double; 
 
 static var test : boolean = true;
 static var debugMode : boolean = false;
 static var CES : int;
 static var nMobs : int = 1;
-//static var nMob1 : int = Random.Range(1, 5);
-//static var nMob2 : int;
-//static var nMob3 : int;
+
 static var GPS_Flag : boolean = false;
 static var sZoneName : String;
 static var sZoneNameToDisplay : String;
-//static var myChar		: CharData = new CharData();
-//static var enemyChar1	: CharData = new CharData();
-//static var enemyChar2	: CharData = new CharData();
-//static var enemyChar3	: CharData = new CharData();
-//static var cPC			: Char = new Char();
+
 static var myChar : Char = new Char();
+
+
+
+static var myLog : Char = new Char();
+
+
+
+
+
+static var mobChar : Mob = new Mob(); 
+
+
+
+
 static var oldEXP : int = -1;
 
 static var theScene : int = 0;
@@ -26,7 +34,7 @@ static var randomNumber : float = 0.0;
 
 static var enemyChar : Mob = new Mob();
 static var mobs : Array = new Array();
-static var BaseHP : int = 100;
+static var BaseHP : int = 600;
 static var BaseENRG : int = 50;
 static var BaseRGEN : int = 10;
 static var spawnInPosition : boolean;
@@ -63,134 +71,213 @@ static var self : Global;
 static var distFromHomebase : float;
 
 static var cancelTrade : boolean;
+static var Hp_incercare : int = 0;
+static var theTime : String;
+static var theDate : String;
+static var theMonth : String;
+static var theDay : String;
 
+static var playerZombie : boolean;  //if player is zombie
 
+//death time related variables
+
+var Sdate : System.DateTime = new System.DateTime();
+var CurrentTime : System.DateTime = new System.DateTime();
+static var deathScreen : boolean = false;
+static var timeOfDeath : int = 0;
+	
 
 function Start()
 {
-    
+	timp = Time.time;
 	self = this;
     debugMode = Application.platform != RuntimePlatform.IPhonePlayer;
-}
-static function save_stats(){
-
-	Debug.Log("**********************Se apeleaza functia save_stats din Global*****************");
-	var the_url = Global.server + "/mmo_iphone/user_update.php";
-	var postData : WWWForm = new WWWForm();
-	Debug.Log("Global.js:function save_stats::"+Network.connections.Length.ToString());
-	Inventory.self.RemoveItemStats();	
-	postData.AddField("id", Global.myChar.id);
-	postData.AddField("brutality",Global.myChar.BRT+"");
-	postData.AddField("accuracy", Global.myChar.ACC+"");
-	postData.AddField("energy", Global.myChar.ENRG+"");
-	postData.AddField("defense",Global.myChar.DEF+"");
-	postData.AddField("fortitude",Global.myChar.FORT+"");
-	postData.AddField("hp", Global.myChar.HP+"");
-	postData.AddField("evasion", Global.myChar.EVASION+"");
-	postData.AddField("attack", Global.myChar.ATK+"");
-	postData.AddField("level", Global.myChar.LVL+"");
-	postData.AddField("experience", Global.myChar.EXP+"");
-	postData.AddField("regen", Global.myChar.REGEN+"");
-	
-	postData.AddField("hands", Global.myChar.Hands+"");
-	Debug.Log("Global.js: save_stats(): postData.AddField(hands) ="+ Global.myChar.Hands);
-	
-	postData.AddField("helmet", Global.myChar.Helmet+"");
-	postData.AddField("chest", Global.myChar.Chest+"");
-	postData.AddField("pants", Global.myChar.Pants+"");
-	postData.AddField("shoes", Global.myChar.Shoes+"");
-	postData.AddField("weapon", Global.myChar.Weapon+"");
-	postData.AddField("difficulty", Global.myChar.Difficulty);
-	postData.AddField("money", Global.myChar.Money);
-	Inventory.self.AddItemStats();	
-	//print(postData);
-	var upload : WWW = new WWW(the_url,postData);
-	yield upload;
-	while( upload.error && upload.error.ToString().Contains("Resolving host timed out") )
-	{
-		Debug.Log( "Retrying to post data! (save_stats)" );
-		upload = new WWW(the_url,postData);
-		yield upload;
-	}
-	//while(!upload.isDone){}
-	if(upload.error) {
-		print( "Error downloading: " + upload.error );
-	}else{
-		//print("no error");
-		print(upload.text);
-		Debug.Log("Global.js: save_stats(): postData.AddField(weptype) ="+ Global.myChar.Weapon+"");
-	}
-	
+    timeOfDeath = PlayerPrefs.GetInt("deathTime");
+  	if(((CurrentTime.Hour*100+CurrentTime.Minute)*100+CurrentTime.Second - PlayerPrefs.GetInt("deathTime"))<=500)
+  	{
+  		deathScreen = true;
+  	}
 }
 
-static function getUserData(){
-	//Debug.Log( "Global.js:Getting user data" );
+function checkzombie()
+{
 	var values : String[];
 	var the_url = Global.server + "/mmo_iphone/user_desc.php?username=" + Global.myChar.User;
 	var download = new WWW( the_url );
 	yield download;
 	while( download.error && download.error.ToString().Contains("Resolving host timed out") )
-	{
-		//Debug.Log( "Retrying" );
-		download = new WWW( the_url );
-		yield download;
-	}
-	if(download.error) {
-		//print( "Error downloading: " + download.error );
-		//wwwData = "Error! Could not connect.";
-		return;
-	}else{
-	var	wwwData = download.text;
-       // Debug.Log("Global.js: data user::"+wwwData);
-	}
-
-	if(wwwData.IndexOf("Invalid", 0) > 0){
-		//print("Invalid user ID.");
-	}
+		{
+			download = new WWW( the_url );
+			yield download;
+		}
+	if(download.error)
+		{
+		//	wwwData = "Error! Could not connect.";
+			return;
+		}
 	else
-	{
-		values = Regex.Split(wwwData,"<br />");
+		{
+			var	wwwData = download.text;
+		}
 
-		Global.myChar.BRT		= parseInt(values[0]);
-		Global.myChar.ACC		= parseInt(values[1]);
-		Global.myChar.ENRG		= parseInt(values[2]);
-		Global.myChar.DEF		= parseInt(values[3]);
-		Global.myChar.FORT		= parseInt(values[4]);
-		Global.myChar.HP		= parseInt(values[5]);
-		
-		Global.myChar.EVASION	= parseFloat(values[6]);
-		Global.myChar.ATK		= parseFloat(values[7]);
-		Global.myChar.LVL		= parseInt(values[8]);
-		Global.myChar.EXP		= parseInt(values[9]);
-		Global.myChar.REGEN		= parseFloat(values[10]);
-		
-		Global.myChar.Nick		= values[11];
-		Global.myChar.id		= parseInt(values[12]);
-
-		Global.myChar.Hands		= parseInt(values[13]);
-		
-		Global.myChar.Helmet	= parseInt(values[14]);
-		Global.myChar.Chest		= parseInt(values[15]);
-		Global.myChar.Pants		= parseInt(values[16]);
-		Global.myChar.Shoes		= parseInt(values[17]);
-		Global.myChar.Weapon	= parseInt(values[18]);
-		Global.myChar.Difficulty = parseInt(values[19]);
-         
-		Global.myChar.Money = parseInt(values[20]);
-		Global.myChar.AvatarId = values[21];
-		Global.myChar.CalculateHybridStats();
-        
-		if ( values.Length > 22 && values[22].Length > 0 ) Global.myChar.home_lat = parseFloat(values[22]);
-		if ( values.Length > 23 && values[23].Length > 0 ) Global.myChar.home_lon = parseFloat(values[23]);	
-		if ( values.Length > 24 && values[24].Length > 0 ) Global.myChar.Body = parseInt(values[24]);
-		
-		if ( Inventory.self != null )
-			Inventory.self.AddItemStats();	
+	if(wwwData.IndexOf("Invalid", 0) > 0)
+		{
+			print("Invalid user ID.");
+		}
+	else
+	{	
+			values = Regex.Split(wwwData,"<br />");
+			
+			Global.myChar.playerZombie = parseInt(values[25]);
 	}
 }
 
+function Update()
+{
+    regenHp = Time.time;
+	if ( regenHp-timp > 4 && Global.myChar.HP > Global.Hp_incercare && Global.Hp_incercare > 1)
+		{
+			Global.Hp_incercare = Global.Hp_incercare + 1;
+			timp = Time.time; 
+			print("HP regenerat:"+ Global.Hp_incercare);
+		} 
+}
+static function save_stats()
+{	//------------------------
+	//Implementare zombificare:
+	//------------------------
+			if (Global.playerZombie == true)
+				Global.myChar.playerZombie=1;
+			else 
+				Global.myChar.playerZombie = 0;
+			var the_url = Global.server + "/mmo_iphone/user_update.php";
+            var postData : WWWForm = new WWWForm();
+			Inventory.self.RemoveItemStats();	
+			postData.AddField("id", Global.myChar.id);
+			postData.AddField("brutality",Global.myChar.BRT+"");
+			postData.AddField("accuracy", Global.myChar.ACC+"");
+			postData.AddField("energy", Global.myChar.ENRG+"");
+			postData.AddField("defense",Global.myChar.DEF+"");
+			postData.AddField("fortitude",Global.myChar.FORT+"");
+			postData.AddField("hp", Global.myChar.HP+"");
+			postData.AddField("evasion", Global.myChar.EVASION+"");
+			postData.AddField("attack", Global.myChar.ATK+"");
+			postData.AddField("level", Global.myChar.LVL+"");
+			postData.AddField("experience", Global.myChar.EXP+"");
+			postData.AddField("regen", Global.myChar.REGEN+"");
+		
+			postData.AddField("hands", Global.myChar.Hands+"");
+			
+			postData.AddField("helmet", Global.myChar.Helmet+"");
+			postData.AddField("chest", Global.myChar.Chest+"");
+			postData.AddField("pants", Global.myChar.Pants+"");
+			postData.AddField("shoes", Global.myChar.Shoes+"");
+			postData.AddField("weapon", Global.myChar.Weapon+"");
+			postData.AddField("difficulty", Global.myChar.Difficulty);
+			postData.AddField("money", Global.myChar.Money);
+			postData.AddField("playerzombie", Global.myChar.playerZombie);
+			postData.AddField("stoken", Global.myChar.soulToken);
+			Inventory.self.AddItemStats();	
+			
+			
+			
 
+	var upload : WWW = new WWW(the_url,postData);
+	yield upload;
+	while( upload.error && upload.error.ToString().Contains("Resolving host timed out") )
+		{
+			upload = new WWW(the_url,postData);
+			yield upload;
+		}
+	if(upload.error) 
+		{
+			print( "Error downloading: " + upload.error );
+		}
+	//else
+		//{}
+}
 
+static function getUserData()
+{
+print("GETUSERDATA");
+	var values : String[];
+	var the_url = Global.server + "/mmo_iphone/user_desc.php?username=" + Global.myChar.User;
+	var download = new WWW( the_url );
+	yield download;
+	while( download.error && download.error.ToString().Contains("Resolving host timed out") )
+		{
+			download = new WWW( the_url );
+			yield download;
+		}
+	if(download.error)
+		{
+		//	wwwData = "Error! Could not connect.";
+			return;
+		}
+	else
+		{
+			var	wwwData = download.text;
+		}
+
+	if(wwwData.IndexOf("Invalid", 0) > 0)
+		{
+			print("Invalid user ID.");
+		}
+	else
+	{	
+			values = Regex.Split(wwwData,"<br />");
+
+			Global.myChar.BRT		= parseInt(values[0]);
+			Global.myChar.ACC		= parseInt(values[1]);
+			Global.myChar.ENRG		= parseInt(values[2]);
+			Global.myChar.DEF		= parseInt(values[3]);
+			Global.myChar.FORT		= parseInt(values[4]);
+			Global.myChar.HP		= parseInt(values[5]);
+			
+			Global.myChar.EVASION	= parseFloat(values[6]);
+			Global.myChar.ATK		= parseFloat(values[7]);
+			Global.myChar.LVL		= parseInt(values[8]);
+			Global.myChar.EXP		= parseInt(values[9]);
+			Global.myChar.REGEN		= parseFloat(values[10]);
+			
+			Global.myChar.Nick		= values[11];
+			Global.myChar.id		= parseInt(values[12]);
+	
+			Global.myChar.Hands		= parseInt(values[13]);
+			
+			Global.myChar.Helmet	= parseInt(values[14]);
+			Global.myChar.Chest		= parseInt(values[15]);
+			Global.myChar.Pants		= parseInt(values[16]);
+			Global.myChar.Shoes		= parseInt(values[17]);
+			Global.myChar.Weapon	= parseInt(values[18]);
+			Global.myChar.Difficulty = parseInt(values[19]);
+	        
+	        
+			Global.myChar.Money = parseInt(values[20]);
+			Global.myChar.AvatarId = values[21];
+			
+			
+			//Am adaugat temporar o variabila care contorizeaza soulToken-urile
+			//Global.myChar.soulToken = parseInt(values[26]);
+			
+			//Global.myChar.playerZombie = parseInt(values[25]);
+	
+			Global.myChar.CalculateHybridStats();
+	        
+			if ( values.Length > 22 && values[22].Length > 0 ) Global.myChar.home_lat = parseFloat(values[22]);
+			if ( values.Length > 23 && values[23].Length > 0 ) Global.myChar.home_lon = parseFloat(values[23]);	
+			if ( values.Length > 24 && values[24].Length > 0 ) Global.myChar.Body.Set(parseInt(values[24]));
+			Global.myChar.playerZombie = parseInt(values[25]);
+//			Global.myChar.soulToken = parseInt(values[26]);
+			
+			
+			
+			if ( Inventory.self != null )
+				Inventory.self.AddItemStats();
+					
+									
+	}
+}
 
 
 static function ServerRequest( the_url : String )
@@ -198,16 +285,13 @@ static function ServerRequest( the_url : String )
 	var request : WWW = new WWW(the_url);
 	yield request;	
 	while (request.error && request.error.ToString().Contains("Resolving host timed out"))
-	{
-		Debug.Log( "Retrying" );
-		request = new WWW(the_url);
-		yield request;
-	}
-	
+		{
+			request = new WWW(the_url);
+			yield request;
+		}
 }
 
 static var lastTouchPosition : Vector2;
-
 
 static function Scroll(scrollVector : Vector2, rec : Rect) : Vector2
 {
@@ -217,15 +301,14 @@ static function Scroll(scrollVector : Vector2, rec : Rect) : Vector2
 		if(touch.x < rec.x) return scrollVector;
 		if(Screen.height - touch.y < rec.y) return scrollVector;
 		if(touch.x > rec.x+rec.width) return scrollVector;
-		if(Screen.width - touch.y > rec.y+rec.height) return scrollVector;	}
+		if(Screen.width - touch.y > rec.y+rec.height) return scrollVector;	
+	}
 			
 	if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
 		lastTouchPosition = Input.GetTouch(0).position;
 	
 	if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved) 
 	{
-
-
 		var touchPosition : Vector2 = Input.GetTouch(0).position;
 		var aux : int = touchPosition.y - lastTouchPosition.y;
 
@@ -235,29 +318,48 @@ static function Scroll(scrollVector : Vector2, rec : Rect) : Vector2
 	return scrollVector;
 }
 
-function FightMob( mob : String  )
+function StartMission( mission : Mission )
 {
+	if ( mission.toDo.ToUpper() == "KILL" )
+		{
+			FightMob( mission.what, mission.quant - mission.done );
+		}
+	else
+		{
+			FightMob( mission.what, 1 );
+		}
+}
+
+function SetMobs( numbers: int )
+{
+	if ( numbers > 1 )
+		{
+			LoadSceneScript.nrOfMobsKilled = 0;
+			LoadSceneScript.nrOfMobs = numbers;
+			LoadSceneScript.MoreMobsToFight = true;
+		}
+	else
+		LoadSceneScript.MoreMobsToFight = false;
+}
+
+function FightMob( mob : String, numbers : int  )
+{
+	SetMobs(numbers);
 	mob = WWW.EscapeURL( mob );
-	Debug.Log( "Fighting mob start" );
+
 	var download : WWW = new WWW(server + "/mmo_iphone/mobs.php?id=" + mob );
 	yield download;
-	Debug.Log( "download finished , id ="+mob );
-
 	while (download.error && download.error.ToString().Contains("Resolving host timed out"))
-	{
-		Debug.Log( "Retrying");
-		download = new WWW(server + "/mmo_iphone/mobs.php?id=" + mob );
-		yield download;
-	}
-	Debug.Log( "Got mob rresponse: " + download.text );
+		{
+			download = new WWW(server + "/mmo_iphone/mobs.php?id=" + mob );
+			yield download;
+		}
 	var values = Regex.Split(download.text,"<br />");
 
 	var tmp = Regex.Split(values[0],"\n");
 	if (!download.error)
-	if (values[2].length > 0){
-		Debug.Log( "no error" );
-		//enemyChar.mobname 	= values[0].Substring(3, values[0].length-3);
-		Debug.Log("SubstSSSSSSS: " + tmp[1]);
+	if (values[2].length > 0)
+	{
 		enemyChar.mobname = tmp[1];
 		enemyChar.HP		= parseInt(values[1]);
 		enemyChar.ENRG		= parseInt(values[2]);
@@ -271,9 +373,16 @@ function FightMob( mob : String  )
 		enemyChar.LVL		= parseInt(values[9]);		
 		enemyChar.id 		= parseInt( values[10] );
 		enemyChar.mobModel 	= values[11];
-		
+		if (values[12] != "")
+			{
+				Global.enemyChar.specialMob	= parseInt(values[12]);
+				if (parseInt(values[12]) == 1)
+					{
+						Global.enemyChar.photosNames = values[13];
+					}
+			}
+		else Global.enemyChar.specialMob = 0;
 	}
-	Debug.Log( "fiiiiight" );
 	// Fight!
 	fightTriggered = true;
 	FightType = 1;
@@ -282,7 +391,7 @@ function FightMob( mob : String  )
 
 function StartFightWithMob( mob : String )
 {
-	yield FightMob( mob );
+	yield FightMob( mob,1 );
 	Inventory.ResetSelectedItem();
 	var retGetMobToFight = 1;
 		
@@ -292,33 +401,3 @@ function StartFightWithMob( mob : String )
 }
 
 
-//static function UserToNick (kUser : String) : String
-//{
-//	var the_url = Global.server + "/mmo_iphone/user_to_nick.php";
-//	var postData: WWWForm = new WWWForm();
-//	postData.AddField("opt", 2);  // Username to nick
-//	postData.AddField("user", kUser);
-//	var upload: WWW = new WWW(the_url, postData);
-//	yield upload;
-//	//while( !upload.isDone ) {}
-//	if (upload.error) {
-//		return "";
-//	} else {
-//		return upload.text;
-//	}
-//}
-
-//static function NickToUser (kNick: String) : String {
-//	var the_url = Global.server + "/mmo_iphone/user_to_nick.php";
-//	var postData: WWWForm = new WWWForm();
-//	postData.AddField("opt", 1);  // Nick to username
-//	postData.AddField("user", kNick);
-//	var upload: WWW = new WWW(the_url, postData);
-//	//while (!upload.isDone) {}
-//	yield upload;
-//	if (upload.error) {
-//		return "";
-//	} else {
-//		return upload.text;
-//	}
-//}

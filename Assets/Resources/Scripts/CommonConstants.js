@@ -13,6 +13,7 @@ static var TUT_AUCTION_SELL		: int = 1 << 9;
 static var TUT_CRAFT			: int = 1 << 10;
 static var TUT_FIGHT_NORMAL		: int = 1 << 11;
 static var TUT_FIGHT_PVP		: int = 1 << 12;
+static var TUT_FRIEND			: int = 1 << 13;
 
 
 static var CRAFT_ARMOR : int = 1;

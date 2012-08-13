@@ -223,7 +223,7 @@ var texLose: Texture2D;
 		}
 		//--------------------
 		GUI.Label (Rect (0, 0, 100, 20), BattleScript.zH+"/"+BattleScript.zT);
-		Log.OnGUI();
+		//Log.OnGUI();
 	}
 	//-------------battle funtions-------------
 	function computeTurn(){

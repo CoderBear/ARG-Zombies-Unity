@@ -1,0 +1,57 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Global.js">
+    <Files>
+      <File FileName="../../../Users/marius/Desktop/LoginInterface.js" Line="299" Column="38" />
+      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMissions.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/OLD/CharacterScript.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Inventory.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="1" Column="35" />
+      <File FileName="Assets/Plugins/UIToolkit/UI.cs" Line="62" Column="23" />
+      <File FileName="Assets/Resources/Scripts/Craft.js" Line="268" Column="28" />
+      <File FileName="Assets/Resources/Scripts/scriptMarket.js" Line="152" Column="26" />
+      <File FileName="Assets/Resources/Scripts/scriptItem.js" Line="110" Column="23" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Resources" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="Assembly-CSharp-firstpass" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Plugins" expanded="True">
+                <Node name="UIToolkit" expanded="True">
+                  <Node name="BaseElements" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Assembly-UnityScript" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Resources" expanded="True">
+                <Node name="Atlases" expanded="True" />
+                <Node name="Scripts" expanded="True">
+                  <Node name="OLD" expanded="True">
+                    <Node name="Battle" expanded="True" />
+                  </Node>
+                  <Node name="PvP" expanded="True" />
+                  <Node name="Global.js" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -451,3 +451,31 @@ class Item4{
 		quantity	= parseInt(aStr[2]);
 	}
 }
+
+class Item5 
+{
+	var id             : int;
+	var name           : String;
+	var brutality      : int;
+	var accuracy       : int;
+	var fortitude      : int;
+	var attack         : int;
+	var defense        : int;
+	var price          : int;
+	var level          : int;
+	
+	function Item5(aStr : String)
+	{	
+		var values : String[] = Regex.Split(aStr, ";");
+		
+		id             = parseInt(values[0]);
+		name           = values[1];
+		brutality      = parseInt(values[2]);
+		accuracy       = parseInt(values[3]);
+		fortitude      = parseInt(values[4]);
+		attack         = parseInt(values[5]);
+		defense        = parseInt(values[6]);
+		price          = parseInt(values[7]);
+		level          = parseInt(values[8]);
+	}
+}

@@ -60,6 +60,7 @@ function getUserData(){
 }
 
 function Start (){
+print("A incarcat texturile caracterului!");
 	inPath = "Animations/Character1.5";
 	transform.eulerAngles = Vector3(0,90,0);
 	yield StartCoroutine( getUserData() );
