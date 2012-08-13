@@ -1,0 +1,44 @@
+{"frames": {
+
+"homebase_zone.png":
+{
+	"frame": {"x":80,"y":43,"w":59,"h":58},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":59,"h":58},
+	"sourceSize": {"w":59,"h":58}
+},
+"set_button.png":
+{
+	"frame": {"x":80,"y":2,"w":121,"h":39},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":121,"h":39},
+	"sourceSize": {"w":121,"h":39}
+},
+"set_button_pr.png":
+{
+	"frame": {"x":203,"y":2,"w":121,"h":39},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":121,"h":39},
+	"sourceSize": {"w":121,"h":39}
+},
+"text_box.png":
+{
+	"frame": {"x":2,"y":2,"w":469,"h":76},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":2,"w":469,"h":76},
+	"sourceSize": {"w":471,"h":78}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "MenuHomebase.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":512},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:be39fe9049b8495ad8b6e4999032bbab$"
+}
+}
