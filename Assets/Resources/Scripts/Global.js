@@ -1,5 +1,10 @@
 static var server : String = "http://www.b-0.info";
 
+//screen dimension variables
+static var screenW : int;
+static var screenH : int;
+//end of screen dimension variables
+
 var regenHp : double;
 var timp : double; 
 
@@ -89,6 +94,10 @@ static var timeOfDeath : int = 0;
 
 function Start()
 {
+	//geting screen details
+	screenW = Screen.width;
+	screenH = Screen.height;
+	
 	timp = Time.time;
 	self = this;
     debugMode = Application.platform != RuntimePlatform.IPhonePlayer;
