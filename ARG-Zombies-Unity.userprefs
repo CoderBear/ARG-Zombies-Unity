@@ -1,16 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/scriptBattle.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../Users/marius/Desktop/LoginInterface.js">
     <Files>
       <File FileName="../../../Users/marius/Desktop/LoginInterface.js" Line="299" Column="38" />
-      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Scripts/scriptMissions.js" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Scripts/OLD/CharacterScript.js" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="19" Column="28" />
-      <File FileName="Assets/Resources/Scripts/Inventory.js" Line="1592" Column="4" />
-      <File FileName="Assets/Resources/Scripts/Global.js" Line="1" Column="1" />
-      <File FileName="Assets/Plugins/UIToolkit/UI.cs" Line="62" Column="23" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -38,7 +30,7 @@
                     <Node name="Battle" expanded="True" />
                   </Node>
                   <Node name="PvP" expanded="True" />
-                  <Node name="scriptBattle.js" selected="True" />
+                  <Node name="Global.js" selected="True" />
                 </Node>
               </Node>
             </Node>
