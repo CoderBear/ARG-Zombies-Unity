@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{ABDD910F-BD9C-7D23-19BE-E9A9A9F565CF}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_2;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_OSX;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Plugins\AR\ARBinding.cs" />
+     <Compile Include="Assets\Plugins\AR\AREventListener.cs" />
+     <Compile Include="Assets\Plugins\AR\ARManager.cs" />
+     <Compile Include="Assets\Plugins\MiniJSON.cs" />
+     <Compile Include="Assets\Plugins\QRDecoder.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\IPositionable.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\ITouchable.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UIAbstractContainer.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UIAbstractTouchableContainer.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UIControlTemplate.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UIElement.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UIObject.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UISprite.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UISpriteAnimation.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UISpriteManager.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\BaseElements\UITouchableSprite.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIAbsoluteLayout.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIBackgroundLayout.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIHorizontalLayout.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIScrollableHorizontalLayout.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIScrollableVerticalLayout.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIVerticalLayout.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Containers\UIVerticalPanel.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UIAnchorInfo.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UIClippingPlane.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UIEdgeInsets.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UIEdgeOffsets.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UITouchMaker.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UIUVRect.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Structs\UIVertexIndices.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Support\IPositionablePositioningExtensions.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Support\UIObjectAnimationExtensions.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\Support\UIRelative.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UI.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIAnimation\Easing.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIAnimation\UIAnimation.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\TouchInfo.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIButton.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIColorPicker.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIContinuousButton.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIGhostJoystick.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIJoystick.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIKnob.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UILanguageManager.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIProgressBar.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UISlider.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UISpacer.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIStateButton.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIStateSprite.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UISwipeDetector.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIText.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UITextInstance.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIToggleButton.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIElements\UIZoomButton.cs" />
+     <Compile Include="Assets\Plugins\UIToolkit\UIToolkit.cs" />
+     <None Include="Assets\Resources\Atlases\MenuLogInMainHBOptRegSound.txt" />
+     <None Include="Assets\Resources\Atlases\ButtonsOld.txt" />
+     <None Include="Assets\Resources\Files\Swipes\pummel.txt" />
+     <None Include="Assets\Resources\Atlases\miscWindows.txt" />
+     <None Include="Assets\Resources\Files\Swipes\furry_of_fists.txt" />
+     <None Include="Assets\Resources\Files\Swipes\one _two.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuGeneral.txt" />
+     <None Include="Assets\Resources\Files\Swipes\tuck_ in_tight.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuAH.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuLogInMainHBOptRegSound.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\ButtonsNew.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuGeneral.txt" />
+     <None Include="Assets\DemoAssets\Resources\colorPickerSheet.txt" />
+     <None Include="Assets\Resources\Files\Swipes\swing.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\HomeBase.txt" />
+     <None Include="Assets\Resources\Atlases\ButtonsNew.txt" />
+     <None Include="Assets\Resources\Files\Swipes\barrage.txt" />
+     <None Include="Assets\Resources\Files\Swipes\mastery.txt" />
+     <None Include="Assets\Resources\Files\Swipes\stillnes_of_the_sword.txt" />
+     <None Include="Assets\Resources\Files\Swipes\head_shot.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuChat.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuFriends.txt" />
+     <None Include="Assets\Resources\Files\Swipes\super_punch.txt" />
+     <None Include="Assets\DemoAssets\Resources\textDemoSheet.txt" />
+     <None Include="Assets\Resources\Atlases\MenuChat.txt" />
+     <None Include="Assets\Resources\Files\Swipes\multi_slash.txt" />
+     <None Include="Assets\Plugins\UIToolkit\Shaders\UIToolkit Alpha Enabled (Default).shader" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\windows.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuCraft.txt" />
+     <None Include="Assets\DemoAssets\Resources\textDemoSheet2x.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuAH.txt" />
+     <None Include="Assets\Resources\Atlases\MenuBattle.txt" />
+     <None Include="Assets\Resources\Files\Swipes\duck_and_weave.txt" />
+     <None Include="Assets\DemoAssets\Resources\joystickSheet2x.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuLogInMainHBOptRegSound.txt" />
+     <None Include="Assets\Resources\Files\PC.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\buttoonsAndMisc.txt" />
+     <None Include="Assets\Resources\Atlases\HomeBase.txt" />
+     <None Include="Assets\Resources\Files\Swipes\stab&amp;twist.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\ButtonsNew.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\miscWindows.txt" />
+     <None Include="Assets\DemoAssets\Resources\kitchenSinkSheet2x.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuBattle.txt" />
+     <None Include="Assets\Resources\Files\Swipes\covering_fire.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\ButtonsOld.txt" />
+     <None Include="Assets\Plugins\UIToolkit\Shaders\UIToolkit Premultiplied Alpha.shader" />
+     <None Include="Assets\Resources\Atlases\MenuGeneral.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\buttoonsAndMisc.txt" />
+     <None Include="Assets\Resources\Atlases\LodaingScreens.txt" />
+     <None Include="Assets\Resources\Atlases\CraftMissionChat.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\windows.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuFriends.txt" />
+     <None Include="Assets\DemoAssets\Resources\kitchenSinkSheet.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\miscWindows.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\HomeBase.txt" />
+     <None Include="Assets\Resources\Atlases\MenuFriends.txt" />
+     <None Include="Assets\Resources\Files\Swipes\flail widly.txt" />
+     <None Include="Assets\Resources\Atlases\windows.txt" />
+     <None Include="Assets\Resources\Files\Swipes\blow the mag.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuCraft.txt" />
+     <None Include="Assets\DemoAssets\Resources\prototype2x.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\CraftMissionChat.txt" />
+     <None Include="Assets\Resources\Files\Swipes\hi-duke-in.txt" />
+     <None Include="Assets\Resources\Atlases\buttoonsAndMisc.txt" />
+     <None Include="Assets\Resources\Files\Swipes\_readme.txt" />
+     <None Include="Assets\Resources\Files\Swipes\center_mass.txt" />
+     <None Include="Assets\Resources\Atlases\MenuCraft.txt" />
+     <None Include="Assets\Plugins\UIToolkit\Shaders\UIToolkit No Alpha.shader" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\ButtonsOld.txt" />
+     <None Include="Assets\Resources\Atlases\MenuAH.txt" />
+     <None Include="Assets\DemoAssets\Resources\prototype.txt" />
+     <None Include="Assets\DemoAssets\Resources\_Atlases\MenuChat.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuBattle.txt" />
+     <None Include="Assets\DemoAssets\Resources\joystickSheet.txt" />
+     <None Include="Assets\Resources\Files\Swipes\from_the_hip.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\LodaingScreens.txt" />
+ <Reference Include="Assets\QRCode\Plugins\Antares.QRCode">
+ <HintPath>Assets\QRCode\Plugins\Antares.QRCode.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>
