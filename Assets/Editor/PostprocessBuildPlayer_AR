@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+# PostprocessBuildPlayer #
+# Grabs the plugin info from the filename after the '_'
+
+# Dont run on any builds that are not iPhone builds
+if( $ARGV[1] ne "iPhone" )
+{
+	exit;
+}
+
+use File::Basename;
+use Foundation;
+
+# Paths - grab the current filename and extract the package name
+$packageName = $0;
+if( $packageName =~ /.*?_(.*)$/ )
+{
+	$packageName = $1;
+}
+
+$installPath = $ARGV[0];
+$currDir = `pwd`;
+chomp $currDir;
+$xcodeFiles = $currDir . "/Assets/Editor/$packageName";
+
+# Error handling.
+sub handler
+{
+	my($msg) = @_;
+	`osascript -e \'tell application \"Finder\" to display dialog \"$msg\" buttons \"OK\"\'`;
+	die "$msg\n";
+}
+$SIG{'__DIE__'}  = \&handler;
+
+
+# Make sure the XcodeFiles directory exists.
+opendir(XCODEPROJECTDIR, $xcodeFiles) || die("Cannot find directory $xcodeFiles");
+closedir(XCODEPROJECTDIR);
+
+
+# Call our to the AppleScript script to configure the Xcode project
+`osascript \'$currDir/Assets/Editor/UpdateXcode.scpt\' \'$installPath\' \'$currDir\' \'$packageName\'`;

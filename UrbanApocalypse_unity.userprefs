@@ -1,0 +1,40 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/scriptAH.js">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="52" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="2373" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMainMenu.js" Line="544" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMissions.js" Line="308" Column="36" />
+      <File FileName="Assets/Resources/Scripts/scriptAH.js" Line="129" Column="3" />
+      <File FileName="Assets/Resources/Scripts/Inventory.js" Line="821" Column="8" />
+      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Craft.js" Line="183" Column="16" />
+      <File FileName="Assets/Resources/Scripts/scriptItem.js" Line="345" Column="16" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="UrbanApocalypse_unity" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Resources" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="scriptAH.js" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True">
+          <Node name="UrbanApocalypse_unity" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

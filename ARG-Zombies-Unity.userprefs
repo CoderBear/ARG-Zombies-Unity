@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Craft.js">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="1" Column="40" />
+      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Craft.js" Line="577" Column="60" />
+      <File FileName="Assets/Resources/Scripts/Inventory.js" Line="198" Column="32" />
+      <File FileName="Assets/Resources/Scripts/scriptSwipeCutScene.js" Line="232" Column="42" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

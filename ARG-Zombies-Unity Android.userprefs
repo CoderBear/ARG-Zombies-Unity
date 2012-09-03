@@ -1,0 +1,35 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Global.js">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptSwipe.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="298" Column="24" />
+      <File FileName="Assets/Resources/Scripts/Inventory.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Craft.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMainMenu.js" Line="309" Column="30" />
+      <File FileName="Assets/Resources/Scripts/scriptLogout.js" Line="52" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-UnityScript" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Resources" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="Global.js" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

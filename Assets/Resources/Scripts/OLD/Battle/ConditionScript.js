@@ -1,0 +1,6 @@
+class Condition{
+	
+	function Condition(){
+	}
+	
+}
