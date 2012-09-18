@@ -1,0 +1,61 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/scriptBattle.js">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="302" Column="28" />
+      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="22" Column="30" />
+      <File FileName="Assets/Resources/Scripts/scriptSwipeCutScene.js" Line="382" Column="32" />
+      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="1222" Column="14" />
+      <File FileName="Assets/Resources/Scripts/scriptMainMenu.js" Line="466" Column="49" />
+      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="2014" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp-firstpass" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="DemoAssets" expanded="True">
+                <Node name="Resources" expanded="True">
+                  <Node name="Atlases" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Plugins" expanded="True">
+                <Node name="UIToolkit" expanded="True">
+                  <Node name="BaseElements" expanded="True" />
+                  <Node name="UIElements" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Assembly-UnityScript" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="DemoAssets" expanded="True">
+                <Node name="Resources" expanded="True">
+                  <Node name="Atlases" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Resources" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="Bullets" expanded="True" />
+                  <Node name="Chat" expanded="True" />
+                  <Node name="Map" expanded="True" />
+                  <Node name="Mobs" expanded="True" />
+                  <Node name="OLD" expanded="True">
+                    <Node name="Battle" expanded="True" />
+                  </Node>
+                  <Node name="PvP" expanded="True" />
+                  <Node name="Tests" expanded="True" />
+                  <Node name="scriptBattle.js" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

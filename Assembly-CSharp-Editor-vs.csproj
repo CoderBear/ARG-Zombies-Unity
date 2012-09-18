@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{3F24C70E-F796-962B-2A2E-884929D1FE3C}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_2;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_IOS;UNITY_IPHONE;ENABLE_GENERICS;ENABLE_TERRAIN;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_DUCK_TYPING</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Editor\BatchTextureImport.cs" />
+     <Compile Include="Assets\Editor\Prime31\P31MenuItem.cs" />
+     <Compile Include="Assets\Editor\Prime31\PListEditor.cs" />
+     <Compile Include="Assets\Editor\Prime31\Prime31PlistHelperWizard.cs" />
+     <None Include="Assets\Resources\Files\Swipes\furry_of_fists.txt" />
+     <None Include="Assets\Resources\Files\Swipes\tuck_ in_tight.txt" />
+     <None Include="Assets\Resources\Files\PC.txt" />
+     <None Include="Assets\Resources\Files\Swipes\blow the mag.txt" />
+     <None Include="Assets\DemoAssets\Resources\textDemoSheet2x.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\ButtonsNew.txt" />
+     <None Include="Assets\Plugins\UIToolkit\Shaders\UIToolkit Premultiplied Alpha.shader" />
+     <None Include="Assets\Resources\Files\Swipes\swing.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuGeneral.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\miscWindows.txt" />
+     <None Include="Assets\DemoAssets\Resources\colorPickerSheet.txt" />
+     <None Include="Assets\Resources\Files\Swipes\stillnes_of_the_sword.txt" />
+     <None Include="Assets\Resources\Files\Swipes\super_punch.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\windows.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\CraftMissionChat.txt" />
+     <None Include="Assets\Resources\Files\Swipes\one _two.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\DeathScreen.txt" />
+     <None Include="Assets\DemoAssets\Resources\joystickSheet.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\buttoonsAndMisc.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuCraft.txt" />
+     <None Include="Assets\Plugins\UIToolkit\Shaders\UIToolkit Alpha Enabled (Default).shader" />
+     <None Include="Assets\Resources\Files\Swipes\mastery.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuAH.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuLogInMainHBOptRegSound.txt" />
+     <None Include="Assets\Resources\Files\Swipes\center_mass.txt" />
+     <None Include="Assets\Resources\Files\Swipes\pummel.txt" />
+     <None Include="Assets\DemoAssets\Resources\kitchenSinkSheet.txt" />
+     <None Include="Assets\Resources\Files\Swipes\_readme.txt" />
+     <None Include="Assets\Resources\Files\Swipes\stab&amp;twist.txt" />
+     <None Include="Assets\Resources\Files\Swipes\from_the_hip.txt" />
+     <None Include="Assets\Resources\Files\Swipes\covering_fire.txt" />
+     <None Include="Assets\Resources\Files\Swipes\duck_and_weave.txt" />
+     <None Include="Assets\DemoAssets\Resources\joystickSheet2x.txt" />
+     <None Include="Assets\Resources\Files\Swipes\barrage.txt" />
+     <None Include="Assets\Plugins\UIToolkit\Shaders\UIToolkit No Alpha.shader" />
+     <None Include="Assets\DemoAssets\Resources\textDemoSheet.txt" />
+     <None Include="Assets\Resources\Files\Swipes\hi-duke-in.txt" />
+     <None Include="Assets\DemoAssets\Resources\prototype.txt" />
+     <None Include="Assets\DemoAssets\Resources\kitchenSinkSheet2x.txt" />
+     <None Include="Assets\Resources\Files\Swipes\head_shot.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\ButtonsOld.txt" />
+     <None Include="Assets\DemoAssets\Resources\prototype2x.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuChat.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\HomeBase.txt" />
+     <None Include="Assets\Resources\Files\Swipes\flail widly.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuBattle.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\LodaingScreens.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\FriendScan.txt" />
+     <None Include="Assets\DemoAssets\Resources\Atlases\MenuFriends.txt" />
+     <None Include="Assets\Resources\Files\Swipes\multi_slash.txt" />
+ <Reference Include="Library\ScriptAssemblies\Assembly-UnityScript">
+ <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
+ </Reference>
+ <Reference Include="Assets\QRCode\Plugins\Antares.QRCode">
+ <HintPath>Assets\QRCode\Plugins\Antares.QRCode.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{52D1041F-A2A1-FF6F-9774-E80BAA567B9C}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{88385D2B-DF1A-6CCF-3428-7213E519279D}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

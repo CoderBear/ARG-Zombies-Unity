@@ -1,0 +1,20 @@
+{"frames": {
+
+"friendscan.png":
+{
+	"frame": {"x":2,"y":2,"w":970,"h":658},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":115,"w":970,"h":658},
+	"sourceSize": {"w":1244,"h":892}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "FriendScan.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1b18f299e44b23bf6283707b96fd685c$"
+}
+}

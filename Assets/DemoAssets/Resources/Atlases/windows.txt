@@ -1,0 +1,36 @@
+{"frames": {
+
+"death.png":
+{
+	"frame": {"x":974,"y":2,"w":968,"h":656},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":968,"h":656},
+	"sourceSize": {"w":968,"h":656}
+},
+"friends.png":
+{
+	"frame": {"x":974,"y":660,"w":680,"h":547},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":680,"h":547},
+	"sourceSize": {"w":680,"h":547}
+},
+"friendscan.png":
+{
+	"frame": {"x":2,"y":2,"w":970,"h":658},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":115,"w":970,"h":658},
+	"sourceSize": {"w":1244,"h":892}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "windows.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:2a118b7a0a12c31f0758ce417bd96349$"
+}
+}

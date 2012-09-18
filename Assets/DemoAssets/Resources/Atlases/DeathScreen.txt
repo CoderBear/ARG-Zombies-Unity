@@ -1,0 +1,20 @@
+{"frames": {
+
+"death.png":
+{
+	"frame": {"x":2,"y":2,"w":968,"h":656},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":968,"h":656},
+	"sourceSize": {"w":968,"h":656}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "DeathScreen.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:385d00b7788bdfbe2506889a2481e7f1$"
+}
+}

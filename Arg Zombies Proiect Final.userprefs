@@ -1,0 +1,36 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/scriptItem.js">
+    <Files>
+      <File FileName="Assets/Plugins/AR/ARBinding.cs" Line="28" Column="1" />
+      <File FileName="Assets/Plugins/UIToolkit/UIElements/UIToggleButton.cs" Line="5" Column="16" />
+      <File FileName="Assets/Plugins/QRDecoder.cs" Line="10" Column="4" />
+      <File FileName="Assets/QRCode/DemoScene/QRCodeDemo.cs" Line="62" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMissions.js" Line="1312" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptBattle.js" Line="1479" Column="38" />
+      <File FileName="Assets/Resources/Scripts/scriptLevelUp.js" Line="278" Column="20" />
+      <File FileName="Assets/Resources/Scripts/BackgroundManager.js" Line="54" Column="25" />
+      <File FileName="Assets/Resources/Scripts/scriptMain.js" Line="3449" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptMarket.js" Line="46" Column="41" />
+      <File FileName="Assets/Resources/Scripts/scriptItem.js" Line="365" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptBank.js" Line="25" Column="39" />
+      <File FileName="Assets/Resources/Scripts/Global.js" Line="294" Column="28" />
+      <File FileName="Assets/Resources/Scripts/scriptMob.js" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptLogout.js" Line="30" Column="4" />
+      <File FileName="Assets/Resources/Scripts/Inventory.js" Line="863" Column="41" />
+      <File FileName="Assets/Resources/Scripts/Craft.js" Line="603" Column="2" />
+      <File FileName="Assets/Resources/Scripts/scriptChar.js" Line="590" Column="31" />
+      <File FileName="Assets/Resources/Scripts/PvP/scriptPvP.js" Line="1545" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptGUICutScene.js" Line="128" Column="24" />
+      <File FileName="Assets/Resources/Scripts/scriptSwipeCutScene.js" Line="125" Column="41" />
+      <File FileName="Assets/Resources/Scripts/scriptChat.js" Line="265" Column="1" />
+      <File FileName="Assets/Resources/Scripts/PvP/scriptEnemyPC.js" Line="200" Column="10" />
+      <File FileName="Assets/Resources/Scripts/LoadSceneScript.js" Line="26" Column="1" />
+      <File FileName="Assets/Resources/Scripts/scriptAH.js" Line="694" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

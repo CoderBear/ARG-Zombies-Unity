@@ -1,0 +1,108 @@
+{"frames": {
+
+"chat_edit.png":
+{
+	"frame": {"x":2,"y":129,"w":352,"h":25},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":352,"h":25},
+	"sourceSize": {"w":352,"h":25}
+},
+"chat_tab.png":
+{
+	"frame": {"x":29,"y":129,"w":90,"h":25},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":90,"h":25},
+	"sourceSize": {"w":90,"h":25}
+},
+"chat_tab_p.png":
+{
+	"frame": {"x":29,"y":221,"w":90,"h":25},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":90,"h":25},
+	"sourceSize": {"w":90,"h":25}
+},
+"close.png":
+{
+	"frame": {"x":2,"y":52,"w":57,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":57,"h":23},
+	"sourceSize": {"w":59,"h":25}
+},
+"close_p.png":
+{
+	"frame": {"x":2,"y":77,"w":57,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":57,"h":23},
+	"sourceSize": {"w":59,"h":25}
+},
+"plus tab.png":
+{
+	"frame": {"x":36,"y":313,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18}
+},
+"plus tab2.png":
+{
+	"frame": {"x":16,"y":483,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18}
+},
+"plus.png":
+{
+	"frame": {"x":2,"y":102,"w":26,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":25},
+	"sourceSize": {"w":26,"h":25}
+},
+"plus_p.png":
+{
+	"frame": {"x":30,"y":102,"w":26,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":25},
+	"sourceSize": {"w":26,"h":25}
+},
+"sageata.png":
+{
+	"frame": {"x":2,"y":483,"w":12,"h":20},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":12,"h":20},
+	"sourceSize": {"w":14,"h":22}
+},
+"send.png":
+{
+	"frame": {"x":2,"y":2,"w":57,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":57,"h":23},
+	"sourceSize": {"w":59,"h":25}
+},
+"send_p.png":
+{
+	"frame": {"x":2,"y":27,"w":57,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":57,"h":23},
+	"sourceSize": {"w":59,"h":25}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "MenuChat.png",
+	"format": "RGBA8888",
+	"size": {"w":64,"h":512},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9285da36c2b77fd1f4748f2e636e1ebc$"
+}
+}
